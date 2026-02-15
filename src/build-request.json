@@ -1,0 +1,77 @@
+{
+  "kind": "build_request",
+  "title": "Upgrade timer color customization presets and apply color to all timer visuals",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-16",
+      "text": "Extend the timer color preset themes to include: Orange, Neon, and White in addition to the existing presets (Red, Green, Blue, Purple), while keeping the existing custom color picker.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Predefined color themes (Red, Green, Blue, Purple, Orange, Neon, White)",
+          "Custom color picker"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The color selection UI shows preset options for Red, Green, Blue, Purple, Orange, Neon, and White.",
+        "The existing custom color picker remains available and continues to work.",
+        "Selecting any preset updates the selected timer color immediately."
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "text": "When the user changes the timer color (via preset or custom picker), apply the selected color consistently to: the timer circle/progress ring, the countdown numbers, the progress animation styling, and the glow effect.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "When user changes color:\n\nTimer circle\n\nCountdown numbers\n\nProgress animation\n\nGlow effect\nAll should change accordingly."
+        ]
+      },
+      "acceptanceCriteria": [
+        "The progress ring stroke color updates to the selected color.",
+        "The countdown time text (MM:SS) updates to the selected color.",
+        "The visual progress animation retains smooth animation while reflecting the selected color (no regressions in animation smoothness).",
+        "The glow/drop-shadow effect uses the selected color (including for White and Neon presets) and remains visible in dark mode."
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "text": "Persist the selected timer color in localStorage so it is restored on reload and remains active in Streamer Mode (including on the /timer route).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Save selected color per user (store in database/local storage).",
+          "In Streamer Mode, selected color should remain active."
+        ]
+      },
+      "acceptanceCriteria": [
+        "After selecting a timer color and refreshing the page, the timer renders using the previously selected color.",
+        "When Streamer Mode is enabled, the timer continues to use the same selected color for the ring, countdown numbers, animation styling, and glow.",
+        "No backend/database dependency is introduced for persisting the timer color (localStorage persistence is sufficient)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not edit files under frontend/src/components/ui (read-only).",
+    "Do not edit any paths listed in frontend.immutablePaths (compose with existing hooks/components instead).",
+    "Backend is a single Motoko actor; do not add backend persistence for this request unless explicitly required."
+  ],
+  "nonGoals": [
+    "Adding user accounts or per-identity database storage for color settings.",
+    "Changing timer duration logic, sound behavior, quotes, metrics, or Streamer Mode layout beyond ensuring the selected color remains applied."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

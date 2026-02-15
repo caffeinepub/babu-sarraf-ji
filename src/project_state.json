@@ -1,0 +1,225 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "Modern, clean aesthetic study website “Babu Sarraf Ji” featuring an advanced customizable Pomodoro focus timer with dark-mode glowing design and an OBS-friendly Streamer Mode at a separate /timer URL; pure frontend (HTML/CSS/JS), responsive, fast, no login.",
+  "architectural_notes": [
+    "Pure frontend implementation (HTML/CSS/JavaScript) with no login/auth.",
+    "Separate clean URL route/page at /timer for OBS Browser Source usage.",
+    "Persist user settings (timer lengths, theme color, sound toggles, streamer mode, etc.) in localStorage (optional feature scope).",
+    "Color theme selection should apply consistently to all timer visuals (ring, digits, progress animation, glow) across normal and Streamer Mode, and persist via localStorage."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-the-main-landing-page-for-the-study-website-named-babu-sarraf-ji-with-the-tagline-text-focus-study-repeat-and-a-minimal-layout-that-prominently-features-the-pomodoro-timer",
+      "title": "Create the main landing page for the study website named “Babu Sarraf Ji” with the tagline text “Focus. Study. Repeat.” and a minimal layout that prominently features the Pomodoro timer.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-fully-functional-pomodoro-focus-timer-with-defaults-of-25-minutes-focus-and-5-minutes-break-supporting-start-pause-reset-and-skip-session",
+      "title": "Implement a fully functional Pomodoro focus timer with defaults of 25 minutes focus and 5 minutes break, supporting: start, pause, reset, and skip session.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-allow-the-user-to-manually-set-focus-duration-and-break-duration-before-and-or-between-sessions-with-input-validation-that-prevents-invalid-durations",
+      "title": "Allow the user to manually set focus duration and break duration before and/or between sessions, with input validation that prevents invalid durations.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-circular-animated-progress-indicator-for-the-timer-progress-ring-with-smooth-countdown-animation-and-a-soft-glowing-appearance-in-dark-mode",
+      "title": "Add a circular animated progress indicator for the timer (progress ring) with smooth countdown animation and a soft glowing appearance in dark mode.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-timer-color-customization-with-preset-options-red-green-blue-purple-and-a-custom-color-picker-option-that-updates-the-progress-ring-and-related-accents",
+      "title": "Provide timer color customization with preset options (Red, Green, Blue, Purple) and a custom color picker option that updates the progress ring and related accents.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-sound-features-a-soft-ticking-sound-toggle-on-off-during-active-countdown-and-a-bell-sound-that-plays-when-a-session-completes",
+      "title": "Implement sound features: a soft ticking sound toggle (ON/OFF) during active countdown and a bell sound that plays when a session completes.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-show-a-motivational-quote-when-the-timer-starts-e-g-discipline-beats-motivation-ensuring-the-quote-is-visible-and-styled-consistently-with-the-minimal-ui",
+      "title": "Show a motivational quote when the timer starts (e.g., “Discipline beats motivation.”), ensuring the quote is visible and styled consistently with the minimal UI.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-coherent-study-vibe-visual-theme-across-the-site-default-dark-mode-deep-navy-black-minimal-distraction-free-layout-modern-student-aesthetic-font-and-a-subtle-animated-gradient-background",
+      "title": "Apply a coherent “study vibe” visual theme across the site: default dark mode (deep navy/black), minimal distraction-free layout, modern student-aesthetic font, and a subtle animated gradient background.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-obs-studio-compatible-separate-route-page-at-timer-that-can-be-used-as-a-clean-browser-source-and-include-a-streamer-mode-toggle-that-changes-the-layout-behavior",
+      "title": "Add an OBS Studio compatible separate route/page at “/timer” that can be used as a clean browser source, and include a “Streamer Mode” toggle that changes the layout behavior.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-when-streamer-mode-is-on-render-only-the-countdown-timer-no-settings-panel-and-no-buttons-other-than-the-countdown-display-with-an-option-for-a-transparent-background-for-overlay-use",
+      "title": "When Streamer Mode is ON, render only the countdown/timer (no settings panel and no buttons other than the countdown display), with an option for a transparent background for overlay use.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-app-is-fully-responsive-mobile-desktop-lightweight-and-performs-smoothly-in-chrome-no-login-required-all-functionality-runs-client-side",
+      "title": "Ensure the app is fully responsive (mobile + desktop), lightweight, and performs smoothly in Chrome; no login required; all functionality runs client-side.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-persist-user-settings-in-browser-storage-localstorage-including-focus-break-durations-selected-timer-color-including-custom-ticking-toggle-and-streamer-mode-preferences",
+      "title": "Persist user settings in browser storage (localStorage), including focus/break durations, selected timer color (including custom), ticking toggle, and Streamer Mode preferences.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-optional-advanced-study-metrics-a-daily-session-counter-and-a-streak-counter-based-on-completed-focus-sessions-persisted-in-localstorage-and-displayed-in-the-non-streamer-ui-only",
+      "title": "Implement optional advanced study metrics: a daily session counter and a streak counter based on completed focus sessions, persisted in localStorage and displayed in the non-streamer UI only.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-an-optional-lo-fi-background-music-toggle-with-a-lightweight-audio-asset-and-ensure-it-can-be-enabled-disabled-without-interfering-with-ticking-bell-sounds",
+      "title": "Implement an optional lo-fi background music toggle with a lightweight audio asset and ensure it can be enabled/disabled without interfering with ticking/bell sounds.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-required-static-assets-to-the-frontend-generated-images-and-audio-and-reference-them-directly-from-the-frontend-not-via-backend",
+      "title": "Add required static assets to the frontend (generated images and audio) and reference them directly from the frontend (not via backend).",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-timer-color-preset-themes-to-include-orange-neon-and-white-in-addition-to-the-existing-presets-red-green-blue-purple-while-keeping-the-existing-custom-color-picker",
+      "title": "Extend the timer color preset themes to include: Orange, Neon, and White in addition to the existing presets (Red, Green, Blue, Purple), while keeping the existing custom color picker.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-when-the-user-changes-the-timer-color-via-preset-or-custom-picker-apply-the-selected-color-consistently-to-the-timer-circle-progress-ring-the-countdown-numbers-the-progress-animation-styling-and-the-glow-effect",
+      "title": "When the user changes the timer color (via preset or custom picker), apply the selected color consistently to: the timer circle/progress ring, the countdown numbers, the progress animation styling, and the glow effect.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-persist-the-selected-timer-color-in-localstorage-so-it-is-restored-on-reload-and-remains-active-in-streamer-mode-including-on-the-timer-route",
+      "title": "Persist the selected timer color in localStorage so it is restored on reload and remains active in Streamer Mode (including on the /timer route).",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Build advanced Pomodoro timer (default 25/5) with editable focus/break times, start/pause/reset, and skip session",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Add circular animated progress ring and smooth countdown animation for the timer",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Implement timer color themes (red/green/blue/purple) plus custom color picker",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Add sound features: soft ticking toggle and bell sound on session completion",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Show motivational quote when timer starts",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Create study-vibe UI: default dark mode, soft glow timer, minimal distraction-free layout, modern font, subtle animated gradient background, logo + tagline 'Focus. Study. Repeat.'",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Provide OBS Studio compatible separate /timer page with Streamer Mode toggle that shows only timer (no settings/buttons), optional transparent background, and clean minimal layout",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Ensure technical requirements: fully responsive, smooth in Chrome, lightweight/fast, no login, pure frontend (HTML/CSS/JS)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Optional: daily session counter, streak counter, lofi background music toggle, and save settings in localStorage",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Upgrade timer color customization: add more preset themes (Orange, Neon, White) and ensure selected color updates timer circle, countdown numbers, progress animation, and glow; persist selection in localStorage and keep active in Streamer Mode",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Babu Sarraf Ji",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,71 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-15T06:45:31.000Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 3,
+    "implemented": 3,
+    "items": [
+      {
+        "id": "REQ-16",
+        "summary": "Extend the timer color preset themes to include: Orange, Neon, and White in addition to the existing presets (Red, Green, Blue, Purple), while keeping the existing custom color picker.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/PomodoroTimer/ColorControls.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/PomodoroTimer/ColorControls.tsx"
+        ]
+      },
+      {
+        "id": "REQ-17",
+        "summary": "When the user changes the timer color (via preset or custom picker), apply the selected color consistently to: the timer circle/progress ring, the countdown numbers, the progress animation styling, and the glow effect.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/lib/color.ts",
+          "frontend/src/components/PomodoroTimer/ProgressRing.tsx",
+          "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/lib/color.ts",
+          "frontend/src/components/PomodoroTimer/ProgressRing.tsx",
+          "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx"
+        ]
+      },
+      {
+        "id": "REQ-18",
+        "summary": "Persist the selected timer color in localStorage so it is restored on reload and remains active in Streamer Mode (including on the /timer route).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/PomodoroTimer/usePomodoroTimer.ts",
+          "frontend/src/hooks/useLocalStorageState.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/PomodoroTimer/usePomodoroTimer.ts",
+          "frontend/src/hooks/useLocalStorageState.ts"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "build-template/README.md",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/components/PomodoroTimer/ColorControls.tsx",
+    "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx",
+    "frontend/src/components/PomodoroTimer/ProgressRing.tsx",
+    "frontend/src/components/PomodoroTimer/usePomodoroTimer.ts",
+    "frontend/src/hooks/useLocalStorageState.ts",
+    "frontend/src/lib/color.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

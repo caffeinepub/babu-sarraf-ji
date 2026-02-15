@@ -1,0 +1,71 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Upgrade timer color presets, apply selected color to all timer visuals, and persist selection",
+  "requirements": [
+    {
+      "id": "REQ-16",
+      "summary": "Add Orange, Neon, and White timer color presets while retaining the custom color picker and immediate updates.",
+      "acceptanceCriteria": [
+        "The color selection UI shows preset options for Red, Green, Blue, Purple, Orange, Neon, and White.",
+        "The existing custom color picker remains available and continues to work.",
+        "Selecting any preset updates the selected timer color immediately."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/PomodoroTimer/ColorControls.tsx",
+          "operation": "modify",
+          "description": "Extend PRESET_COLORS to include Orange, Neon, and White; adjust the preset grid layout to accommodate 7 swatches; ensure the custom color input stays in sync when the parent `color` prop changes (e.g., via localStorage restore) so the UI reflects the active selection immediately."
+        }
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "summary": "Apply the selected timer color consistently to the progress ring, countdown text, animation styling, and glow effect (including White and Neon).",
+      "acceptanceCriteria": [
+        "The progress ring stroke color updates to the selected color.",
+        "The countdown time text (MM:SS) updates to the selected color.",
+        "The visual progress animation retains smooth animation while reflecting the selected color (no regressions in animation smoothness).",
+        "The glow/drop-shadow effect uses the selected color (including for White and Neon presets) and remains visible in dark mode."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/lib/color.ts",
+          "operation": "create",
+          "description": "Create small color utilities for UI styling (e.g., converting a hex color to rgba with configurable alpha) to reliably generate glow/drop-shadow and text-shadow values for all presets (including White/Neon) and custom-picked colors."
+        },
+        {
+          "path": "frontend/src/components/PomodoroTimer/ProgressRing.tsx",
+          "operation": "modify",
+          "description": "Use the selected `color` for the progress ring stroke and compute a visible, dark-mode-friendly glow using the new color utility (rather than assuming hex+alpha concatenation). Ensure animation remains smooth by limiting transitions to the progress-related properties and not introducing layout-jank."
+        },
+        {
+          "path": "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx",
+          "operation": "modify",
+          "description": "Apply `timerColor` to the countdown numbers (MM:SS) and add a matching glow/text-shadow derived from the same color utility; ensure the timer visuals (ring + numbers + glow) stay consistent regardless of Streamer Mode UI changes."
+        }
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "summary": "Persist and restore the selected timer color via localStorage so it survives reloads and remains active in Streamer Mode (including on /timer).",
+      "acceptanceCriteria": [
+        "After selecting a timer color and refreshing the page, the timer renders using the previously selected color.",
+        "When Streamer Mode is enabled, the timer continues to use the same selected color for the ring, countdown numbers, animation styling, and glow.",
+        "No backend/database dependency is introduced for persisting the timer color (localStorage persistence is sufficient)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/PomodoroTimer/usePomodoroTimer.ts",
+          "operation": "modify",
+          "description": "Harden localStorage-backed `timerColor` behavior by validating/restoring a safe hex color value (fallback to default on invalid data) while continuing to persist changes via the existing localStorage-synced state. Keep the same storage key so the selection is restored across reloads and on the /timer route."
+        },
+        {
+          "path": "frontend/src/hooks/useLocalStorageState.ts",
+          "operation": "modify",
+          "description": "Improve resilience for persisted primitive values by handling JSON parse failures gracefully (retain current state/default without throwing) so a corrupted localStorage entry cannot prevent timer color restoration."
+        }
+      ]
+    }
+  ]
+}

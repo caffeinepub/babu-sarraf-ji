@@ -1,0 +1,62 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-extend-the-timer-color-preset-themes-to-include-orange-neon-and-white-in-addition-to-the-existing-presets-red-green-blue-purple-while-keeping-the-existing-custom-color-picker",
+      "featureTitle": "Extend the timer color preset themes to include: Orange, Neon, and White in addition to the existing presets (Red, Green, Blue, Purple), while keeping the existing custom color picker.",
+      "files": [
+        "frontend/src/components/PomodoroTimer/ColorControls.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-16"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-when-the-user-changes-the-timer-color-via-preset-or-custom-picker-apply-the-selected-color-consistently-to-the-timer-circle-progress-ring-the-countdown-numbers-the-progress-animation-styling-and-the-glow-effect",
+      "featureTitle": "When the user changes the timer color (via preset or custom picker), apply the selected color consistently to: the timer circle/progress ring, the countdown numbers, the progress animation styling, and the glow effect.",
+      "files": [
+        "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx",
+        "frontend/src/components/PomodoroTimer/ProgressRing.tsx",
+        "frontend/src/lib/color.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-17"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-persist-the-selected-timer-color-in-localstorage-so-it-is-restored-on-reload-and-remains-active-in-streamer-mode-including-on-the-timer-route",
+      "featureTitle": "Persist the selected timer color in localStorage so it is restored on reload and remains active in Streamer Mode (including on the /timer route).",
+      "files": [
+        "frontend/src/components/PomodoroTimer/usePomodoroTimer.ts",
+        "frontend/src/hooks/useLocalStorageState.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-18"
+      ],
+      "confidence": "high"
+    }
+  ]
+}
