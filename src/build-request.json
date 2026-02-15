@@ -1,106 +1,160 @@
 {
   "kind": "build_request",
-  "title": "Add Instagram and X social icons (header + footer), with glow hover and streamer-mode hiding",
+  "title": "Dashboard background image customization (per-user) with upload + reset",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-19",
-      "text": "Update the footer social links to include clickable Instagram and X (Twitter) icons that open in a new tab and point to the provided profiles: https://instagram.com/babu_sarraf_ji and https://x.com/babu_sarraf_ji. Keep icon styling minimal/modern with proper spacing, a soft glow hover effect matching the dark “study vibe” theme, and ensure the icons are responsive on mobile and desktop.",
+      "id": "REQ-57",
+      "text": "Add a clean, minimal Dashboard UI control section on the Home/Dashboard page (route \"/\") that includes a button labeled exactly \"Change Background\" and a button labeled exactly \"Reset to Default\".",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-1"
+          "recent-messages-4"
         ],
         "quotes": [
-          "Add Instagram icon in: Footer section",
-          "Link: https://instagram.com/babu_sarraf_ji Open in new tab",
-          "Add X icon next to Instagram icon",
-          "Clickable link: https://x.com/babu_sarraf_ji Open in new tab",
-          "Minimal modern icon style",
-          "Soft glow hover effect (match study vibe theme)",
-          "Proper spacing between icons",
-          "Responsive for mobile and desktop"
+          "Add a button in Dashboard: “Change Background”",
+          "Add “Reset to Default” button.",
+          "Keep UI clean and study vibe."
         ]
       },
       "acceptanceCriteria": [
-        "Footer shows Instagram and X icons adjacent to each other with consistent sizing and spacing.",
-        "Clicking the Instagram icon opens https://instagram.com/babu_sarraf_ji in a new tab and includes rel=\"noopener noreferrer\".",
-        "Clicking the X icon opens https://x.com/babu_sarraf_ji in a new tab and includes rel=\"noopener noreferrer\".",
-        "Hovering either icon shows a soft glow effect consistent with the existing dark theme.",
-        "On small screens the footer layout remains readable and the icons do not overflow or overlap other footer content."
+        "On route \"/\", the user can see a \"Change Background\" control and a \"Reset to Default\" control in a clean, study-vibe style consistent with the existing UI components.",
+        "All user-facing text is English and matches the requested button labels exactly.",
+        "Controls are responsive and usable on mobile (buttons not cramped, tap targets reasonable)."
       ]
     },
     {
-      "id": "REQ-20",
-      "text": "Add the same Instagram and X social icon links to the top-right corner of the landing page header (near the existing header/profile area), using the same minimal modern style, spacing, and soft glow hover effect. These header icons must open the provided links in a new tab.",
+      "id": "REQ-58",
+      "text": "Allow the user to select an image from their device (gallery/files) when clicking \"Change Background\"; validate that the selected file is an image and show a clear English error message if the file is invalid or the upload fails.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-1"
+          "recent-messages-4"
         ],
         "quotes": [
-          "Add Instagram icon in: Top right corner (near profile section)",
-          "Add X icon next to Instagram icon",
-          "Open in new tab",
-          "Icons should be minimal and professional"
+          "User can upload image from their gallery."
         ]
       },
       "acceptanceCriteria": [
-        "Landing page header displays Instagram and X icons in the top-right area without disrupting the centered logo/tagline.",
-        "Both icons open the correct URLs in a new tab with rel=\"noopener noreferrer\".",
-        "Icons are visually consistent with the footer versions (size, color, hover glow).",
-        "Header remains responsive (icons remain accessible and correctly positioned on mobile and desktop)."
+        "Clicking \"Change Background\" opens the native file picker and accepts common image formats.",
+        "If the selected file is not an image, the UI shows an English validation message and does not apply/save the background.",
+        "If saving fails, the UI shows an English error state; the previous background remains unchanged."
       ]
     },
     {
-      "id": "REQ-21",
-      "text": "Add optional follow text under the timer in non-streamer mode: “Follow for daily study motivation – @babu_sarraf_ji”. Ensure it fits the minimal study aesthetic and does not appear in Streamer Mode.",
+      "id": "REQ-59",
+      "text": "Apply the selected image as the background only on the Dashboard/Home page (route \"/\"): the background must cover the full viewport, be properly fitted without stretching (cover + centered), and include a slight dark overlay layer to preserve readability of the existing timer and text.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-1"
+          "recent-messages-4"
         ],
         "quotes": [
-          "Optional text under timer: “Follow for daily study motivation – @babu_sarraf_ji”",
-          "In Streamer Mode: Social icons should be hidden automatically"
+          "Selected image should be applied only to the Dashboard background.",
+          "Cover full screen",
+          "Be properly fitted (no stretching)",
+          "Have slight dark overlay for readability"
         ]
       },
       "acceptanceCriteria": [
-        "When streamerMode is false, the text “Follow for daily study motivation – @babu_sarraf_ji” renders beneath the timer area and matches the existing typography/color system.",
-        "When streamerMode is true, the follow text is not rendered."
+        "When a background is set, route \"/\" displays it full-screen behind existing content.",
+        "The background uses a non-stretching fit (equivalent to CSS background-size: cover; background-position: center).",
+        "A dark overlay is visible above the image and below the UI content, improving text/timer readability.",
+        "Navigating away from \"/\" removes the custom background effect (no impact on other routes)."
       ]
     },
     {
-      "id": "REQ-22",
-      "text": "Ensure any social icons rendered on the /timer route are automatically hidden when Streamer Mode is enabled (to keep the browser-source overlay clean).",
+      "id": "REQ-60",
+      "text": "Ensure the custom Dashboard background does not affect the Timer page at \"/timer\" (including Streamer Mode and transparent background behavior) and does not introduce any new UI elements onto Streamer Mode views.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-1"
+          "recent-messages-4"
         ],
         "quotes": [
-          "In Streamer Mode: Social icons should be hidden automatically"
+          "Should not affect Streamer Mode timer page."
         ]
       },
       "acceptanceCriteria": [
-        "On /timer, when Streamer Mode is ON, no social icons (Instagram/X) are visible anywhere on the page.",
-        "On /timer, when Streamer Mode is OFF, social icons (if shown on that route) display normally with the same styling/hover behavior as the landing page."
+        "On \"/timer\", the appearance and behavior remain unchanged relative to current behavior, including Streamer Mode hiding UI and transparent background handling.",
+        "No Dashboard background image or overlay is applied to \"/timer\" in any mode."
+      ]
+    },
+    {
+      "id": "REQ-61",
+      "text": "Persist the Dashboard background per user account: signed-in users (Internet Identity) must have their selected background saved to their account and restored automatically on returning to the Dashboard; signed-out users can view the default background and must see a clear English prompt to sign in if they attempt to change or reset the Dashboard background.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "recent-messages-4"
+        ],
+        "quotes": [
+          "Save background per user account."
+        ]
+      },
+      "acceptanceCriteria": [
+        "If the user is signed in, setting a background persists it to the backend and it is restored on page reload and future visits.",
+        "If the user is signed out, clicking \"Change Background\" or \"Reset to Default\" shows an English prompt indicating sign-in is required to save the Dashboard background.",
+        "Signed-out users continue to see the default Dashboard background."
+      ]
+    },
+    {
+      "id": "REQ-62",
+      "text": "Implement backend support (Motoko, single-actor) for storing, retrieving, and clearing a per-user Dashboard background image, using Internet Identity principal as the key and using existing blob storage types already used for community post images.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "recent-messages-4"
+        ],
+        "quotes": [
+          "Save background per user account."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes Candid methods to: (1) get the caller’s current Dashboard background image (optional), (2) set/update the caller’s Dashboard background image, and (3) clear/reset the caller’s Dashboard background image.",
+        "Backend enforces that only authenticated users with user permission can set/get/clear their own Dashboard background.",
+        "The stored background is keyed by caller principal so it is per-account."
+      ]
+    },
+    {
+      "id": "REQ-63",
+      "text": "Wire the Dashboard UI to the backend methods using React Query patterns consistent with existing hooks (e.g., actor availability checks, query invalidation on mutation) so that after upload/reset the UI updates immediately and restores state on load.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "recent-messages-4"
+        ]
+      },
+      "acceptanceCriteria": [
+        "On Dashboard load, the app queries for the signed-in user’s saved background and applies it if present.",
+        "After uploading a new background, the UI updates without requiring a manual refresh.",
+        "After clicking \"Reset to Default\", the UI reverts to the default background and persists the reset for that signed-in user.",
+        "React Query cache is invalidated/refetched appropriately after mutations so state stays consistent."
       ]
     }
   ],
   "constraints": [
-    "Frontend only (no backend changes required).",
-    "Do not modify files under frontend/src/components/ui or other immutablePaths listed in SYSTEM_CONTEXT.",
-    "All external links must open in a new tab and include rel=\"noopener noreferrer\".",
-    "User-facing text must be in English."
+    "Do not modify files under frontend/src/components/ui (read-only shadcn components). Compose them instead.",
+    "Do not edit immutable paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
+    "Backend must remain a single Motoko actor in backend/main.mo; only add backend/migration.mo if needed for state upgrade."
   ],
   "nonGoals": [
-    "Do not add third-party authentication or social media API integrations (links only).",
-    "Do not add tracking/analytics for social link clicks.",
-    "Do not change core Pomodoro timer behavior beyond adding the optional follow text in non-streamer mode."
+    "Do not apply the uploaded background to /timer, /community, /ncert, or /test-series pages.",
+    "Do not add new authentication providers; use existing Internet Identity only.",
+    "Do not redesign the entire Dashboard; only add the requested background customization controls and styling needed for readability."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

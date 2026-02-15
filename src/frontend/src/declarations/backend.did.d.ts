@@ -10,7 +10,96 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
-export interface _SERVICE {}
+export interface ChatMessageView {
+  'id' : bigint,
+  'content' : string,
+  'author' : Principal,
+  'timestamp' : Time,
+}
+export interface CommentView {
+  'id' : bigint,
+  'content' : string,
+  'author' : Principal,
+  'timestamp' : Time,
+}
+export type ExternalBlob = Uint8Array;
+export interface PostView {
+  'id' : bigint,
+  'likedBy' : Array<Principal>,
+  'author' : Principal,
+  'likes' : bigint,
+  'timestamp' : Time,
+  'caption' : string,
+  'image' : ExternalBlob,
+  'comments' : Array<CommentView>,
+}
+export interface TestResult {
+  'exam' : string,
+  'score' : bigint,
+  'totalQuestions' : bigint,
+  'incorrectCount' : bigint,
+  'timestamp' : Time,
+  'category' : string,
+  'correctCount' : bigint,
+  'accuracy' : bigint,
+}
+export type Time = bigint;
+export interface UserProfile { 'displayName' : string }
+export type UserRole = { 'admin' : null } |
+  { 'user' : null } |
+  { 'guest' : null };
+export interface _CaffeineStorageCreateCertificateResult {
+  'method' : string,
+  'blob_hash' : string,
+}
+export interface _CaffeineStorageRefillInformation {
+  'proposed_top_up_amount' : [] | [bigint],
+}
+export interface _CaffeineStorageRefillResult {
+  'success' : [] | [boolean],
+  'topped_up_amount' : [] | [bigint],
+}
+export interface _SERVICE {
+  '_caffeineStorageBlobIsLive' : ActorMethod<[Uint8Array], boolean>,
+  '_caffeineStorageBlobsToDelete' : ActorMethod<[], Array<Uint8Array>>,
+  '_caffeineStorageConfirmBlobDeletion' : ActorMethod<
+    [Array<Uint8Array>],
+    undefined
+  >,
+  '_caffeineStorageCreateCertificate' : ActorMethod<
+    [string],
+    _CaffeineStorageCreateCertificateResult
+  >,
+  '_caffeineStorageRefillCashier' : ActorMethod<
+    [[] | [_CaffeineStorageRefillInformation]],
+    _CaffeineStorageRefillResult
+  >,
+  '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
+  '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
+  'addComment' : ActorMethod<[bigint, string], bigint>,
+  'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'blockUser' : ActorMethod<[Principal], undefined>,
+  'clearDashboardBackground' : ActorMethod<[], undefined>,
+  'createPost' : ActorMethod<[ExternalBlob, string], bigint>,
+  'deleteChatMessage' : ActorMethod<[bigint], undefined>,
+  'deleteComment' : ActorMethod<[bigint, bigint], undefined>,
+  'deletePost' : ActorMethod<[bigint], undefined>,
+  'getAllPosts' : ActorMethod<[], Array<PostView>>,
+  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
+  'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getChatMessages' : ActorMethod<[], Array<ChatMessageView>>,
+  'getComments' : ActorMethod<[bigint], Array<CommentView>>,
+  'getDashboardBackground' : ActorMethod<[], [] | [ExternalBlob]>,
+  'getTestHistory' : ActorMethod<[], Array<TestResult>>,
+  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'isCallerAdmin' : ActorMethod<[], boolean>,
+  'likePost' : ActorMethod<[bigint], undefined>,
+  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+  'saveDashboardBackground' : ActorMethod<[ExternalBlob], undefined>,
+  'saveTestResult' : ActorMethod<[TestResult], undefined>,
+  'sendMessage' : ActorMethod<[string], bigint>,
+  'unblockUser' : ActorMethod<[Principal], undefined>,
+}
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];
 export declare const idlFactory: IDL.InterfaceFactory;

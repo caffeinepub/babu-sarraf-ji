@@ -8,10 +8,226 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
-export const idlService = IDL.Service({});
+export const _CaffeineStorageCreateCertificateResult = IDL.Record({
+  'method' : IDL.Text,
+  'blob_hash' : IDL.Text,
+});
+export const _CaffeineStorageRefillInformation = IDL.Record({
+  'proposed_top_up_amount' : IDL.Opt(IDL.Nat),
+});
+export const _CaffeineStorageRefillResult = IDL.Record({
+  'success' : IDL.Opt(IDL.Bool),
+  'topped_up_amount' : IDL.Opt(IDL.Nat),
+});
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
+export const ExternalBlob = IDL.Vec(IDL.Nat8);
+export const Time = IDL.Int;
+export const CommentView = IDL.Record({
+  'id' : IDL.Nat,
+  'content' : IDL.Text,
+  'author' : IDL.Principal,
+  'timestamp' : Time,
+});
+export const PostView = IDL.Record({
+  'id' : IDL.Nat,
+  'likedBy' : IDL.Vec(IDL.Principal),
+  'author' : IDL.Principal,
+  'likes' : IDL.Nat,
+  'timestamp' : Time,
+  'caption' : IDL.Text,
+  'image' : ExternalBlob,
+  'comments' : IDL.Vec(CommentView),
+});
+export const UserProfile = IDL.Record({ 'displayName' : IDL.Text });
+export const ChatMessageView = IDL.Record({
+  'id' : IDL.Nat,
+  'content' : IDL.Text,
+  'author' : IDL.Principal,
+  'timestamp' : Time,
+});
+export const TestResult = IDL.Record({
+  'exam' : IDL.Text,
+  'score' : IDL.Nat,
+  'totalQuestions' : IDL.Nat,
+  'incorrectCount' : IDL.Nat,
+  'timestamp' : Time,
+  'category' : IDL.Text,
+  'correctCount' : IDL.Nat,
+  'accuracy' : IDL.Nat,
+});
+
+export const idlService = IDL.Service({
+  '_caffeineStorageBlobIsLive' : IDL.Func(
+      [IDL.Vec(IDL.Nat8)],
+      [IDL.Bool],
+      ['query'],
+    ),
+  '_caffeineStorageBlobsToDelete' : IDL.Func(
+      [],
+      [IDL.Vec(IDL.Vec(IDL.Nat8))],
+      ['query'],
+    ),
+  '_caffeineStorageConfirmBlobDeletion' : IDL.Func(
+      [IDL.Vec(IDL.Vec(IDL.Nat8))],
+      [],
+      [],
+    ),
+  '_caffeineStorageCreateCertificate' : IDL.Func(
+      [IDL.Text],
+      [_CaffeineStorageCreateCertificateResult],
+      [],
+    ),
+  '_caffeineStorageRefillCashier' : IDL.Func(
+      [IDL.Opt(_CaffeineStorageRefillInformation)],
+      [_CaffeineStorageRefillResult],
+      [],
+    ),
+  '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'addComment' : IDL.Func([IDL.Nat, IDL.Text], [IDL.Nat], []),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'blockUser' : IDL.Func([IDL.Principal], [], []),
+  'clearDashboardBackground' : IDL.Func([], [], []),
+  'createPost' : IDL.Func([ExternalBlob, IDL.Text], [IDL.Nat], []),
+  'deleteChatMessage' : IDL.Func([IDL.Nat], [], []),
+  'deleteComment' : IDL.Func([IDL.Nat, IDL.Nat], [], []),
+  'deletePost' : IDL.Func([IDL.Nat], [], []),
+  'getAllPosts' : IDL.Func([], [IDL.Vec(PostView)], ['query']),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getChatMessages' : IDL.Func([], [IDL.Vec(ChatMessageView)], ['query']),
+  'getComments' : IDL.Func([IDL.Nat], [IDL.Vec(CommentView)], ['query']),
+  'getDashboardBackground' : IDL.Func([], [IDL.Opt(ExternalBlob)], ['query']),
+  'getTestHistory' : IDL.Func([], [IDL.Vec(TestResult)], ['query']),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
+      ['query'],
+    ),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'likePost' : IDL.Func([IDL.Nat], [], []),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'saveDashboardBackground' : IDL.Func([ExternalBlob], [], []),
+  'saveTestResult' : IDL.Func([TestResult], [], []),
+  'sendMessage' : IDL.Func([IDL.Text], [IDL.Nat], []),
+  'unblockUser' : IDL.Func([IDL.Principal], [], []),
+});
 
 export const idlInitArgs = [];
 
-export const idlFactory = ({ IDL }) => { return IDL.Service({}); };
+export const idlFactory = ({ IDL }) => {
+  const _CaffeineStorageCreateCertificateResult = IDL.Record({
+    'method' : IDL.Text,
+    'blob_hash' : IDL.Text,
+  });
+  const _CaffeineStorageRefillInformation = IDL.Record({
+    'proposed_top_up_amount' : IDL.Opt(IDL.Nat),
+  });
+  const _CaffeineStorageRefillResult = IDL.Record({
+    'success' : IDL.Opt(IDL.Bool),
+    'topped_up_amount' : IDL.Opt(IDL.Nat),
+  });
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
+  const ExternalBlob = IDL.Vec(IDL.Nat8);
+  const Time = IDL.Int;
+  const CommentView = IDL.Record({
+    'id' : IDL.Nat,
+    'content' : IDL.Text,
+    'author' : IDL.Principal,
+    'timestamp' : Time,
+  });
+  const PostView = IDL.Record({
+    'id' : IDL.Nat,
+    'likedBy' : IDL.Vec(IDL.Principal),
+    'author' : IDL.Principal,
+    'likes' : IDL.Nat,
+    'timestamp' : Time,
+    'caption' : IDL.Text,
+    'image' : ExternalBlob,
+    'comments' : IDL.Vec(CommentView),
+  });
+  const UserProfile = IDL.Record({ 'displayName' : IDL.Text });
+  const ChatMessageView = IDL.Record({
+    'id' : IDL.Nat,
+    'content' : IDL.Text,
+    'author' : IDL.Principal,
+    'timestamp' : Time,
+  });
+  const TestResult = IDL.Record({
+    'exam' : IDL.Text,
+    'score' : IDL.Nat,
+    'totalQuestions' : IDL.Nat,
+    'incorrectCount' : IDL.Nat,
+    'timestamp' : Time,
+    'category' : IDL.Text,
+    'correctCount' : IDL.Nat,
+    'accuracy' : IDL.Nat,
+  });
+  
+  return IDL.Service({
+    '_caffeineStorageBlobIsLive' : IDL.Func(
+        [IDL.Vec(IDL.Nat8)],
+        [IDL.Bool],
+        ['query'],
+      ),
+    '_caffeineStorageBlobsToDelete' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Vec(IDL.Nat8))],
+        ['query'],
+      ),
+    '_caffeineStorageConfirmBlobDeletion' : IDL.Func(
+        [IDL.Vec(IDL.Vec(IDL.Nat8))],
+        [],
+        [],
+      ),
+    '_caffeineStorageCreateCertificate' : IDL.Func(
+        [IDL.Text],
+        [_CaffeineStorageCreateCertificateResult],
+        [],
+      ),
+    '_caffeineStorageRefillCashier' : IDL.Func(
+        [IDL.Opt(_CaffeineStorageRefillInformation)],
+        [_CaffeineStorageRefillResult],
+        [],
+      ),
+    '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'addComment' : IDL.Func([IDL.Nat, IDL.Text], [IDL.Nat], []),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'blockUser' : IDL.Func([IDL.Principal], [], []),
+    'clearDashboardBackground' : IDL.Func([], [], []),
+    'createPost' : IDL.Func([ExternalBlob, IDL.Text], [IDL.Nat], []),
+    'deleteChatMessage' : IDL.Func([IDL.Nat], [], []),
+    'deleteComment' : IDL.Func([IDL.Nat, IDL.Nat], [], []),
+    'deletePost' : IDL.Func([IDL.Nat], [], []),
+    'getAllPosts' : IDL.Func([], [IDL.Vec(PostView)], ['query']),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getChatMessages' : IDL.Func([], [IDL.Vec(ChatMessageView)], ['query']),
+    'getComments' : IDL.Func([IDL.Nat], [IDL.Vec(CommentView)], ['query']),
+    'getDashboardBackground' : IDL.Func([], [IDL.Opt(ExternalBlob)], ['query']),
+    'getTestHistory' : IDL.Func([], [IDL.Vec(TestResult)], ['query']),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'likePost' : IDL.Func([IDL.Nat], [], []),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'saveDashboardBackground' : IDL.Func([ExternalBlob], [], []),
+    'saveTestResult' : IDL.Func([TestResult], [], []),
+    'sendMessage' : IDL.Func([IDL.Text], [IDL.Nat], []),
+    'unblockUser' : IDL.Func([IDL.Principal], [], []),
+  });
+};
 
 export const init = ({ IDL }) => { return []; };

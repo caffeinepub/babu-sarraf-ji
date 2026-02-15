@@ -1,95 +1,142 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add Instagram/X social icons with glow hover + streamer-mode hiding",
+  "title": "Per-user Dashboard background customization (upload + reset) on Home",
   "requirements": [
     {
-      "id": "REQ-19",
-      "summary": "Update footer social links to show Instagram and X icons pointing to the provided profiles with modern spacing, glow hover, and responsive layout.",
+      "id": "REQ-57",
+      "summary": "Add a minimal background customization control section on the Dashboard/Home (/) with exact button labels.",
       "acceptanceCriteria": [
-        "Footer shows Instagram and X icons adjacent to each other with consistent sizing and spacing.",
-        "Clicking the Instagram icon opens https://instagram.com/babu_sarraf_ji in a new tab and includes rel=\"noopener noreferrer\".",
-        "Clicking the X icon opens https://x.com/babu_sarraf_ji in a new tab and includes rel=\"noopener noreferrer\".",
-        "Hovering either icon shows a soft glow effect consistent with the existing dark theme.",
-        "On small screens the footer layout remains readable and the icons do not overflow or overlap other footer content."
+        "On route \"/\", the user can see a \"Change Background\" control and a \"Reset to Default\" control in a clean, study-vibe style consistent with the existing UI components.",
+        "All user-facing text is English and matches the requested button labels exactly.",
+        "Controls are responsive and usable on mobile (buttons not cramped, tap targets reasonable)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/SocialLinks.tsx",
+          "path": "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
           "operation": "create",
-          "description": "Create a reusable SocialLinks component that renders only Instagram and X icon links (react-icons) with consistent sizing/spacing, accessibility labels, and required external-link attributes (target=\"_blank\" + rel=\"noopener noreferrer\"). Also expose props to support reuse in header/footer and to optionally hide in streamer mode."
+          "description": "Create a small, clean control panel UI composed from existing shadcn/ui components (e.g., Button/Card) containing two buttons labeled exactly \"Change Background\" and \"Reset to Default\" and mobile-friendly layout. Verify the component's usage instructions before implementing."
         },
         {
           "path": "frontend/src/pages/LandingPage.tsx",
           "operation": "modify",
-          "description": "Replace the existing footer social links with the new SocialLinks component configured for footer usage. Ensure links point exactly to https://instagram.com/babu_sarraf_ji and https://x.com/babu_sarraf_ji and remove/avoid extra social icons so Instagram and X are adjacent with consistent spacing."
-        },
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Add a small global component class (via Tailwind @layer components) for social icon links to provide the minimal/modern styling and a soft glow hover/focus-visible effect consistent with the dark study theme; apply it from SocialLinks to ensure consistent styling and responsiveness."
+          "description": "Render the new DashboardBackgroundControls component on route \"/\" in a minimal placement that fits the current layout and maintains a study vibe. Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-20",
-      "summary": "Add Instagram and X social icons to the landing page header top-right without disrupting centered branding, matching footer styling and glow hover.",
+      "id": "REQ-58",
+      "summary": "Enable image selection via native file picker and validate file type with clear English errors.",
       "acceptanceCriteria": [
-        "Landing page header displays Instagram and X icons in the top-right area without disrupting the centered logo/tagline.",
-        "Both icons open the correct URLs in a new tab with rel=\"noopener noreferrer\".",
-        "Icons are visually consistent with the footer versions (size, color, hover glow).",
-        "Header remains responsive (icons remain accessible and correctly positioned on mobile and desktop)."
+        "Clicking \"Change Background\" opens the native file picker and accepts common image formats.",
+        "If the selected file is not an image, the UI shows an English validation message and does not apply/save the background.",
+        "If saving fails, the UI shows an English error state; the previous background remains unchanged."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+          "operation": "modify",
+          "description": "Implement a hidden file input (accepting image/*) triggered by the \"Change Background\" button; validate selected file is an image (MIME type) and surface clear English errors (and upload failure errors) without applying changes on failure. Use existing UI composition patterns (e.g., ErrorBanner) and ensure previous background remains active if mutation fails. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useDashboardBackground.ts",
+          "operation": "create",
+          "description": "Add a small hook to convert selected File -> bytes -> blob-storage ExternalBlob and expose helper logic for upload progress/error handling to be used by the controls. Use the blob-storage ExternalBlob capability (fromBytes, withUploadProgress) to represent the uploadable image. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-59",
+      "summary": "Apply the selected background image only on \"/\" with full-viewport cover/center fit and a dark overlay for readability.",
+      "acceptanceCriteria": [
+        "When a background is set, route \"/\" displays it full-screen behind existing content.",
+        "The background uses a non-stretching fit (equivalent to CSS background-size: cover; background-position: center).",
+        "A dark overlay is visible above the image and below the UI content, improving text/timer readability.",
+        "Navigating away from \"/\" removes the custom background effect (no impact on other routes)."
       ],
       "file_operations": [
         {
           "path": "frontend/src/pages/LandingPage.tsx",
           "operation": "modify",
-          "description": "Adjust the header layout to keep the logo/tagline centered while placing the SocialLinks component in the top-right area (near the header/profile area). Ensure the header icons use the same SocialLinks styling as the footer and remain responsive on mobile/desktop."
+          "description": "Wrap the Dashboard page content in a route-local background layer: when a custom background URL exists, render a full-viewport background (cover + centered) behind content plus a slight dark overlay layer; ensure layering keeps existing timer/text readable and affects only \"/\"."
         },
         {
-          "path": "frontend/src/components/SocialLinks.tsx",
+          "path": "frontend/src/hooks/useDashboardBackground.ts",
           "operation": "modify",
-          "description": "Ensure SocialLinks supports a header-friendly layout variant (e.g., compact sizing and alignment) while keeping icon size/color/hover glow consistent with the footer."
+          "description": "Expose derived background render data (e.g., direct URL from ExternalBlob) for the Dashboard page to consume so the background can be applied only on route \"/\"."
         }
       ]
     },
     {
-      "id": "REQ-21",
-      "summary": "Render optional follow text under the timer when not in streamer mode, matching the minimal study aesthetic.",
+      "id": "REQ-60",
+      "summary": "Ensure Timer page (/timer) visuals and Streamer Mode behavior remain unchanged and free of new UI elements.",
       "acceptanceCriteria": [
-        "When streamerMode is false, the text “Follow for daily study motivation – @babu_sarraf_ji” renders beneath the timer area and matches the existing typography/color system.",
-        "When streamerMode is true, the follow text is not rendered."
+        "On \"/timer\", the appearance and behavior remain unchanged relative to current behavior, including Streamer Mode hiding UI and transparent background handling.",
+        "No Dashboard background image or overlay is applied to \"/timer\" in any mode."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx",
+          "path": "frontend/src/pages/LandingPage.tsx",
           "operation": "modify",
-          "description": "Add the follow text “Follow for daily study motivation – @babu_sarraf_ji” directly beneath the timer display area, styled with the existing muted typography system, and conditionally render it only when streamerMode is false."
+          "description": "Keep custom background and overlay implementation fully contained within the Dashboard/Home page component so it does not impact /timer or any other route."
+        },
+        {
+          "path": "frontend/src/components/SiteNav.tsx",
+          "operation": "modify",
+          "description": "Confirm no new Dashboard background controls or UI are introduced into the global nav (especially on /timer streamer mode where nav is hidden); keep controls only on the / page."
         }
       ]
     },
     {
-      "id": "REQ-22",
-      "summary": "Guarantee social icons on the /timer route are automatically hidden when Streamer Mode is enabled to keep browser-source overlays clean.",
+      "id": "REQ-61",
+      "summary": "Persist background per signed-in Internet Identity user; prompt signed-out users to sign in when attempting changes.",
       "acceptanceCriteria": [
-        "On /timer, when Streamer Mode is ON, no social icons (Instagram/X) are visible anywhere on the page.",
-        "On /timer, when Streamer Mode is OFF, social icons (if shown on that route) display normally with the same styling/hover behavior as the landing page."
+        "If the user is signed in, setting a background persists it to the backend and it is restored on page reload and future visits.",
+        "If the user is signed out, clicking \"Change Background\" or \"Reset to Default\" shows an English prompt indicating sign-in is required to save the Dashboard background.",
+        "Signed-out users continue to see the default Dashboard background."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/TimerPage.tsx",
+          "path": "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
           "operation": "modify",
-          "description": "Add a route-level marker (e.g., a data attribute on the TimerPage root wrapper) that reflects the current streamerMode state, so CSS can automatically suppress any social icon blocks when streamerMode is enabled."
+          "description": "Use the existing authorization/Internet Identity auth state to gate actions: if signed out, intercept clicks on \"Change Background\" and \"Reset to Default\" and show a clear English sign-in-required prompt; do not open picker or perform mutations while signed out. Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/index.css",
+          "path": "frontend/src/hooks/useDashboardBackground.ts",
           "operation": "modify",
-          "description": "Add a scoped CSS rule that hides any elements marked as social icons/containers (as provided by SocialLinks, e.g., [data-social-links]) when the TimerPage wrapper indicates streamer mode is enabled (e.g., [data-streamer-mode=\"true\"]). Ensure this does not affect the landing page."
+          "description": "Add React Query logic to fetch the signed-in user's saved Dashboard background and to skip querying while signed out (to avoid authorization errors), returning null/default in that case."
         },
         {
-          "path": "frontend/src/components/SocialLinks.tsx",
+          "path": "frontend/src/pages/LandingPage.tsx",
           "operation": "modify",
-          "description": "Mark the SocialLinks root element with a stable selector (e.g., data-social-links) so TimerPage streamer-mode CSS can reliably hide it on /timer if SocialLinks is ever rendered there."
+          "description": "On route \"/\", read the persisted background state (when authenticated) and automatically apply it on load; when signed out, ensure the page continues to show the default background styling."
+        }
+      ]
+    },
+    {
+      "id": "REQ-63",
+      "summary": "Wire Dashboard background UI to backend methods using React Query patterns with actor availability checks and cache invalidation.",
+      "acceptanceCriteria": [
+        "On Dashboard load, the app queries for the signed-in user’s saved background and applies it if present.",
+        "After uploading a new background, the UI updates without requiring a manual refresh.",
+        "After clicking \"Reset to Default\", the UI reverts to the default background and persists the reset for that signed-in user.",
+        "React Query cache is invalidated/refetched appropriately after mutations so state stays consistent."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useDashboardBackground.ts",
+          "operation": "create",
+          "description": "Implement React Query hooks consistent with existing patterns (actor availability checks like in useQueries.ts): (1) query hook to load getDashboardBackground, (2) mutation hook to saveDashboardBackground, and (3) mutation hook to clearDashboardBackground; invalidate/refetch the background query after successful mutations. Use blob-storage ExternalBlob capability to upload and to render via getDirectURL(). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+          "operation": "modify",
+          "description": "Integrate the new React Query hooks: trigger save mutation after valid image selection; trigger clear mutation on reset; handle pending/loading states and ensure the UI reflects updates immediately after mutation success. Use the blob-storage ExternalBlob upload progress capability where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/LandingPage.tsx",
+          "operation": "modify",
+          "description": "Consume the background query hook on load and apply/remove the background/overlay based on query results so the Dashboard restores state automatically and updates immediately after upload/reset."
         }
       ]
     }

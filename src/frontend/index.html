@@ -2,7 +2,27 @@
     <head>
         <meta charset='UTF-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-        <title>Babu Sarraf Ji</title>
+        <title>Focus Babu</title>
+        <script>
+            // Pre-hydration theme bootstrap: apply dark class before React mounts
+            (function() {
+                try {
+                    const stored = localStorage.getItem('theme');
+                    const theme = stored ? JSON.parse(stored) : 'dark';
+                    if (theme === 'dark') {
+                        document.documentElement.classList.add('dark');
+                        document.documentElement.style.colorScheme = 'dark';
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        document.documentElement.style.colorScheme = 'light';
+                    }
+                } catch (e) {
+                    // Default to dark on error
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.style.colorScheme = 'dark';
+                }
+            })();
+        </script>
     </head>
     <body>
         <div id='root'></div>

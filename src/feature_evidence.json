@@ -2,11 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-update-the-footer-social-links-to-include-clickable-instagram-and-x-twitter-icons-that-open-in-a-new-tab-and-point-to-the-provided-profiles-https-instagram-com-babu-sarraf-ji-and-https-x-com-babu-sarraf-ji-keep-icon-styling-minimal-modern-with-proper-spacing-a-soft-glow-hover-effect-matching-the-dark-study-vibe-theme-and-ensure-the-icons-are-responsive-on-mobile-and-desktop",
-      "featureTitle": "Update the footer social links to include clickable Instagram and X (Twitter) icons that open in a new tab and point to the provided profiles: https://instagram.com/babu_sarraf_ji and https://x.com/babu_sarraf_ji. Keep icon styling minimal/modern with proper spacing, a soft glow hover effect matching the dark “study vibe” theme, and ensure the icons are responsive on mobile and desktop.",
+      "featureId": "feature-add-a-clean-minimal-dashboard-ui-control-section-on-the-home-dashboard-page-route-that-includes-a-button-labeled-exactly-change-background-and-a-button-labeled-exactly-reset-to-default",
+      "featureTitle": "Add a clean, minimal Dashboard UI control section on the Home/Dashboard page (route \"/\") that includes a button labeled exactly \"Change Background\" and a button labeled exactly \"Reset to Default\".",
       "files": [
-        "frontend/src/components/SocialLinks.tsx",
-        "frontend/src/index.css",
+        "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
         "frontend/src/pages/LandingPage.tsx"
       ],
       "components": [
@@ -14,18 +13,41 @@
         "shadcn-ui@1.0.0",
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-19"
+        "REQ-57"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-the-same-instagram-and-x-social-icon-links-to-the-top-right-corner-of-the-landing-page-header-near-the-existing-header-profile-area-using-the-same-minimal-modern-style-spacing-and-soft-glow-hover-effect-these-header-icons-must-open-the-provided-links-in-a-new-tab",
-      "featureTitle": "Add the same Instagram and X social icon links to the top-right corner of the landing page header (near the existing header/profile area), using the same minimal modern style, spacing, and soft glow hover effect. These header icons must open the provided links in a new tab.",
+      "featureId": "feature-allow-the-user-to-select-an-image-from-their-device-gallery-files-when-clicking-change-background-validate-that-the-selected-file-is-an-image-and-show-a-clear-english-error-message-if-the-file-is-invalid-or-the-upload-fails",
+      "featureTitle": "Allow the user to select an image from their device (gallery/files) when clicking \"Change Background\"; validate that the selected file is an image and show a clear English error message if the file is invalid or the upload fails.",
       "files": [
-        "frontend/src/components/SocialLinks.tsx",
+        "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+        "frontend/src/hooks/useDashboardBackground.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-58"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-the-selected-image-as-the-background-only-on-the-dashboard-home-page-route-the-background-must-cover-the-full-viewport-be-properly-fitted-without-stretching-cover-centered-and-include-a-slight-dark-overlay-layer-to-preserve-readability-of-the-existing-timer-and-text",
+      "featureTitle": "Apply the selected image as the background only on the Dashboard/Home page (route \"/\"): the background must cover the full viewport, be properly fitted without stretching (cover + centered), and include a slight dark overlay layer to preserve readability of the existing timer and text.",
+      "files": [
+        "frontend/src/hooks/useDashboardBackground.ts",
         "frontend/src/pages/LandingPage.tsx"
       ],
       "components": [
@@ -33,48 +55,76 @@
         "shadcn-ui@1.0.0",
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-20"
+        "REQ-59"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-optional-follow-text-under-the-timer-in-non-streamer-mode-follow-for-daily-study-motivation-babu-sarraf-ji-ensure-it-fits-the-minimal-study-aesthetic-and-does-not-appear-in-streamer-mode",
-      "featureTitle": "Add optional follow text under the timer in non-streamer mode: “Follow for daily study motivation – @babu_sarraf_ji”. Ensure it fits the minimal study aesthetic and does not appear in Streamer Mode.",
+      "featureId": "feature-ensure-the-custom-dashboard-background-does-not-affect-the-timer-page-at-timer-including-streamer-mode-and-transparent-background-behavior-and-does-not-introduce-any-new-ui-elements-onto-streamer-mode-views",
+      "featureTitle": "Ensure the custom Dashboard background does not affect the Timer page at \"/timer\" (including Streamer Mode and transparent background behavior) and does not introduce any new UI elements onto Streamer Mode views.",
       "files": [
-        "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx"
+        "frontend/src/pages/LandingPage.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
         "shadcn-ui@1.0.0",
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-21"
+        "REQ-60"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-ensure-any-social-icons-rendered-on-the-timer-route-are-automatically-hidden-when-streamer-mode-is-enabled-to-keep-the-browser-source-overlay-clean",
-      "featureTitle": "Ensure any social icons rendered on the /timer route are automatically hidden when Streamer Mode is enabled (to keep the browser-source overlay clean).",
+      "featureId": "feature-persist-the-dashboard-background-per-user-account-signed-in-users-internet-identity-must-have-their-selected-background-saved-to-their-account-and-restored-automatically-on-returning-to-the-dashboard-signed-out-users-can-view-the-default-background-and-must-see-a-clear-english-prompt-to-sign-in-if-they-attempt-to-change-or-reset-the-dashboard-background",
+      "featureTitle": "Persist the Dashboard background per user account: signed-in users (Internet Identity) must have their selected background saved to their account and restored automatically on returning to the Dashboard; signed-out users can view the default background and must see a clear English prompt to sign in if they attempt to change or reset the Dashboard background.",
       "files": [
-        "frontend/src/components/SocialLinks.tsx",
-        "frontend/src/index.css",
-        "frontend/src/pages/TimerPage.tsx"
+        "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+        "frontend/src/hooks/useDashboardBackground.ts",
+        "frontend/src/pages/LandingPage.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
         "shadcn-ui@1.0.0",
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-22"
+        "REQ-61"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-wire-the-dashboard-ui-to-the-backend-methods-using-react-query-patterns-consistent-with-existing-hooks-e-g-actor-availability-checks-query-invalidation-on-mutation-so-that-after-upload-reset-the-ui-updates-immediately-and-restores-state-on-load",
+      "featureTitle": "Wire the Dashboard UI to the backend methods using React Query patterns consistent with existing hooks (e.g., actor availability checks, query invalidation on mutation) so that after upload/reset the UI updates immediately and restores state on load.",
+      "files": [
+        "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+        "frontend/src/hooks/useDashboardBackground.ts",
+        "frontend/src/pages/LandingPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-63"
       ],
       "confidence": "high"
     }

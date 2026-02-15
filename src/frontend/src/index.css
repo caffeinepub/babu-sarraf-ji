@@ -7,73 +7,73 @@
 @layer base {
     :root {
         --radius: 0.625rem;
-        --background: 1 0 0;
-        --foreground: 0.145 0 0;
-        --card: 1 0 0;
-        --card-foreground: 0.145 0 0;
-        --popover: 1 0 0;
-        --popover-foreground: 0.145 0 0;
-        --primary: 0.205 0 0;
-        --primary-foreground: 0.985 0 0;
-        --secondary: 0.97 0 0;
-        --secondary-foreground: 0.205 0 0;
-        --muted: 0.97 0 0;
-        --muted-foreground: 0.556 0 0;
-        --accent: 0.97 0 0;
-        --accent-foreground: 0.205 0 0;
-        --destructive: 0.577 0.245 27.325;
-        --destructive-foreground: 0.985 0 0;
-        --border: 0.922 0 0;
-        --input: 0.922 0 0;
-        --ring: 0.708 0 0;
-        --chart-1: 0.646 0.222 41.116;
-        --chart-2: 0.6 0.118 184.704;
-        --chart-3: 0.398 0.07 227.392;
-        --chart-4: 0.828 0.189 84.429;
-        --chart-5: 0.769 0.188 70.08;
-        --sidebar: 0.985 0 0;
-        --sidebar-foreground: 0.145 0 0;
-        --sidebar-primary: 0.205 0 0;
-        --sidebar-primary-foreground: 0.985 0 0;
-        --sidebar-accent: 0.97 0 0;
-        --sidebar-accent-foreground: 0.205 0 0;
-        --sidebar-border: 0.922 0 0;
-        --sidebar-ring: 0.708 0 0;
-    }
-
-    .dark {
-        --background: 0.08 0.02 250;
-        --foreground: 0.98 0.01 250;
-        --card: 0.12 0.03 250;
-        --card-foreground: 0.98 0.01 250;
-        --popover: 0.15 0.03 250;
-        --popover-foreground: 0.98 0.01 250;
-        --primary: 0.65 0.18 280;
+        --background: 0.98 0.01 250;
+        --foreground: 0.15 0.02 250;
+        --card: 0.95 0.01 250;
+        --card-foreground: 0.15 0.02 250;
+        --popover: 0.98 0.01 250;
+        --popover-foreground: 0.15 0.02 250;
+        --primary: 0.55 0.18 260;
         --primary-foreground: 0.98 0.01 250;
-        --secondary: 0.18 0.04 250;
-        --secondary-foreground: 0.98 0.01 250;
-        --muted: 0.18 0.04 250;
-        --muted-foreground: 0.65 0.02 250;
-        --accent: 0.22 0.05 250;
-        --accent-foreground: 0.98 0.01 250;
+        --secondary: 0.90 0.02 250;
+        --secondary-foreground: 0.15 0.02 250;
+        --muted: 0.92 0.02 250;
+        --muted-foreground: 0.45 0.02 250;
+        --accent: 0.88 0.03 250;
+        --accent-foreground: 0.15 0.02 250;
         --destructive: 0.60 0.20 25;
         --destructive-foreground: 0.98 0.01 250;
-        --border: 0.25 0.04 250;
-        --input: 0.25 0.04 250;
-        --ring: 0.65 0.18 280;
-        --chart-1: 0.65 0.18 280;
+        --border: 0.85 0.02 250;
+        --input: 0.85 0.02 250;
+        --ring: 0.55 0.18 260;
+        --chart-1: 0.55 0.18 260;
         --chart-2: 0.60 0.15 200;
         --chart-3: 0.70 0.20 160;
         --chart-4: 0.55 0.22 320;
         --chart-5: 0.68 0.18 40;
-        --sidebar: 0.12 0.03 250;
-        --sidebar-foreground: 0.98 0.01 250;
-        --sidebar-primary: 0.65 0.18 280;
+        --sidebar: 0.95 0.01 250;
+        --sidebar-foreground: 0.15 0.02 250;
+        --sidebar-primary: 0.55 0.18 260;
         --sidebar-primary-foreground: 0.98 0.01 250;
-        --sidebar-accent: 0.18 0.04 250;
-        --sidebar-accent-foreground: 0.98 0.01 250;
-        --sidebar-border: 0.25 0.04 250;
-        --sidebar-ring: 0.65 0.18 280;
+        --sidebar-accent: 0.90 0.02 250;
+        --sidebar-accent-foreground: 0.15 0.02 250;
+        --sidebar-border: 0.85 0.02 250;
+        --sidebar-ring: 0.55 0.18 260;
+    }
+
+    .dark {
+        --background: 0.08 0.02 240;
+        --foreground: 0.92 0.01 240;
+        --card: 0.14 0.03 240;
+        --card-foreground: 0.92 0.01 240;
+        --popover: 0.14 0.03 240;
+        --popover-foreground: 0.92 0.01 240;
+        --primary: 0.62 0.16 270;
+        --primary-foreground: 0.98 0.01 240;
+        --secondary: 0.20 0.04 240;
+        --secondary-foreground: 0.92 0.01 240;
+        --muted: 0.18 0.03 240;
+        --muted-foreground: 0.58 0.02 240;
+        --accent: 0.22 0.04 240;
+        --accent-foreground: 0.92 0.01 240;
+        --destructive: 0.55 0.20 25;
+        --destructive-foreground: 0.98 0.01 240;
+        --border: 0.24 0.03 240;
+        --input: 0.24 0.03 240;
+        --ring: 0.62 0.16 270;
+        --chart-1: 0.62 0.16 270;
+        --chart-2: 0.55 0.14 200;
+        --chart-3: 0.65 0.18 160;
+        --chart-4: 0.50 0.20 320;
+        --chart-5: 0.63 0.16 40;
+        --sidebar: 0.14 0.03 240;
+        --sidebar-foreground: 0.92 0.01 240;
+        --sidebar-primary: 0.62 0.16 270;
+        --sidebar-primary-foreground: 0.98 0.01 240;
+        --sidebar-accent: 0.20 0.04 240;
+        --sidebar-accent-foreground: 0.92 0.01 240;
+        --sidebar-border: 0.24 0.03 240;
+        --sidebar-ring: 0.62 0.16 270;
     }
 
     * {
@@ -83,14 +83,34 @@
     body {
         @apply bg-background text-foreground;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
         background-image: 
-            radial-gradient(circle at 20% 50%, oklch(0.15 0.08 280 / 0.3) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, oklch(0.15 0.08 250 / 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 20% 50%, oklch(0.15 0.08 280 / 0.25) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, oklch(0.15 0.08 250 / 0.25) 0%, transparent 50%),
             url('/assets/generated/bg-study-gradient.dim_1920x1080.png');
         background-size: cover, cover, cover;
         background-position: center, center, center;
         background-attachment: fixed;
         animation: gradientShift 20s ease infinite;
+        transition: opacity 0.3s ease;
+    }
+
+    .dark body::before {
+        opacity: 0.5;
+    }
+
+    body:not(.dark)::before {
+        opacity: 0.3;
     }
 
     h1, h2, h3, h4, h5, h6 {

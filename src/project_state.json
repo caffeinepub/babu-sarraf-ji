@@ -1,13 +1,18 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 7,
-  "summary": "Modern, clean aesthetic study website “Babu Sarraf Ji” featuring an advanced customizable Pomodoro focus timer with dark-mode glowing design and an OBS-friendly Streamer Mode at a separate /timer URL; pure frontend (HTML/CSS/JS), responsive, fast, no login.",
+  "projectStateVersion": 23,
+  "summary": "Study website “Focus Babu” with Pomodoro timer + Streamer Mode (/timer), site-wide Dark/Light theme toggle (persisted), dashboard-only customizable background image (per-user saved + reset), a /community page with authenticated posting/chat/admin moderation using Firebase, a /ncert section with Class 11/12 subject PDFs, and a /test-series section (navbar icon + route) providing JEE/NEET/CUET test series (PYQ/chapter-wise/full mock) with timed MCQ exam interface, results/accuracy, and saved user test history. Tagline: “Focus. Study. Repeat.”",
   "architectural_notes": [
-    "Pure frontend implementation (HTML/CSS/JavaScript) with no login/auth.",
     "Separate clean URL route/page at /timer for OBS Browser Source usage.",
     "Persist user settings (timer lengths, theme color, sound toggles, streamer mode, etc.) in localStorage (optional feature scope).",
     "Color theme selection should apply consistently to all timer visuals (ring, digits, progress animation, glow) across normal and Streamer Mode, and persist via localStorage.",
-    "Social media icons (Instagram, X) should be hidden automatically in Streamer Mode (/timer overlay view)."
+    "Social media icons (Instagram, X) should be hidden automatically in Streamer Mode (/timer overlay view).",
+    "Add site-wide theme system (Dark/Light) with smooth transition; default Dark; persist preference and apply to all components (background, timer, text, buttons, cards) including /timer Streamer Mode.",
+    "Add Firebase stack for community: Firebase Auth (Google), Firestore (posts/comments/chat), Firebase Storage (image uploads), and real-time listeners for chat/feed updates.",
+    "Implement role-based moderation via Firestore-stored roles (admin assigned manually) enforced with Firebase Security Rules; only logged-in users can post/comment/chat.",
+    "Add new /ncert route and navbar entry (book icon) for NCERT resources; organize content by Class (11/12) -> Subject -> Chapter list with PDF view/download actions.",
+    "Dark Mode must be the default theme on first visit/initial load; use a consistent palette: dark navy/black background, white/light-gray text, slightly lighter dark cards/buttons; ensure timer glow effect is tuned to look good on the dark palette across all routes (Dashboard, /timer, /community, /ncert).",
+    "Add new React route/page at /test-series and a navbar entry (Test Series icon) that navigates to it."
   ],
   "known_issues": [],
   "isFixRequest": false,
@@ -187,6 +192,310 @@
         "REQ-22"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-implement-a-site-wide-dark-mode-light-mode-toggle-with-a-small-icon-button-in-the-top-right-corner-moon-icon-dark-mode-sun-icon-light-mode-with-dark-mode-as-the-default-a-smooth-animated-transition-between-themes-and-persistence-of-the-user-s-preference-in-localstorage-the-selected-theme-must-apply-across-the-entire-website-background-timer-text-buttons-cards-including-the-timer-streamer-mode-view",
+      "title": "Implement a site-wide Dark Mode / Light Mode toggle with a small icon button in the top-right corner (Moon icon = Dark Mode, Sun icon = Light Mode), with Dark Mode as the default, a smooth animated transition between themes, and persistence of the user’s preference in localStorage. The selected theme must apply across the entire website (background, timer, text, buttons, cards) including the /timer Streamer Mode view.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-community-page-at-route-community-and-add-a-community-icon-entry-in-the-site-navigation-so-users-can-navigate-to-it-from-the-main-ui-use-a-group-people-style-icon",
+      "title": "Add a new Community page at route \"/community\" and add a Community icon entry in the site navigation so users can navigate to it from the main UI (use a group/people style icon).",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-internet-identity-based-authentication-gating-for-community-features-users-must-be-signed-in-to-create-posts-comment-or-send-chat-messages-signed-out-users-can-browse-the-community-feed-but-see-clear-english-prompts-to-sign-in-to-participate",
+      "title": "Add Internet Identity-based authentication gating for Community features: users must be signed in to create posts, comment, or send chat messages; signed-out users can browse the community feed but see clear English prompts to sign in to participate.",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-community-posting-signed-in-users-can-create-a-post-with-1-an-uploaded-image-of-today-s-target-and-2-a-short-caption-posts-must-appear-in-a-community-feed-ordered-latest-first-and-each-feed-item-must-display-user-identity-info-display-name-derived-from-principal-or-a-simple-profile-name-time-posted-image-caption-and-a-like-button",
+      "title": "Implement Community posting: signed-in users can create a post with (1) an uploaded image of “Today’s Target” and (2) a short caption. Posts must appear in a community feed ordered latest-first, and each feed item must display user identity info (display name derived from principal or a simple profile name), time posted, image, caption, and a Like button.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-comments-under-each-community-post-signed-in-users-can-add-a-comment-comments-render-under-the-post-in-chronological-order-and-show-author-identity-info-and-timestamp",
+      "title": "Add comments under each Community post: signed-in users can add a comment; comments render under the post in chronological order and show author identity info and timestamp.",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-simple-group-chat-section-on-the-community-page-where-signed-in-users-can-send-messages-including-emojis-and-see-a-shared-room-feed-displaying-sender-identity-info-and-timestamps-implement-near-real-time-updates-using-periodic-polling-refetching-no-websockets",
+      "title": "Add a simple group chat section on the Community page where signed-in users can send messages (including emojis) and see a shared room feed displaying sender identity info and timestamps. Implement “near real-time” updates using periodic polling/refetching (no WebSockets).",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-moderator-admin-system-where-the-site-owner-is-admin-admin-can-delete-any-post-delete-any-comment-delete-any-chat-message-and-block-users-normal-users-can-create-posts-comments-chat-messages-but-cannot-delete-other-users-content-enforce-permissions-on-the-backend-not-just-via-ui",
+      "title": "Implement a moderator/admin system where the site owner is Admin. Admin can delete any post, delete any comment, delete any chat message, and block users. Normal users can create posts/comments/chat messages but cannot delete other users’ content. Enforce permissions on the backend (not just via UI).",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-community-ui-is-clean-simple-mobile-friendly-and-consistent-with-the-existing-dark-study-vibe-design-while-also-looking-good-in-light-mode-use-english-for-all-user-facing-text-labels-buttons-errors-empty-states",
+      "title": "Ensure Community UI is clean, simple, mobile-friendly, and consistent with the existing “dark study vibe” design, while also looking good in Light Mode; use English for all user-facing text (labels, buttons, errors, empty states).",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-route-at-ncert-to-the-react-router-so-that-navigating-to-ncert-renders-a-dedicated-ncert-page",
+      "title": "Add a new route at \"/ncert\" to the React router so that navigating to /ncert renders a dedicated NCERT page.",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-top-navbar-to-include-a-new-ncert-navigation-entry-with-a-book-icon-style-using-an-available-icon-set-such-as-lucide-react-and-make-it-navigate-to-ncert-when-clicked",
+      "title": "Update the top navbar to include a new \"NCERT\" navigation entry with a book icon (📘-style, using an available icon set such as lucide-react), and make it navigate to \"/ncert\" when clicked.",
+      "reqIds": [
+        "REQ-33"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-the-ncert-page-ui-with-two-clearly-separated-sections-class-11-and-class-12-each-section-must-present-subject-folders-cards-for-physics-chemistry-and-biology-in-a-clean-minimal-book-style-layout",
+      "title": "Create the NCERT page UI with two clearly separated sections: \"Class 11\" and \"Class 12\". Each section must present subject folders/cards for Physics, Chemistry, and Biology in a clean, minimal, book-style layout.",
+      "reqIds": [
+        "REQ-34"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-within-each-subject-for-both-class-11-and-class-12-render-a-chapter-wise-list-where-each-chapter-row-provides-actions-to-view-open-the-pdf-in-browser-and-to-download-the-pdf",
+      "title": "Within each subject (for both Class 11 and Class 12), render a chapter-wise list where each chapter row provides actions to view/open the PDF in-browser and to download the PDF.",
+      "reqIds": [
+        "REQ-35"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-ncert-page-matches-the-existing-site-design-constraints-clean-study-vibe-minimal-and-distraction-free-dark-mode-compatible-and-looks-good-in-light-mode-consistent-card-styling-with-existing-ui-components-and-fully-responsive",
+      "title": "Ensure the NCERT page matches the existing site design constraints: clean study vibe, minimal and distraction-free, dark-mode compatible (and looks good in light mode), consistent card styling with existing UI components, and fully responsive.",
+      "reqIds": [
+        "REQ-36"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-dark-mode-is-the-default-theme-on-first-visit-and-loads-automatically-when-the-website-opens-no-light-theme-flash-before-react-mounts",
+      "title": "Ensure Dark Mode is the default theme on first visit and loads automatically when the website opens (no light-theme flash before React mounts).",
+      "reqIds": [
+        "REQ-37"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-global-dark-mode-color-palette-to-match-a-clean-minimal-study-vibe-with-a-dark-navy-black-background-white-light-gray-text-and-cards-buttons-using-a-slightly-lighter-dark-shade-apply-consistently-across-dashboard-landing-timer-community-and-ncert",
+      "title": "Update the global Dark Mode color palette to match a clean, minimal “study vibe” with a dark navy/black background, white/light-gray text, and cards/buttons using a slightly lighter dark shade; apply consistently across Dashboard (landing), /timer, /community, and /ncert.",
+      "reqIds": [
+        "REQ-38"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-adjust-the-pomodoro-timer-glow-styling-so-it-looks-visually-pleasing-and-readable-against-the-updated-dark-navy-black-background-across-both-the-main-dashboard-timer-and-the-timer-route-including-streamer-mode",
+      "title": "Adjust the Pomodoro timer glow styling so it looks visually pleasing and readable against the updated dark navy/black background across both the main dashboard timer and the /timer route (including Streamer Mode).",
+      "reqIds": [
+        "REQ-39"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-rename-the-website-from-babu-sarraf-ji-to-focus-babu-everywhere-it-appears-in-the-frontend-ui-specifically-covering-the-navbar-logo-area-browser-tab-page-title-login-related-ui-dashboard-landing-page-footer-community-page-and-ncert-page-ensure-there-are-no-remaining-visible-references-to-babu-sarraf-ji-in-these-locations",
+      "title": "Rename the website from “Babu Sarraf Ji” to “Focus Babu” everywhere it appears in the frontend UI, specifically covering: the navbar/logo area, browser tab page title, login-related UI, dashboard/landing page, footer, Community page, and NCERT page. Ensure there are no remaining visible references to “Babu Sarraf Ji” in these locations.",
+      "reqIds": [
+        "REQ-40"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-tagline-text-across-the-site-is-exactly-focus-study-repeat-and-remains-consistent-with-the-existing-dark-study-vibe-design-no-redesign",
+      "title": "Ensure the tagline text across the site is exactly: “Focus. Study. Repeat.” and remains consistent with the existing dark “study vibe” design (no redesign).",
+      "reqIds": [
+        "REQ-41"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-landing-page-logo-asset-and-references-so-the-displayed-logo-matches-the-new-site-name-focus-babu-including-updating-the-image-source-path-and-accessible-text-alt",
+      "title": "Update the landing page logo asset and references so the displayed logo matches the new site name “Focus Babu”, including updating the image source path and accessible text (alt).",
+      "reqIds": [
+        "REQ-42"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-test-series-entry-to-the-top-navbar-that-uses-a-chart-or-note-style-icon-lucide-react-and-navigates-to-the-new-route-test-series",
+      "title": "Add a new \"Test Series\" entry to the top navbar that uses a chart or note-style icon (lucide-react) and navigates to the new route \"/test-series\".",
+      "reqIds": [
+        "REQ-43"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-react-route-test-series-to-the-tanstack-router-and-render-a-dedicated-testseriespage-component",
+      "title": "Add a new React route \"/test-series\" to the TanStack Router and render a dedicated TestSeriesPage component.",
+      "reqIds": [
+        "REQ-44"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-test-series-page-ui-with-three-clearly-separated-sections-jee-neet-and-cuet-each-section-must-present-test-categories-5-years-pyq-tests-chapter-wise-tests-and-full-syllabus-mock-test",
+      "title": "Implement the Test Series page UI with three clearly separated sections: \"JEE\", \"NEET\", and \"CUET\". Each section must present test categories: \"5 Years PYQ Tests\", \"Chapter-wise Tests\", and \"Full Syllabus Mock Test\".",
+      "reqIds": [
+        "REQ-45"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-timed-online-mcq-test-taking-interface-for-test-series-tests-with-an-exam-like-distraction-free-layout-one-question-per-screen-multiple-choice-options-a-visible-countdown-timer-during-the-test-next-previous-navigation-and-a-submit-button",
+      "title": "Create a timed online MCQ test-taking interface for Test Series tests with an exam-like, distraction-free layout: one question per screen, multiple-choice options, a visible countdown timer during the test, Next/Previous navigation, and a Submit button.",
+      "reqIds": [
+        "REQ-46"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-after-test-submission-show-an-immediate-results-screen-that-includes-score-correct-vs-incorrect-counts-and-accuracy-percentage-and-clearly-indicates-which-answers-were-correct-incorrect",
+      "title": "After test submission, show an immediate results screen that includes: Score, Correct vs Incorrect counts, and Accuracy percentage, and clearly indicates which answers were correct/incorrect.",
+      "reqIds": [
+        "REQ-47"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-integrate-the-frontend-test-series-results-flow-with-backend-test-history-after-submission-persist-the-attempt-for-signed-in-users-for-signed-out-users-show-an-english-prompt-to-sign-in-to-save-history-while-still-allowing-them-to-view-results",
+      "title": "Integrate the frontend Test Series results flow with backend test history: after submission, persist the attempt for signed-in users; for signed-out users, show an English prompt to sign in to save history, while still allowing them to view results.",
+      "reqIds": [
+        "REQ-49"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-test-history-view-on-the-test-series-page-or-within-the-test-series-section-that-shows-the-signed-in-user-s-saved-attempts-in-reverse-chronological-order-with-key-stats-exam-category-date-time-score-accuracy",
+      "title": "Add a \"Test History\" view on the Test Series page (or within the Test Series section) that shows the signed-in user’s saved attempts in reverse chronological order, with key stats (exam, category, date/time, score, accuracy).",
+      "reqIds": [
+        "REQ-50"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-user-provided-focus-babu-logo-image-to-the-frontend-as-a-static-asset-and-reference-it-from-the-ui-do-not-route-the-image-through-the-backend",
+      "title": "Add the user-provided Focus Babu logo image to the frontend as a static asset and reference it from the UI (do not route the image through the backend).",
+      "reqIds": [
+        "REQ-51"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-top-navbar-to-display-the-focus-babu-logo-in-the-top-left-area-the-logo-must-be-clickable-and-navigate-to-the-homepage-route",
+      "title": "Update the top navbar to display the Focus Babu logo in the top-left area; the logo must be clickable and navigate to the homepage route \"/\".",
+      "reqIds": [
+        "REQ-52"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-subtle-hover-effect-to-the-navbar-logo-soft-glow-and-or-gentle-scale-while-keeping-the-overall-design-clean-and-professional",
+      "title": "Add a subtle hover effect to the navbar logo (soft glow and/or gentle scale) while keeping the overall design clean and professional.",
+      "reqIds": [
+        "REQ-53"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-navbar-logo-is-responsive-it-should-automatically-resize-appropriately-on-mobile-viewports-not-too-big-not-cropped-and-keeps-aspect-ratio",
+      "title": "Ensure the navbar logo is responsive: it should automatically resize appropriately on mobile viewports (not too big, not cropped, and keeps aspect ratio).",
+      "reqIds": [
+        "REQ-54"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-display-the-focus-babu-logo-centered-on-the-app-s-login-page-screen-the-ui-surface-where-the-user-is-prompted-to-sign-in-with-an-appropriate-size-and-clean-spacing-the-centered-logo-must-be-clickable-and-navigate-to-the-homepage-route",
+      "title": "Display the Focus Babu logo centered on the app’s login page/screen (the UI surface where the user is prompted to sign in), with an appropriate size and clean spacing; the centered logo must be clickable and navigate to the homepage route \"/\".",
+      "reqIds": [
+        "REQ-55"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-automatically-hide-the-focus-babu-logo-in-streamer-mode-so-it-never-appears-in-the-streamer-mode-view",
+      "title": "Automatically hide the Focus Babu logo in Streamer Mode so it never appears in the Streamer Mode view.",
+      "reqIds": [
+        "REQ-56"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-clean-minimal-dashboard-ui-control-section-on-the-home-dashboard-page-route-that-includes-a-button-labeled-exactly-change-background-and-a-button-labeled-exactly-reset-to-default",
+      "title": "Add a clean, minimal Dashboard UI control section on the Home/Dashboard page (route \"/\") that includes a button labeled exactly \"Change Background\" and a button labeled exactly \"Reset to Default\".",
+      "reqIds": [
+        "REQ-57"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-allow-the-user-to-select-an-image-from-their-device-gallery-files-when-clicking-change-background-validate-that-the-selected-file-is-an-image-and-show-a-clear-english-error-message-if-the-file-is-invalid-or-the-upload-fails",
+      "title": "Allow the user to select an image from their device (gallery/files) when clicking \"Change Background\"; validate that the selected file is an image and show a clear English error message if the file is invalid or the upload fails.",
+      "reqIds": [
+        "REQ-58"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-the-selected-image-as-the-background-only-on-the-dashboard-home-page-route-the-background-must-cover-the-full-viewport-be-properly-fitted-without-stretching-cover-centered-and-include-a-slight-dark-overlay-layer-to-preserve-readability-of-the-existing-timer-and-text",
+      "title": "Apply the selected image as the background only on the Dashboard/Home page (route \"/\"): the background must cover the full viewport, be properly fitted without stretching (cover + centered), and include a slight dark overlay layer to preserve readability of the existing timer and text.",
+      "reqIds": [
+        "REQ-59"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-custom-dashboard-background-does-not-affect-the-timer-page-at-timer-including-streamer-mode-and-transparent-background-behavior-and-does-not-introduce-any-new-ui-elements-onto-streamer-mode-views",
+      "title": "Ensure the custom Dashboard background does not affect the Timer page at \"/timer\" (including Streamer Mode and transparent background behavior) and does not introduce any new UI elements onto Streamer Mode views.",
+      "reqIds": [
+        "REQ-60"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-persist-the-dashboard-background-per-user-account-signed-in-users-internet-identity-must-have-their-selected-background-saved-to-their-account-and-restored-automatically-on-returning-to-the-dashboard-signed-out-users-can-view-the-default-background-and-must-see-a-clear-english-prompt-to-sign-in-if-they-attempt-to-change-or-reset-the-dashboard-background",
+      "title": "Persist the Dashboard background per user account: signed-in users (Internet Identity) must have their selected background saved to their account and restored automatically on returning to the Dashboard; signed-out users can view the default background and must see a clear English prompt to sign in if they attempt to change or reset the Dashboard background.",
+      "reqIds": [
+        "REQ-61"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-wire-the-dashboard-ui-to-the-backend-methods-using-react-query-patterns-consistent-with-existing-hooks-e-g-actor-availability-checks-query-invalidation-on-mutation-so-that-after-upload-reset-the-ui-updates-immediately-and-restores-state-on-load",
+      "title": "Wire the Dashboard UI to the backend methods using React Query patterns consistent with existing hooks (e.g., actor availability checks, query invalidation on mutation) so that after upload/reset the UI updates immediately and restores state on load.",
+      "reqIds": [
+        "REQ-63"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -255,10 +564,100 @@
       "summary": "Add social media links: Instagram + X icons (top-right near profile and footer), clickable open-in-new-tab, minimal modern style with soft glow hover, optional follow text under timer; hide icons in Streamer Mode; responsive spacing and dark study aesthetic",
       "reqIds": [],
       "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Add site-wide Dark/Light mode toggle icon (moon/sun) in top-right with smooth animated transition; default Dark; persist preference (localStorage or DB) and apply across all UI including Streamer Mode",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Add /community page with navbar community icon; authenticated users can upload 'Today's Target' photo + caption to a public feed (latest first) with profile info, timestamp, likes, and comments per post",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Add real-time group chat section on /community supporting text + emojis with profile photo/name/timestamp using Firebase realtime updates",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Implement moderator/admin role system: admin can delete any post/comment/chat message and block/ban/mute users; normal users can post/comment/chat but cannot delete others’ content; role assigned manually in database; enforce via Firebase security rules",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Integrate Firebase backend for community features: Firebase Authentication (Google login), Firestore for posts/comments/chat, Firebase Storage for image uploads; secure rules so only logged-in users can post; fully responsive clean study-vibe UI",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-24",
+      "summary": "Add backend data models and Candid methods in the single Motoko main actor to support Community posts, comments, likes, chat messages, user profiles (minimal), and blocked users, with stable storage so data persists across canister upgrades.",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Add NCERT section: navbar Book icon labeled 'NCERT' linking to /ncert page with Class 11 & 12 sections, subject folders (Physics/Chemistry/Biology), chapter-wise lists, and PDF view/download in clean minimal dark-mode-compatible mobile-friendly card layout",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Refine site-wide Dark Mode as the default on first load with a consistent dark navy/black palette (light text, slightly lighter cards/buttons) and ensure timer glow reads well; apply across Dashboard, /timer, /community, and /ncert while keeping clean study-vibe UI",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-25",
+      "summary": "Rename website from “Babu Sarraf Ji” to “Focus Babu” everywhere (navbar logo, browser tab title, login, dashboard, footer, community, NCERT) and ensure tagline is “Focus. Study. Repeat.” without changing other features",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-26",
+      "summary": "Add Test Series navbar icon linking to /test-series page with JEE/NEET/CUET sections; timed MCQ tests (PYQ/chapter-wise/full mock), next/prev navigation, submit + instant results (score, correct/incorrect, accuracy) and save test history in user account; dark-mode-compatible, clean exam-like, mobile-friendly UI",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-32",
+      "summary": "Add backend support to save and retrieve per-user Test Series history in the user account (Internet Identity principal), including at minimum: test identifier (exam + category), timestamp, total questions, correct count, incorrect count, score, and accuracy percentage.",
+      "reqIds": [
+        "REQ-48"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-33",
+      "summary": "Upload/set Focus Babu logo asset and display it top-left in navbar and centered on login page; logo is clickable to homepage, properly sized with subtle hover effect, responsive auto-resize on mobile, and automatically hidden in Streamer Mode",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-34",
+      "summary": "Dashboard-only background customization: add 'Change Background' upload button to set a per-user saved dashboard background image (full-screen cover, no stretching, slight dark overlay for readability), plus 'Reset to Default'; mobile-friendly; must not affect /timer Streamer Mode; keep clean study-vibe UI",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-40",
+      "summary": "Implement backend support (Motoko, single-actor) for storing, retrieving, and clearing a per-user Dashboard background image, using Internet Identity principal as the key and using existing blob storage types already used for community post images.",
+      "reqIds": [
+        "REQ-62"
+      ],
+      "status": "pending"
     }
   ],
   "gameProjectType": "none",
-  "projectName": "Babu Sarraf Ji",
+  "projectName": "Focus Babu",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

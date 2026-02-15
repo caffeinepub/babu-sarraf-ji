@@ -1,81 +1,119 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-15T06:50:15.783Z",
+  "generatedAt": "2026-02-15T08:31:47.942Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 4,
-    "implemented": 4,
+    "total": 7,
+    "implemented": 6,
     "items": [
       {
-        "id": "REQ-19",
-        "summary": "Update the footer social links to include clickable Instagram and X (Twitter) icons that open in a new tab and point to the provided profiles: https://instagram.com/babu_sarraf_ji and https://x.com/babu_sarraf_ji. Keep icon styling minimal/modern with proper spacing, a soft glow hover effect matching the dark “study vibe” theme, and ensure the icons are responsive on mobile and desktop.",
+        "id": "REQ-57",
+        "summary": "Add a clean, minimal Dashboard UI control section on the Home/Dashboard page (route \"/\") that includes a button labeled exactly \"Change Background\" and a button labeled exactly \"Reset to Default\".",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/SocialLinks.tsx",
-          "frontend/src/pages/LandingPage.tsx",
-          "frontend/src/index.css"
+          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+          "frontend/src/pages/LandingPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/SocialLinks.tsx",
-          "frontend/src/pages/LandingPage.tsx",
-          "frontend/src/index.css"
+          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+          "frontend/src/pages/LandingPage.tsx"
         ]
       },
       {
-        "id": "REQ-20",
-        "summary": "Add the same Instagram and X social icon links to the top-right corner of the landing page header (near the existing header/profile area), using the same minimal modern style, spacing, and soft glow hover effect. These header icons must open the provided links in a new tab.",
+        "id": "REQ-58",
+        "summary": "Allow the user to select an image from their device (gallery/files) when clicking \"Change Background\"; validate that the selected file is an image and show a clear English error message if the file is invalid or the upload fails.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/LandingPage.tsx",
-          "frontend/src/components/SocialLinks.tsx"
+          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+          "frontend/src/hooks/useDashboardBackground.ts"
         ],
         "matchedFiles": [
-          "frontend/src/pages/LandingPage.tsx",
-          "frontend/src/components/SocialLinks.tsx"
+          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+          "frontend/src/hooks/useDashboardBackground.ts"
         ]
       },
       {
-        "id": "REQ-21",
-        "summary": "Add optional follow text under the timer in non-streamer mode: “Follow for daily study motivation – @babu_sarraf_ji”. Ensure it fits the minimal study aesthetic and does not appear in Streamer Mode.",
+        "id": "REQ-59",
+        "summary": "Apply the selected image as the background only on the Dashboard/Home page (route \"/\"): the background must cover the full viewport, be properly fitted without stretching (cover + centered), and include a slight dark overlay layer to preserve readability of the existing timer and text.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx"
+          "frontend/src/pages/LandingPage.tsx",
+          "frontend/src/hooks/useDashboardBackground.ts"
         ],
         "matchedFiles": [
-          "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx"
+          "frontend/src/pages/LandingPage.tsx",
+          "frontend/src/hooks/useDashboardBackground.ts"
         ]
       },
       {
-        "id": "REQ-22",
-        "summary": "Ensure any social icons rendered on the /timer route are automatically hidden when Streamer Mode is enabled (to keep the browser-source overlay clean).",
+        "id": "REQ-60",
+        "summary": "Ensure the custom Dashboard background does not affect the Timer page at \"/timer\" (including Streamer Mode and transparent background behavior) and does not introduce any new UI elements onto Streamer Mode views.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/TimerPage.tsx",
-          "frontend/src/index.css",
-          "frontend/src/components/SocialLinks.tsx"
+          "frontend/src/pages/LandingPage.tsx",
+          "frontend/src/components/SiteNav.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/TimerPage.tsx",
-          "frontend/src/index.css",
-          "frontend/src/components/SocialLinks.tsx"
+          "frontend/src/pages/LandingPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-61",
+        "summary": "Persist the Dashboard background per user account: signed-in users (Internet Identity) must have their selected background saved to their account and restored automatically on returning to the Dashboard; signed-out users can view the default background and must see a clear English prompt to sign in if they attempt to change or reset the Dashboard background.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+          "frontend/src/hooks/useDashboardBackground.ts",
+          "frontend/src/pages/LandingPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+          "frontend/src/hooks/useDashboardBackground.ts",
+          "frontend/src/pages/LandingPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-62",
+        "summary": "Implement backend support (Motoko, single-actor) for storing, retrieving, and clearing a per-user Dashboard background image, using Internet Identity principal as the key and using existing blob storage types already used for community post images.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-63",
+        "summary": "Wire the Dashboard UI to the backend methods using React Query patterns consistent with existing hooks (e.g., actor availability checks, query invalidation on mutation) so that after upload/reset the UI updates immediately and restores state on load.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useDashboardBackground.ts",
+          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+          "frontend/src/pages/LandingPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useDashboardBackground.ts",
+          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+          "frontend/src/pages/LandingPage.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
+    "backend/main.mo",
+    "backend/migration.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx",
-    "frontend/src/components/SocialLinks.tsx",
-    "frontend/src/index.css",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
+    "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useDashboardBackground.ts",
     "frontend/src/pages/LandingPage.tsx",
-    "frontend/src/pages/TimerPage.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

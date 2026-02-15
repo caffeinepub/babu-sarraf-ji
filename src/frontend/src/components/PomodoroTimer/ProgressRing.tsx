@@ -22,7 +22,7 @@ export default function ProgressRing({ progress, size, strokeWidth, color }: Pro
         fill="none"
         stroke="currentColor"
         strokeWidth={strokeWidth}
-        className="text-muted/20"
+        className="text-border/40"
       />
       {/* Progress circle */}
       <circle
