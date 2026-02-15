@@ -1,8 +1,8 @@
 {
   "frontend/src/App.tsx": "Main app component with TanStack Router setup for \"/\" (landing) and \"/timer\" routes, wrapped in dark mode container.",
-  "frontend/src/pages/LandingPage.tsx": "Landing page featuring the Babu Sarraf Ji logo, tagline, full Pomodoro timer with all controls, and footer with social links and attribution.",
-  "frontend/src/pages/TimerPage.tsx": "Dedicated /timer page for OBS Studio with Streamer Mode and transparent background toggles in a fixed control panel.",
-  "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx": "Main Pomodoro timer component orchestrating timer display with color-styled countdown numbers and text shadow, progress ring, controls, settings panels, quotes, sounds, and metrics with conditional rendering for streamer mode.",
+  "frontend/src/pages/LandingPage.tsx": "Landing page featuring the Babu Sarraf Ji logo, tagline, full Pomodoro timer with all controls, social icons in header top-right and footer, and attribution with caffeine.ai link.",
+  "frontend/src/pages/TimerPage.tsx": "Dedicated /timer page for OBS Studio with Streamer Mode and transparent background toggles in a fixed control panel, with data-streamer-mode attribute for CSS-based social icon hiding.",
+  "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx": "Main Pomodoro timer component orchestrating timer display with color-styled countdown numbers and text shadow, progress ring, controls, settings panels, quotes, sounds, metrics, follow text under timer (hidden in streamer mode), and conditional rendering for streamer mode.",
   "frontend/src/components/PomodoroTimer/usePomodoroTimer.ts": "Custom hook managing Pomodoro timer state machine with localStorage persistence, validating and sanitizing timer color to ensure only valid hex colors are used.",
   "frontend/src/components/PomodoroTimer/ProgressRing.tsx": "SVG-based circular progress ring component with smooth animations and color-based glowing effect using the color utility for consistent glow rendering.",
   "frontend/src/components/PomodoroTimer/DurationControls.tsx": "UI controls for adjusting focus and break durations with increment/decrement buttons and direct number input with validation.",
@@ -14,8 +14,9 @@
   "frontend/src/hooks/useAudio.ts": "Custom hook for managing HTML5 audio playback with play/pause controls and loop support for ticking and music.",
   "frontend/src/lib/quotes.ts": "Collection of motivational study quotes with proper escaped apostrophes and random selection function for display when timer starts.",
   "frontend/src/lib/studyMetrics.ts": "Study metrics tracking system managing daily session counts and consecutive day streaks with localStorage persistence and automatic rollover.",
-  "frontend/src/index.css": "Global styles with custom OKLCH dark mode color system, Inter and Space Grotesk fonts, animated gradient background, and study-vibe aesthetic.",
+  "frontend/src/index.css": "Global styles with custom OKLCH dark mode color system, Inter and Space Grotesk fonts, animated gradient background, study-vibe aesthetic, and social icon link component class with soft glow hover effect and streamer mode hiding rules.",
   "frontend/tailwind.config.js": "Tailwind configuration with custom font families (Inter, Space Grotesk), extended color tokens, and animation utilities.",
   "frontend/src/hooks/useQueries.ts": "Empty placeholder file as all functionality is client-side without backend queries.",
-  "frontend/src/lib/color.ts": "Color utility functions for converting hex to rgba, generating glow effects (drop-shadow), text shadows, and validating hex color strings for consistent timer styling across all color presets."
+  "frontend/src/lib/color.ts": "Color utility functions for converting hex to rgba, generating glow effects (drop-shadow), text shadows, and validating hex color strings for consistent timer styling across all color presets.",
+  "frontend/src/components/SocialLinks.tsx": "Reusable component rendering Instagram and X social icons with consistent styling, glow hover effects, and support for header/footer variants with data-social-links attribute for streamer mode hiding."
 }

@@ -1,69 +1,95 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Upgrade timer color presets, apply selected color to all timer visuals, and persist selection",
+  "title": "Add Instagram/X social icons with glow hover + streamer-mode hiding",
   "requirements": [
     {
-      "id": "REQ-16",
-      "summary": "Add Orange, Neon, and White timer color presets while retaining the custom color picker and immediate updates.",
+      "id": "REQ-19",
+      "summary": "Update footer social links to show Instagram and X icons pointing to the provided profiles with modern spacing, glow hover, and responsive layout.",
       "acceptanceCriteria": [
-        "The color selection UI shows preset options for Red, Green, Blue, Purple, Orange, Neon, and White.",
-        "The existing custom color picker remains available and continues to work.",
-        "Selecting any preset updates the selected timer color immediately."
+        "Footer shows Instagram and X icons adjacent to each other with consistent sizing and spacing.",
+        "Clicking the Instagram icon opens https://instagram.com/babu_sarraf_ji in a new tab and includes rel=\"noopener noreferrer\".",
+        "Clicking the X icon opens https://x.com/babu_sarraf_ji in a new tab and includes rel=\"noopener noreferrer\".",
+        "Hovering either icon shows a soft glow effect consistent with the existing dark theme.",
+        "On small screens the footer layout remains readable and the icons do not overflow or overlap other footer content."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/PomodoroTimer/ColorControls.tsx",
+          "path": "frontend/src/components/SocialLinks.tsx",
+          "operation": "create",
+          "description": "Create a reusable SocialLinks component that renders only Instagram and X icon links (react-icons) with consistent sizing/spacing, accessibility labels, and required external-link attributes (target=\"_blank\" + rel=\"noopener noreferrer\"). Also expose props to support reuse in header/footer and to optionally hide in streamer mode."
+        },
+        {
+          "path": "frontend/src/pages/LandingPage.tsx",
           "operation": "modify",
-          "description": "Extend PRESET_COLORS to include Orange, Neon, and White; adjust the preset grid layout to accommodate 7 swatches; ensure the custom color input stays in sync when the parent `color` prop changes (e.g., via localStorage restore) so the UI reflects the active selection immediately."
+          "description": "Replace the existing footer social links with the new SocialLinks component configured for footer usage. Ensure links point exactly to https://instagram.com/babu_sarraf_ji and https://x.com/babu_sarraf_ji and remove/avoid extra social icons so Instagram and X are adjacent with consistent spacing."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add a small global component class (via Tailwind @layer components) for social icon links to provide the minimal/modern styling and a soft glow hover/focus-visible effect consistent with the dark study theme; apply it from SocialLinks to ensure consistent styling and responsiveness."
         }
       ]
     },
     {
-      "id": "REQ-17",
-      "summary": "Apply the selected timer color consistently to the progress ring, countdown text, animation styling, and glow effect (including White and Neon).",
+      "id": "REQ-20",
+      "summary": "Add Instagram and X social icons to the landing page header top-right without disrupting centered branding, matching footer styling and glow hover.",
       "acceptanceCriteria": [
-        "The progress ring stroke color updates to the selected color.",
-        "The countdown time text (MM:SS) updates to the selected color.",
-        "The visual progress animation retains smooth animation while reflecting the selected color (no regressions in animation smoothness).",
-        "The glow/drop-shadow effect uses the selected color (including for White and Neon presets) and remains visible in dark mode."
+        "Landing page header displays Instagram and X icons in the top-right area without disrupting the centered logo/tagline.",
+        "Both icons open the correct URLs in a new tab with rel=\"noopener noreferrer\".",
+        "Icons are visually consistent with the footer versions (size, color, hover glow).",
+        "Header remains responsive (icons remain accessible and correctly positioned on mobile and desktop)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/lib/color.ts",
-          "operation": "create",
-          "description": "Create small color utilities for UI styling (e.g., converting a hex color to rgba with configurable alpha) to reliably generate glow/drop-shadow and text-shadow values for all presets (including White/Neon) and custom-picked colors."
+          "path": "frontend/src/pages/LandingPage.tsx",
+          "operation": "modify",
+          "description": "Adjust the header layout to keep the logo/tagline centered while placing the SocialLinks component in the top-right area (near the header/profile area). Ensure the header icons use the same SocialLinks styling as the footer and remain responsive on mobile/desktop."
         },
         {
-          "path": "frontend/src/components/PomodoroTimer/ProgressRing.tsx",
+          "path": "frontend/src/components/SocialLinks.tsx",
           "operation": "modify",
-          "description": "Use the selected `color` for the progress ring stroke and compute a visible, dark-mode-friendly glow using the new color utility (rather than assuming hex+alpha concatenation). Ensure animation remains smooth by limiting transitions to the progress-related properties and not introducing layout-jank."
-        },
+          "description": "Ensure SocialLinks supports a header-friendly layout variant (e.g., compact sizing and alignment) while keeping icon size/color/hover glow consistent with the footer."
+        }
+      ]
+    },
+    {
+      "id": "REQ-21",
+      "summary": "Render optional follow text under the timer when not in streamer mode, matching the minimal study aesthetic.",
+      "acceptanceCriteria": [
+        "When streamerMode is false, the text “Follow for daily study motivation – @babu_sarraf_ji” renders beneath the timer area and matches the existing typography/color system.",
+        "When streamerMode is true, the follow text is not rendered."
+      ],
+      "file_operations": [
         {
           "path": "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx",
           "operation": "modify",
-          "description": "Apply `timerColor` to the countdown numbers (MM:SS) and add a matching glow/text-shadow derived from the same color utility; ensure the timer visuals (ring + numbers + glow) stay consistent regardless of Streamer Mode UI changes."
+          "description": "Add the follow text “Follow for daily study motivation – @babu_sarraf_ji” directly beneath the timer display area, styled with the existing muted typography system, and conditionally render it only when streamerMode is false."
         }
       ]
     },
     {
-      "id": "REQ-18",
-      "summary": "Persist and restore the selected timer color via localStorage so it survives reloads and remains active in Streamer Mode (including on /timer).",
+      "id": "REQ-22",
+      "summary": "Guarantee social icons on the /timer route are automatically hidden when Streamer Mode is enabled to keep browser-source overlays clean.",
       "acceptanceCriteria": [
-        "After selecting a timer color and refreshing the page, the timer renders using the previously selected color.",
-        "When Streamer Mode is enabled, the timer continues to use the same selected color for the ring, countdown numbers, animation styling, and glow.",
-        "No backend/database dependency is introduced for persisting the timer color (localStorage persistence is sufficient)."
+        "On /timer, when Streamer Mode is ON, no social icons (Instagram/X) are visible anywhere on the page.",
+        "On /timer, when Streamer Mode is OFF, social icons (if shown on that route) display normally with the same styling/hover behavior as the landing page."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/PomodoroTimer/usePomodoroTimer.ts",
+          "path": "frontend/src/pages/TimerPage.tsx",
           "operation": "modify",
-          "description": "Harden localStorage-backed `timerColor` behavior by validating/restoring a safe hex color value (fallback to default on invalid data) while continuing to persist changes via the existing localStorage-synced state. Keep the same storage key so the selection is restored across reloads and on the /timer route."
+          "description": "Add a route-level marker (e.g., a data attribute on the TimerPage root wrapper) that reflects the current streamerMode state, so CSS can automatically suppress any social icon blocks when streamerMode is enabled."
         },
         {
-          "path": "frontend/src/hooks/useLocalStorageState.ts",
+          "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Improve resilience for persisted primitive values by handling JSON parse failures gracefully (retain current state/default without throwing) so a corrupted localStorage entry cannot prevent timer color restoration."
+          "description": "Add a scoped CSS rule that hides any elements marked as social icons/containers (as provided by SocialLinks, e.g., [data-social-links]) when the TimerPage wrapper indicates streamer mode is enabled (e.g., [data-streamer-mode=\"true\"]). Ensure this does not affect the landing page."
+        },
+        {
+          "path": "frontend/src/components/SocialLinks.tsx",
+          "operation": "modify",
+          "description": "Mark the SocialLinks root element with a stable selector (e.g., data-social-links) so TimerPage streamer-mode CSS can reliably hide it on /timer if SocialLinks is ever rendered there."
         }
       ]
     }

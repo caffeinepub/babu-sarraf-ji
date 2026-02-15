@@ -14,6 +14,7 @@ export default function TimerPage() {
       className={`min-h-screen flex items-center justify-center p-4 ${
         transparentBackground && streamerMode ? 'bg-transparent' : ''
       }`}
+      data-streamer-mode={streamerMode}
     >
       <PomodoroTimer
         streamerMode={streamerMode}

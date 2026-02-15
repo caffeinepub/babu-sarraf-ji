@@ -1,5 +1,5 @@
 import PomodoroTimer from '../components/PomodoroTimer/PomodoroTimer';
-import { SiX, SiGithub, SiInstagram } from 'react-icons/si';
+import SocialLinks from '../components/SocialLinks';
 
 export default function LandingPage() {
   const currentYear = new Date().getFullYear();
@@ -10,8 +10,13 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="w-full py-6 px-4 sm:px-6 lg:px-8">
+      <header className="w-full py-6 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-7xl mx-auto flex flex-col items-center gap-3">
+          {/* Social icons in top-right */}
+          <div className="absolute top-6 right-4 sm:right-6 lg:right-8">
+            <SocialLinks variant="header" />
+          </div>
+          
           <img
             src="/assets/generated/logo-babu-sarraf-ji.dim_512x256.png"
             alt="Babu Sarraf Ji"
@@ -34,35 +39,7 @@ export default function LandingPage() {
           <p className="text-sm text-muted-foreground">
             © {currentYear} Babu Sarraf Ji. All rights reserved.
           </p>
-          <div className="flex items-center gap-4">
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Twitter"
-            >
-              <SiX className="w-4 h-4" />
-            </a>
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="GitHub"
-            >
-              <SiGithub className="w-4 h-4" />
-            </a>
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Instagram"
-            >
-              <SiInstagram className="w-4 h-4" />
-            </a>
-          </div>
+          <SocialLinks variant="footer" />
           <p className="text-sm text-muted-foreground">
             Built with ❤️ using{' '}
             <a

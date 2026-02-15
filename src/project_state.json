@@ -1,12 +1,13 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 5,
+  "projectStateVersion": 7,
   "summary": "Modern, clean aesthetic study website “Babu Sarraf Ji” featuring an advanced customizable Pomodoro focus timer with dark-mode glowing design and an OBS-friendly Streamer Mode at a separate /timer URL; pure frontend (HTML/CSS/JS), responsive, fast, no login.",
   "architectural_notes": [
     "Pure frontend implementation (HTML/CSS/JavaScript) with no login/auth.",
     "Separate clean URL route/page at /timer for OBS Browser Source usage.",
     "Persist user settings (timer lengths, theme color, sound toggles, streamer mode, etc.) in localStorage (optional feature scope).",
-    "Color theme selection should apply consistently to all timer visuals (ring, digits, progress animation, glow) across normal and Streamer Mode, and persist via localStorage."
+    "Color theme selection should apply consistently to all timer visuals (ring, digits, progress animation, glow) across normal and Streamer Mode, and persist via localStorage.",
+    "Social media icons (Instagram, X) should be hidden automatically in Streamer Mode (/timer overlay view)."
   ],
   "known_issues": [],
   "isFixRequest": false,
@@ -154,6 +155,38 @@
         "REQ-18"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-update-the-footer-social-links-to-include-clickable-instagram-and-x-twitter-icons-that-open-in-a-new-tab-and-point-to-the-provided-profiles-https-instagram-com-babu-sarraf-ji-and-https-x-com-babu-sarraf-ji-keep-icon-styling-minimal-modern-with-proper-spacing-a-soft-glow-hover-effect-matching-the-dark-study-vibe-theme-and-ensure-the-icons-are-responsive-on-mobile-and-desktop",
+      "title": "Update the footer social links to include clickable Instagram and X (Twitter) icons that open in a new tab and point to the provided profiles: https://instagram.com/babu_sarraf_ji and https://x.com/babu_sarraf_ji. Keep icon styling minimal/modern with proper spacing, a soft glow hover effect matching the dark “study vibe” theme, and ensure the icons are responsive on mobile and desktop.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-same-instagram-and-x-social-icon-links-to-the-top-right-corner-of-the-landing-page-header-near-the-existing-header-profile-area-using-the-same-minimal-modern-style-spacing-and-soft-glow-hover-effect-these-header-icons-must-open-the-provided-links-in-a-new-tab",
+      "title": "Add the same Instagram and X social icon links to the top-right corner of the landing page header (near the existing header/profile area), using the same minimal modern style, spacing, and soft glow hover effect. These header icons must open the provided links in a new tab.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-optional-follow-text-under-the-timer-in-non-streamer-mode-follow-for-daily-study-motivation-babu-sarraf-ji-ensure-it-fits-the-minimal-study-aesthetic-and-does-not-appear-in-streamer-mode",
+      "title": "Add optional follow text under the timer in non-streamer mode: “Follow for daily study motivation – @babu_sarraf_ji”. Ensure it fits the minimal study aesthetic and does not appear in Streamer Mode.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-any-social-icons-rendered-on-the-timer-route-are-automatically-hidden-when-streamer-mode-is-enabled-to-keep-the-browser-source-overlay-clean",
+      "title": "Ensure any social icons rendered on the /timer route are automatically hidden when Streamer Mode is enabled (to keep the browser-source overlay clean).",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -214,6 +247,12 @@
     {
       "id": "AR-10",
       "summary": "Upgrade timer color customization: add more preset themes (Orange, Neon, White) and ensure selected color updates timer circle, countdown numbers, progress animation, and glow; persist selection in localStorage and keep active in Streamer Mode",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Add social media links: Instagram + X icons (top-right near profile and footer), clickable open-in-new-tab, minimal modern style with soft glow hover, optional follow text under timer; hide icons in Streamer Mode; responsive spacing and dark study aesthetic",
       "reqIds": [],
       "status": "pending"
     }

@@ -132,6 +132,15 @@ export default function PomodoroTimer({
             </div>
           </div>
 
+          {/* Follow text under timer */}
+          {!streamerMode && (
+            <div className="text-center px-4 mt-2">
+              <p className="text-sm text-muted-foreground">
+                Follow for daily study motivation – @babu_sarraf_ji
+              </p>
+            </div>
+          )}
+
           {/* Quote Display */}
           {showQuote && !streamerMode && quote && (
             <div className="text-center max-w-md px-4 animate-in fade-in duration-500">

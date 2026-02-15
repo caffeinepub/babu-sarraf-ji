@@ -2,10 +2,12 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-extend-the-timer-color-preset-themes-to-include-orange-neon-and-white-in-addition-to-the-existing-presets-red-green-blue-purple-while-keeping-the-existing-custom-color-picker",
-      "featureTitle": "Extend the timer color preset themes to include: Orange, Neon, and White in addition to the existing presets (Red, Green, Blue, Purple), while keeping the existing custom color picker.",
+      "featureId": "feature-update-the-footer-social-links-to-include-clickable-instagram-and-x-twitter-icons-that-open-in-a-new-tab-and-point-to-the-provided-profiles-https-instagram-com-babu-sarraf-ji-and-https-x-com-babu-sarraf-ji-keep-icon-styling-minimal-modern-with-proper-spacing-a-soft-glow-hover-effect-matching-the-dark-study-vibe-theme-and-ensure-the-icons-are-responsive-on-mobile-and-desktop",
+      "featureTitle": "Update the footer social links to include clickable Instagram and X (Twitter) icons that open in a new tab and point to the provided profiles: https://instagram.com/babu_sarraf_ji and https://x.com/babu_sarraf_ji. Keep icon styling minimal/modern with proper spacing, a soft glow hover effect matching the dark “study vibe” theme, and ensure the icons are responsive on mobile and desktop.",
       "files": [
-        "frontend/src/components/PomodoroTimer/ColorControls.tsx"
+        "frontend/src/components/SocialLinks.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/LandingPage.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -15,17 +17,16 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-16"
+        "REQ-19"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-when-the-user-changes-the-timer-color-via-preset-or-custom-picker-apply-the-selected-color-consistently-to-the-timer-circle-progress-ring-the-countdown-numbers-the-progress-animation-styling-and-the-glow-effect",
-      "featureTitle": "When the user changes the timer color (via preset or custom picker), apply the selected color consistently to: the timer circle/progress ring, the countdown numbers, the progress animation styling, and the glow effect.",
+      "featureId": "feature-add-the-same-instagram-and-x-social-icon-links-to-the-top-right-corner-of-the-landing-page-header-near-the-existing-header-profile-area-using-the-same-minimal-modern-style-spacing-and-soft-glow-hover-effect-these-header-icons-must-open-the-provided-links-in-a-new-tab",
+      "featureTitle": "Add the same Instagram and X social icon links to the top-right corner of the landing page header (near the existing header/profile area), using the same minimal modern style, spacing, and soft glow hover effect. These header icons must open the provided links in a new tab.",
       "files": [
-        "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx",
-        "frontend/src/components/PomodoroTimer/ProgressRing.tsx",
-        "frontend/src/lib/color.ts"
+        "frontend/src/components/SocialLinks.tsx",
+        "frontend/src/pages/LandingPage.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -35,16 +36,15 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-17"
+        "REQ-20"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-persist-the-selected-timer-color-in-localstorage-so-it-is-restored-on-reload-and-remains-active-in-streamer-mode-including-on-the-timer-route",
-      "featureTitle": "Persist the selected timer color in localStorage so it is restored on reload and remains active in Streamer Mode (including on the /timer route).",
+      "featureId": "feature-add-optional-follow-text-under-the-timer-in-non-streamer-mode-follow-for-daily-study-motivation-babu-sarraf-ji-ensure-it-fits-the-minimal-study-aesthetic-and-does-not-appear-in-streamer-mode",
+      "featureTitle": "Add optional follow text under the timer in non-streamer mode: “Follow for daily study motivation – @babu_sarraf_ji”. Ensure it fits the minimal study aesthetic and does not appear in Streamer Mode.",
       "files": [
-        "frontend/src/components/PomodoroTimer/usePomodoroTimer.ts",
-        "frontend/src/hooks/useLocalStorageState.ts"
+        "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -54,7 +54,27 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-18"
+        "REQ-21"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-any-social-icons-rendered-on-the-timer-route-are-automatically-hidden-when-streamer-mode-is-enabled-to-keep-the-browser-source-overlay-clean",
+      "featureTitle": "Ensure any social icons rendered on the /timer route are automatically hidden when Streamer Mode is enabled (to keep the browser-source overlay clean).",
+      "files": [
+        "frontend/src/components/SocialLinks.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/TimerPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-22"
       ],
       "confidence": "high"
     }
