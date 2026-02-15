@@ -1,13 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 import { History, LogIn, Loader2 } from 'lucide-react';
 import { useGetTestHistory } from '../../hooks/testSeries/useTestHistory';
 import { useAuthState } from '../../hooks/useAuthState';
+import { useGetCallerUserProfile } from '../../hooks/useQueries';
+import { resolveDisplayName } from '@/lib/userIdentity';
+import UserAvatar from '../user/UserAvatar';
 
 export default function TestHistory() {
-  const { isAuthenticated } = useAuthState();
+  const { isAuthenticated, principalString } = useAuthState();
   const { data: history, isLoading, error } = useGetTestHistory();
+  const { data: userProfile, isLoading: profileLoading } = useGetCallerUserProfile();
 
   if (!isAuthenticated) {
     return (
@@ -30,7 +35,7 @@ export default function TestHistory() {
     );
   }
 
-  if (isLoading) {
+  if (isLoading || profileLoading) {
     return (
       <Card className="mb-12">
         <CardHeader>
@@ -68,6 +73,8 @@ export default function TestHistory() {
     );
   }
 
+  const displayName = resolveDisplayName(userProfile, principalString);
+
   if (!history || history.length === 0) {
     return (
       <Card className="mb-12">
@@ -78,16 +85,17 @@ export default function TestHistory() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-center text-muted-foreground py-8">
+          <div className="mb-4 flex items-center gap-3 p-3 bg-accent/30 rounded-lg">
+            <UserAvatar displayName={displayName} photoUrl={userProfile?.photoUrl} size="sm" />
+            <span className="text-sm font-medium">{displayName}</span>
+          </div>
+          <p className="text-sm text-muted-foreground text-center py-8">
             No test history yet. Complete a test to see your results here.
           </p>
         </CardContent>
       </Card>
     );
   }
-
-  // Sort history by timestamp (newest first)
-  const sortedHistory = [...history].sort((a, b) => Number(b.timestamp - a.timestamp));
 
   return (
     <Card className="mb-12">
@@ -98,56 +106,60 @@ export default function TestHistory() {
         </CardTitle>
       </CardHeader>
       <CardContent>
+        <div className="mb-4 flex items-center gap-3 p-3 bg-accent/30 rounded-lg">
+          <UserAvatar displayName={displayName} photoUrl={userProfile?.photoUrl} size="sm" />
+          <span className="text-sm font-medium">{displayName}</span>
+        </div>
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Date & Time</TableHead>
                 <TableHead>Exam</TableHead>
                 <TableHead>Category</TableHead>
+                <TableHead>Date</TableHead>
                 <TableHead className="text-right">Score</TableHead>
                 <TableHead className="text-right">Accuracy</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sortedHistory.map((result, index) => {
-                const timestamp = Number(result.timestamp) / 1000000; // Convert nanoseconds to milliseconds
-                const date = new Date(timestamp);
-                const formattedDate = date.toLocaleDateString('en-IN', {
-                  day: '2-digit',
-                  month: 'short',
-                  year: 'numeric',
-                });
-                const formattedTime = date.toLocaleTimeString('en-IN', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                });
+              {history.map((result, index) => {
+                const timestamp = new Date(Number(result.timestamp) / 1000000);
+                const categoryLabel =
+                  result.category.__kind__ === 'mockTest'
+                    ? 'Mock Test'
+                    : `${result.category.previousYearPaperYear}`;
+                const subCategoryLabel = result.subCategory || '';
 
                 return (
                   <TableRow key={index}>
+                    <TableCell className="font-medium">{result.exam}</TableCell>
                     <TableCell>
-                      <div className="flex flex-col">
-                        <span className="font-medium">{formattedDate}</span>
-                        <span className="text-xs text-muted-foreground">{formattedTime}</span>
+                      <div className="flex flex-col gap-1">
+                        <Badge variant="outline" className="w-fit">
+                          {categoryLabel}
+                        </Badge>
+                        {subCategoryLabel && (
+                          <span className="text-xs text-muted-foreground">{subCategoryLabel}</span>
+                        )}
                       </div>
                     </TableCell>
-                    <TableCell className="font-medium">{result.exam}</TableCell>
-                    <TableCell>{result.category}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {timestamp.toLocaleDateString()}
+                    </TableCell>
                     <TableCell className="text-right font-semibold">
                       {Number(result.score)}/{Number(result.totalQuestions)}
                     </TableCell>
                     <TableCell className="text-right">
-                      <span
-                        className={`font-semibold ${
-                          Number(result.accuracy) >= 80
-                            ? 'text-green-600 dark:text-green-400'
-                            : Number(result.accuracy) >= 60
-                            ? 'text-yellow-600 dark:text-yellow-400'
-                            : 'text-red-600 dark:text-red-400'
-                        }`}
+                      <Badge
+                        variant={Number(result.accuracy) >= 70 ? 'default' : 'secondary'}
+                        className={
+                          Number(result.accuracy) >= 70
+                            ? 'bg-green-500/20 text-green-700 dark:text-green-400'
+                            : ''
+                        }
                       >
                         {Number(result.accuracy)}%
-                      </span>
+                      </Badge>
                     </TableCell>
                   </TableRow>
                 );

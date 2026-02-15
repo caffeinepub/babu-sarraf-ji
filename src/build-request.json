@@ -1,160 +1,103 @@
 {
   "kind": "build_request",
-  "title": "Dashboard background image customization (per-user) with upload + reset",
+  "title": "Use authenticated profile name/photo consistently across Community and Test History",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-57",
-      "text": "Add a clean, minimal Dashboard UI control section on the Home/Dashboard page (route \"/\") that includes a button labeled exactly \"Change Background\" and a button labeled exactly \"Reset to Default\".",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "recent-messages-4"
-        ],
-        "quotes": [
-          "Add a button in Dashboard: “Change Background”",
-          "Add “Reset to Default” button.",
-          "Keep UI clean and study vibe."
-        ]
-      },
-      "acceptanceCriteria": [
-        "On route \"/\", the user can see a \"Change Background\" control and a \"Reset to Default\" control in a clean, study-vibe style consistent with the existing UI components.",
-        "All user-facing text is English and matches the requested button labels exactly.",
-        "Controls are responsive and usable on mobile (buttons not cramped, tap targets reasonable)."
-      ]
-    },
-    {
-      "id": "REQ-58",
-      "text": "Allow the user to select an image from their device (gallery/files) when clicking \"Change Background\"; validate that the selected file is an image and show a clear English error message if the file is invalid or the upload fails.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "recent-messages-4"
-        ],
-        "quotes": [
-          "User can upload image from their gallery."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Clicking \"Change Background\" opens the native file picker and accepts common image formats.",
-        "If the selected file is not an image, the UI shows an English validation message and does not apply/save the background.",
-        "If saving fails, the UI shows an English error state; the previous background remains unchanged."
-      ]
-    },
-    {
-      "id": "REQ-59",
-      "text": "Apply the selected image as the background only on the Dashboard/Home page (route \"/\"): the background must cover the full viewport, be properly fitted without stretching (cover + centered), and include a slight dark overlay layer to preserve readability of the existing timer and text.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "recent-messages-4"
-        ],
-        "quotes": [
-          "Selected image should be applied only to the Dashboard background.",
-          "Cover full screen",
-          "Be properly fitted (no stretching)",
-          "Have slight dark overlay for readability"
-        ]
-      },
-      "acceptanceCriteria": [
-        "When a background is set, route \"/\" displays it full-screen behind existing content.",
-        "The background uses a non-stretching fit (equivalent to CSS background-size: cover; background-position: center).",
-        "A dark overlay is visible above the image and below the UI content, improving text/timer readability.",
-        "Navigating away from \"/\" removes the custom background effect (no impact on other routes)."
-      ]
-    },
-    {
-      "id": "REQ-60",
-      "text": "Ensure the custom Dashboard background does not affect the Timer page at \"/timer\" (including Streamer Mode and transparent background behavior) and does not introduce any new UI elements onto Streamer Mode views.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "recent-messages-4"
-        ],
-        "quotes": [
-          "Should not affect Streamer Mode timer page."
-        ]
-      },
-      "acceptanceCriteria": [
-        "On \"/timer\", the appearance and behavior remain unchanged relative to current behavior, including Streamer Mode hiding UI and transparent background handling.",
-        "No Dashboard background image or overlay is applied to \"/timer\" in any mode."
-      ]
-    },
-    {
-      "id": "REQ-61",
-      "text": "Persist the Dashboard background per user account: signed-in users (Internet Identity) must have their selected background saved to their account and restored automatically on returning to the Dashboard; signed-out users can view the default background and must see a clear English prompt to sign in if they attempt to change or reset the Dashboard background.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "recent-messages-4"
-        ],
-        "quotes": [
-          "Save background per user account."
-        ]
-      },
-      "acceptanceCriteria": [
-        "If the user is signed in, setting a background persists it to the backend and it is restored on page reload and future visits.",
-        "If the user is signed out, clicking \"Change Background\" or \"Reset to Default\" shows an English prompt indicating sign-in is required to save the Dashboard background.",
-        "Signed-out users continue to see the default Dashboard background."
-      ]
-    },
-    {
-      "id": "REQ-62",
-      "text": "Implement backend support (Motoko, single-actor) for storing, retrieving, and clearing a per-user Dashboard background image, using Internet Identity principal as the key and using existing blob storage types already used for community post images.",
+      "id": "REQ-96",
+      "text": "Update the user identity model so the app can store and return an authenticated user profile for a principal, including: (1) display name, (2) optional email, and (3) optional profile photo URL, with a clear fallback order for display name: authenticated display name → authenticated email → short principal.",
       "target": "backend",
       "source": {
         "messageIds": [
-          "recent-messages-4"
+          "msg-6"
         ],
         "quotes": [
-          "Save background per user account."
+          "Show user’s real name from Google (Gmail) account.",
+          "If Google name is not available, fallback to registered email."
         ]
       },
       "acceptanceCriteria": [
-        "Backend exposes Candid methods to: (1) get the caller’s current Dashboard background image (optional), (2) set/update the caller’s Dashboard background image, and (3) clear/reset the caller’s Dashboard background image.",
-        "Backend enforces that only authenticated users with user permission can set/get/clear their own Dashboard background.",
-        "The stored background is keyed by caller principal so it is per-account."
+        "The backend exposes a user profile shape that includes a display name plus optional email and optional profile photo URL for a user principal.",
+        "There is a deterministic, documented fallback order used by the frontend for name display: displayName → email → short principal.",
+        "Existing community post/comment/chat and test history APIs continue to work (no breaking Candid changes without a migration strategy)."
       ]
     },
     {
-      "id": "REQ-63",
-      "text": "Wire the Dashboard UI to the backend methods using React Query patterns consistent with existing hooks (e.g., actor availability checks, query invalidation on mutation) so that after upload/reset the UI updates immediately and restores state on load.",
+      "id": "REQ-97",
+      "text": "Remove support for user-supplied/custom usernames in the UI and ensure the displayed name and avatar are sourced only from the authenticated profile data (or fallbacks), with no manual editing controls anywhere in the app.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages-4"
+          "msg-6"
+        ],
+        "quotes": [
+          "Do not allow custom username.",
+          "No manual editing of name allowed."
         ]
       },
       "acceptanceCriteria": [
-        "On Dashboard load, the app queries for the signed-in user’s saved background and applies it if present.",
-        "After uploading a new background, the UI updates without requiring a manual refresh.",
-        "After clicking \"Reset to Default\", the UI reverts to the default background and persists the reset for that signed-in user.",
-        "React Query cache is invalidated/refetched appropriately after mutations so state stays consistent."
+        "There is no input, modal, settings panel, or editable UI that allows setting or changing a username/display name.",
+        "Any existing display-name helper logic is updated to read from the authenticated profile fields and apply the fallback order (name → email → short principal).",
+        "All user-facing text remains English."
+      ]
+    },
+    {
+      "id": "REQ-98",
+      "text": "Automatically sync/load the authenticated profile after login so the correct name and profile photo are available without manual steps, and ensure the profile is used consistently in Community (posts, comments, chat) and in Test History.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Name should automatically load after login.",
+          "Same name should show in: Chat, Comments, Posts, Test history"
+        ]
+      },
+      "acceptanceCriteria": [
+        "After a successful Internet Identity login, the app triggers a profile sync/load flow and the UI updates to show the best available display name without requiring a refresh.",
+        "Community feed items (posts), comments, and chat messages all show the same resolved author name for a given principal.",
+        "Test History shows the signed-in user identity (resolved name and photo if available) in a consistent place (e.g., header area) without altering stored result rows or breaking existing history rendering.",
+        "If profile photo URL is missing, the UI renders a clean fallback avatar (e.g., initial/circle) without layout shift."
+      ]
+    },
+    {
+      "id": "REQ-99",
+      "text": "Update Community chat, comments, and post headers to display: profile photo (if available), bold display name, timestamp, and message/content below the name, with a clean layout that is dark-mode compatible and does not change other Community behaviors (posting, liking, moderation, polling).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Display: Real Name (from Gmail) Profile photo (Google account DP) Timestamp",
+          "Design: Clean layout Name bold Message below name Dark mode compatible Do not disturb other features."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Chat message rows display an avatar next to the author block, author name is visually bold, timestamp is present, and message text renders below the name line.",
+        "Comment items display an avatar (when available), bold author name, timestamp, and comment content below.",
+        "Post header displays the author avatar (when available), bold author name, and timestamp; existing admin actions (delete/block) remain unchanged.",
+        "All updated layouts look correct in both dark and light modes and remain mobile-friendly.",
+        "No changes to Streamer Mode behavior or /timer UI occur as a result of these updates."
       ]
     }
   ],
   "constraints": [
-    "Do not modify files under frontend/src/components/ui (read-only shadcn components). Compose them instead.",
-    "Do not edit immutable paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
-    "Backend must remain a single Motoko actor in backend/main.mo; only add backend/migration.mo if needed for state upgrade."
+    "Authentication must remain Internet Identity-based (no Google/Firebase/Auth0 OAuth integration).",
+    "Do not edit files under frontend/src/components/ui or any frontend immutablePaths listed in SYSTEM_CONTEXT.",
+    "Use English for all user-facing text.",
+    "Do not introduce new real-time transport (no WebSockets); keep existing polling/react-query patterns.",
+    "Do not disturb existing Community moderation permissions; enforce permissions on the backend as currently implemented."
   ],
   "nonGoals": [
-    "Do not apply the uploaded background to /timer, /community, /ncert, or /test-series pages.",
-    "Do not add new authentication providers; use existing Internet Identity only.",
-    "Do not redesign the entire Dashboard; only add the requested background customization controls and styling needed for readability."
+    "Implementing Google Authentication / fetching Gmail profile data directly from Google APIs.",
+    "Allowing users to manually set or edit a username/display name.",
+    "Changing the Community data model for posts/comments/chat beyond adding/reading profile metadata.",
+    "Redesigning the overall site theme or modifying Pomodoro/NCERT/Daily Target behaviors."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

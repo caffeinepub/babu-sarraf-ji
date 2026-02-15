@@ -42,20 +42,35 @@ export const PostView = IDL.Record({
   'image' : ExternalBlob,
   'comments' : IDL.Vec(CommentView),
 });
-export const UserProfile = IDL.Record({ 'displayName' : IDL.Text });
+export const UserProfile = IDL.Record({
+  'displayName' : IDL.Text,
+  'photoUrl' : IDL.Opt(IDL.Text),
+  'email' : IDL.Opt(IDL.Text),
+});
 export const ChatMessageView = IDL.Record({
   'id' : IDL.Nat,
   'content' : IDL.Text,
   'author' : IDL.Principal,
   'timestamp' : Time,
 });
+export const DailyTask = IDL.Record({
+  'day' : IDL.Text,
+  'completed' : IDL.Bool,
+  'target' : IDL.Text,
+  'timestamp' : Time,
+});
+export const TestCategory = IDL.Variant({
+  'previousYearPaperYear' : IDL.Nat,
+  'mockTest' : IDL.Null,
+});
 export const TestResult = IDL.Record({
+  'subCategory' : IDL.Opt(IDL.Text),
   'exam' : IDL.Text,
   'score' : IDL.Nat,
   'totalQuestions' : IDL.Nat,
   'incorrectCount' : IDL.Nat,
   'timestamp' : Time,
-  'category' : IDL.Text,
+  'category' : TestCategory,
   'correctCount' : IDL.Nat,
   'accuracy' : IDL.Nat,
 });
@@ -101,6 +116,8 @@ export const idlService = IDL.Service({
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getChatMessages' : IDL.Func([], [IDL.Vec(ChatMessageView)], ['query']),
   'getComments' : IDL.Func([IDL.Nat], [IDL.Vec(CommentView)], ['query']),
+  'getDailyTarget' : IDL.Func([], [IDL.Opt(DailyTask)], ['query']),
+  'getDailyTaskStatus' : IDL.Func([IDL.Text], [IDL.Text], ['query']),
   'getDashboardBackground' : IDL.Func([], [IDL.Opt(ExternalBlob)], ['query']),
   'getTestHistory' : IDL.Func([], [IDL.Vec(TestResult)], ['query']),
   'getUserProfile' : IDL.Func(
@@ -110,10 +127,12 @@ export const idlService = IDL.Service({
     ),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'likePost' : IDL.Func([IDL.Nat], [], []),
+  'markDailyTargetCompleted' : IDL.Func([IDL.Text], [], []),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   'saveDashboardBackground' : IDL.Func([ExternalBlob], [], []),
   'saveTestResult' : IDL.Func([TestResult], [], []),
   'sendMessage' : IDL.Func([IDL.Text], [IDL.Nat], []),
+  'setDailyTarget' : IDL.Func([IDL.Text, IDL.Text], [], []),
   'unblockUser' : IDL.Func([IDL.Principal], [], []),
 });
 
@@ -154,20 +173,35 @@ export const idlFactory = ({ IDL }) => {
     'image' : ExternalBlob,
     'comments' : IDL.Vec(CommentView),
   });
-  const UserProfile = IDL.Record({ 'displayName' : IDL.Text });
+  const UserProfile = IDL.Record({
+    'displayName' : IDL.Text,
+    'photoUrl' : IDL.Opt(IDL.Text),
+    'email' : IDL.Opt(IDL.Text),
+  });
   const ChatMessageView = IDL.Record({
     'id' : IDL.Nat,
     'content' : IDL.Text,
     'author' : IDL.Principal,
     'timestamp' : Time,
   });
+  const DailyTask = IDL.Record({
+    'day' : IDL.Text,
+    'completed' : IDL.Bool,
+    'target' : IDL.Text,
+    'timestamp' : Time,
+  });
+  const TestCategory = IDL.Variant({
+    'previousYearPaperYear' : IDL.Nat,
+    'mockTest' : IDL.Null,
+  });
   const TestResult = IDL.Record({
+    'subCategory' : IDL.Opt(IDL.Text),
     'exam' : IDL.Text,
     'score' : IDL.Nat,
     'totalQuestions' : IDL.Nat,
     'incorrectCount' : IDL.Nat,
     'timestamp' : Time,
-    'category' : IDL.Text,
+    'category' : TestCategory,
     'correctCount' : IDL.Nat,
     'accuracy' : IDL.Nat,
   });
@@ -213,6 +247,8 @@ export const idlFactory = ({ IDL }) => {
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getChatMessages' : IDL.Func([], [IDL.Vec(ChatMessageView)], ['query']),
     'getComments' : IDL.Func([IDL.Nat], [IDL.Vec(CommentView)], ['query']),
+    'getDailyTarget' : IDL.Func([], [IDL.Opt(DailyTask)], ['query']),
+    'getDailyTaskStatus' : IDL.Func([IDL.Text], [IDL.Text], ['query']),
     'getDashboardBackground' : IDL.Func([], [IDL.Opt(ExternalBlob)], ['query']),
     'getTestHistory' : IDL.Func([], [IDL.Vec(TestResult)], ['query']),
     'getUserProfile' : IDL.Func(
@@ -222,10 +258,12 @@ export const idlFactory = ({ IDL }) => {
       ),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'likePost' : IDL.Func([IDL.Nat], [], []),
+    'markDailyTargetCompleted' : IDL.Func([IDL.Text], [], []),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
     'saveDashboardBackground' : IDL.Func([ExternalBlob], [], []),
     'saveTestResult' : IDL.Func([TestResult], [], []),
     'sendMessage' : IDL.Func([IDL.Text], [IDL.Nat], []),
+    'setDailyTarget' : IDL.Func([IDL.Text, IDL.Text], [], []),
     'unblockUser' : IDL.Func([IDL.Principal], [], []),
   });
 };

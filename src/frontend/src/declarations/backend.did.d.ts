@@ -22,6 +22,12 @@ export interface CommentView {
   'author' : Principal,
   'timestamp' : Time,
 }
+export interface DailyTask {
+  'day' : string,
+  'completed' : boolean,
+  'target' : string,
+  'timestamp' : Time,
+}
 export type ExternalBlob = Uint8Array;
 export interface PostView {
   'id' : bigint,
@@ -33,18 +39,25 @@ export interface PostView {
   'image' : ExternalBlob,
   'comments' : Array<CommentView>,
 }
+export type TestCategory = { 'previousYearPaperYear' : bigint } |
+  { 'mockTest' : null };
 export interface TestResult {
+  'subCategory' : [] | [string],
   'exam' : string,
   'score' : bigint,
   'totalQuestions' : bigint,
   'incorrectCount' : bigint,
   'timestamp' : Time,
-  'category' : string,
+  'category' : TestCategory,
   'correctCount' : bigint,
   'accuracy' : bigint,
 }
 export type Time = bigint;
-export interface UserProfile { 'displayName' : string }
+export interface UserProfile {
+  'displayName' : string,
+  'photoUrl' : [] | [string],
+  'email' : [] | [string],
+}
 export type UserRole = { 'admin' : null } |
   { 'user' : null } |
   { 'guest' : null };
@@ -89,15 +102,19 @@ export interface _SERVICE {
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getChatMessages' : ActorMethod<[], Array<ChatMessageView>>,
   'getComments' : ActorMethod<[bigint], Array<CommentView>>,
+  'getDailyTarget' : ActorMethod<[], [] | [DailyTask]>,
+  'getDailyTaskStatus' : ActorMethod<[string], string>,
   'getDashboardBackground' : ActorMethod<[], [] | [ExternalBlob]>,
   'getTestHistory' : ActorMethod<[], Array<TestResult>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'likePost' : ActorMethod<[bigint], undefined>,
+  'markDailyTargetCompleted' : ActorMethod<[string], undefined>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
   'saveDashboardBackground' : ActorMethod<[ExternalBlob], undefined>,
   'saveTestResult' : ActorMethod<[TestResult], undefined>,
   'sendMessage' : ActorMethod<[string], bigint>,
+  'setDailyTarget' : ActorMethod<[string, string], undefined>,
   'unblockUser' : ActorMethod<[Principal], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;

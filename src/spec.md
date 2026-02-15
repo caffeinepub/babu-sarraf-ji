@@ -1,15 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Let signed-in users customize and persist a per-account background image for the Home/Dashboard page ("/") with upload and reset, without affecting other routes (especially "/timer").
+**Goal:** Ensure the app consistently shows the authenticated user’s name and profile photo (with clear fallbacks) across Community and Test History, without any custom/edited usernames.
 
 **Planned changes:**
-- Add a clean, minimal control section on the Dashboard ("/") with two buttons labeled exactly “Change Background” and “Reset to Default”, responsive for mobile.
-- Implement image selection via native file picker from “Change Background”, validating that the chosen file is an image and showing clear English errors on invalid files or save failures.
-- Apply the selected image only on "/" as a full-viewport background (cover + centered) with a slight dark overlay to preserve readability of existing content.
-- Ensure "/timer" remains unchanged in all modes (including Streamer Mode and transparent background behavior) and receives no new UI from this feature.
-- Persist background per Internet Identity user: signed-in users save/restore their background; signed-out users see the default background and are prompted in English to sign in when attempting change/reset.
-- Add backend (single Motoko actor) methods to get/set/clear the caller’s background image (stored per principal) using existing blob storage patterns used for community post images.
-- Wire UI to backend using existing React Query patterns (actor availability checks, cache invalidation) so background state loads on Dashboard visit and updates immediately after upload/reset.
+- Add/extend a backend user profile model returned for a principal: display name, optional email, optional profile photo URL, and document the frontend fallback order (displayName → email → short principal).
+- Remove any UI support for user-supplied/custom usernames and update all name/avatar rendering helpers to use only authenticated profile data and fallbacks.
+- Trigger an automatic profile sync/load after Internet Identity login so the correct name/photo appear without manual refresh, and reuse the same resolved identity in Community (posts, comments, chat) and Test History.
+- Update Community post/comment/chat headers to a clean, dark-mode compatible layout: avatar (if available), bold display name, timestamp, and content/message below the name line, without changing other Community behaviors.
 
-**User-visible outcome:** On the Dashboard ("/"), signed-in users can upload a background image and later reset it to default; their choice is restored automatically on return. Signed-out users keep the default background and are prompted to sign in if they try to change or reset it. The Timer page ("/timer") is unaffected.
+**User-visible outcome:** After logging in, the user’s authenticated name (or fallback) and profile photo (or clean avatar fallback) automatically appear and remain consistent across Community posts/comments/chat and the Test History view, with updated Community header layouts and no editable username controls anywhere.

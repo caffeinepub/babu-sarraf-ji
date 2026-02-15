@@ -6,16 +6,22 @@ import SiteNav from '../components/SiteNav';
 import ExamSession from '../components/testSeries/ExamSession';
 import TestResults from '../components/testSeries/TestResults';
 import TestHistory from '../components/testSeries/TestHistory';
+import PreviousYearPapersSection from '../components/testSeries/PreviousYearPapersSection';
+import PreviousYearExamSession from '../components/testSeries/previousYear/PreviousYearExamSession';
+import PreviousYearTestResults from '../components/testSeries/previousYear/PreviousYearTestResults';
 import { getTestQuestions } from '../lib/testSeriesData';
-import { getCopyrightText, getAppIdentifier, SITE_NAME } from '../lib/branding';
+import { getPreviousYearPaper } from '../lib/previousYearPapers';
+import { getCopyrightText, getAppIdentifier } from '../lib/branding';
 import { useAuthState } from '../hooks/useAuthState';
 import { useSaveTestResult } from '../hooks/testSeries/useTestHistory';
-import type { TestResult } from '../backend';
+import type { TestResult, TestCategory } from '../backend';
 
 type ViewState = 
   | { type: 'list' }
   | { type: 'exam'; exam: string; category: string }
-  | { type: 'results'; result: TestResult; userAnswers: Record<number, number> };
+  | { type: 'results'; result: TestResult; userAnswers: Record<number, number> }
+  | { type: 'pyp-exam'; paperId: string }
+  | { type: 'pyp-results'; paperId: string; userAnswers: Record<number, number>; markedForReview: Set<number> };
 
 export default function TestSeriesPage() {
   const [viewState, setViewState] = useState<ViewState>({ type: 'list' });
@@ -25,6 +31,11 @@ export default function TestSeriesPage() {
 
   const handleStartTest = (exam: string, category: string) => {
     setViewState({ type: 'exam', exam, category });
+    setSaveStatus('idle');
+  };
+
+  const handleStartPYP = (paperId: string) => {
+    setViewState({ type: 'pyp-exam', paperId });
     setSaveStatus('idle');
   };
 
@@ -55,9 +66,12 @@ export default function TestSeriesPage() {
     const accuracy = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
     const score = correctCount;
 
+    const testCategory: TestCategory = { __kind__: 'mockTest', mockTest: null };
+
     const result: TestResult = {
       exam,
-      category,
+      category: testCategory,
+      subCategory: category,
       timestamp: BigInt(Date.now() * 1000000),
       totalQuestions: BigInt(totalQuestions),
       correctCount: BigInt(correctCount),
@@ -83,11 +97,150 @@ export default function TestSeriesPage() {
     }
   };
 
+  const handlePYPSubmit = async (paperId: string, userAnswers: Record<number, number>, markedForReview: Set<number>) => {
+    const paper = getPreviousYearPaper(paperId);
+    if (!paper) {
+      console.error('Paper not found:', paperId);
+      return;
+    }
+
+    // Flatten all questions
+    const allQuestions = paper.sections.flatMap(section => section.questions);
+    let correctCount = 0;
+    let incorrectCount = 0;
+
+    allQuestions.forEach((q, idx) => {
+      const userAnswer = userAnswers[idx];
+      if (userAnswer !== undefined) {
+        if (userAnswer === q.correctAnswer) {
+          correctCount++;
+        } else {
+          incorrectCount++;
+        }
+      } else {
+        incorrectCount++;
+      }
+    });
+
+    const totalQuestions = allQuestions.length;
+    const accuracy = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
+    const score = correctCount;
+
+    const testCategory: TestCategory = {
+      __kind__: 'previousYearPaperYear',
+      previousYearPaperYear: BigInt(paper.year)
+    };
+
+    const result: TestResult = {
+      exam: paper.exam,
+      category: testCategory,
+      subCategory: paper.title,
+      timestamp: BigInt(Date.now() * 1000000),
+      totalQuestions: BigInt(totalQuestions),
+      correctCount: BigInt(correctCount),
+      incorrectCount: BigInt(incorrectCount),
+      score: BigInt(score),
+      accuracy: BigInt(accuracy),
+    };
+
+    setViewState({ type: 'pyp-results', paperId, userAnswers, markedForReview });
+
+    // Save to backend if authenticated
+    if (isAuthenticated) {
+      setSaveStatus('saving');
+      try {
+        await saveTestResult.mutateAsync(result);
+        setSaveStatus('success');
+      } catch (error) {
+        console.error('Failed to save test result:', error);
+        setSaveStatus('error');
+      }
+    } else {
+      setSaveStatus('signin-required');
+    }
+  };
+
   const handleBackToList = () => {
     setViewState({ type: 'list' });
     setSaveStatus('idle');
   };
 
+  // Previous Year Paper Exam Session
+  if (viewState.type === 'pyp-exam') {
+    const paper = getPreviousYearPaper(viewState.paperId);
+    if (!paper) {
+      return (
+        <div className="min-h-screen bg-background">
+          <SiteNav />
+          <main className="max-w-4xl mx-auto px-4 py-8">
+            <p className="text-center text-destructive">Paper not found</p>
+            <div className="flex justify-center mt-4">
+              <Button onClick={handleBackToList}>Back to Test Series</Button>
+            </div>
+          </main>
+        </div>
+      );
+    }
+
+    return (
+      <div className="min-h-screen bg-background">
+        <PreviousYearExamSession
+          paper={paper}
+          onSubmit={(answers, marked) => handlePYPSubmit(viewState.paperId, answers, marked)}
+          onExit={handleBackToList}
+        />
+      </div>
+    );
+  }
+
+  // Previous Year Paper Results
+  if (viewState.type === 'pyp-results') {
+    const paper = getPreviousYearPaper(viewState.paperId);
+    if (!paper) {
+      return (
+        <div className="min-h-screen bg-background">
+          <SiteNav />
+          <main className="max-w-4xl mx-auto px-4 py-8">
+            <p className="text-center text-destructive">Paper not found</p>
+            <div className="flex justify-center mt-4">
+              <Button onClick={handleBackToList}>Back to Test Series</Button>
+            </div>
+          </main>
+        </div>
+      );
+    }
+
+    return (
+      <div className="min-h-screen bg-background">
+        <SiteNav />
+        <PreviousYearTestResults
+          paper={paper}
+          userAnswers={viewState.userAnswers}
+          markedForReview={viewState.markedForReview}
+          saveStatus={saveStatus}
+          onBackToList={handleBackToList}
+        />
+        <footer className="border-t border-border bg-card/40 backdrop-blur-sm py-6 mt-12">
+          <div className="max-w-7xl mx-auto px-4 text-center text-sm text-muted-foreground">
+            <p>{getCopyrightText(new Date().getFullYear())}</p>
+            <p className="mt-1">
+              Built with ❤️ using{' '}
+              <a
+                href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${getAppIdentifier()}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                caffeine.ai
+              </a>
+            </p>
+          </div>
+        </footer>
+      </div>
+    );
+  }
+
+  // Sample Test Exam Session
   if (viewState.type === 'exam') {
     return (
       <div className="min-h-screen bg-background">
@@ -102,6 +255,7 @@ export default function TestSeriesPage() {
     );
   }
 
+  // Sample Test Results
   if (viewState.type === 'results') {
     return (
       <div className="min-h-screen bg-background">
@@ -132,6 +286,7 @@ export default function TestSeriesPage() {
     );
   }
 
+  // Test Series List View
   return (
     <div className="min-h-screen bg-background">
       <SiteNav />
@@ -143,6 +298,9 @@ export default function TestSeriesPage() {
 
         {/* Test History Section */}
         <TestHistory />
+
+        {/* Previous Year Real Papers Section */}
+        <PreviousYearPapersSection onStart={handleStartPYP} />
 
         {/* JEE Section */}
         <section className="mb-12">

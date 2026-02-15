@@ -1,101 +1,66 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-15T08:31:47.942Z",
+  "generatedAt": "2026-02-15T11:44:16.012Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 7,
-    "implemented": 6,
+    "total": 4,
+    "implemented": 3,
     "items": [
       {
-        "id": "REQ-57",
-        "summary": "Add a clean, minimal Dashboard UI control section on the Home/Dashboard page (route \"/\") that includes a button labeled exactly \"Change Background\" and a button labeled exactly \"Reset to Default\".",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-          "frontend/src/pages/LandingPage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-          "frontend/src/pages/LandingPage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-58",
-        "summary": "Allow the user to select an image from their device (gallery/files) when clicking \"Change Background\"; validate that the selected file is an image and show a clear English error message if the file is invalid or the upload fails.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-          "frontend/src/hooks/useDashboardBackground.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-          "frontend/src/hooks/useDashboardBackground.ts"
-        ]
-      },
-      {
-        "id": "REQ-59",
-        "summary": "Apply the selected image as the background only on the Dashboard/Home page (route \"/\"): the background must cover the full viewport, be properly fitted without stretching (cover + centered), and include a slight dark overlay layer to preserve readability of the existing timer and text.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/LandingPage.tsx",
-          "frontend/src/hooks/useDashboardBackground.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/LandingPage.tsx",
-          "frontend/src/hooks/useDashboardBackground.ts"
-        ]
-      },
-      {
-        "id": "REQ-60",
-        "summary": "Ensure the custom Dashboard background does not affect the Timer page at \"/timer\" (including Streamer Mode and transparent background behavior) and does not introduce any new UI elements onto Streamer Mode views.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/LandingPage.tsx",
-          "frontend/src/components/SiteNav.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/LandingPage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-61",
-        "summary": "Persist the Dashboard background per user account: signed-in users (Internet Identity) must have their selected background saved to their account and restored automatically on returning to the Dashboard; signed-out users can view the default background and must see a clear English prompt to sign in if they attempt to change or reset the Dashboard background.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-          "frontend/src/hooks/useDashboardBackground.ts",
-          "frontend/src/pages/LandingPage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-          "frontend/src/hooks/useDashboardBackground.ts",
-          "frontend/src/pages/LandingPage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-62",
-        "summary": "Implement backend support (Motoko, single-actor) for storing, retrieving, and clearing a per-user Dashboard background image, using Internet Identity principal as the key and using existing blob storage types already used for community post images.",
+        "id": "REQ-96",
+        "summary": "Update the user identity model so the app can store and return an authenticated user profile for a principal, including: (1) display name, (2) optional email, and (3) optional profile photo URL, with a clear fallback order for display name: authenticated display name → authenticated email → short principal.",
         "status": "unknown",
         "plannedFiles": [],
         "matchedFiles": []
       },
       {
-        "id": "REQ-63",
-        "summary": "Wire the Dashboard UI to the backend methods using React Query patterns consistent with existing hooks (e.g., actor availability checks, query invalidation on mutation) so that after upload/reset the UI updates immediately and restores state on load.",
+        "id": "REQ-97",
+        "summary": "Remove support for user-supplied/custom usernames in the UI and ensure the displayed name and avatar are sourced only from the authenticated profile data (or fallbacks), with no manual editing controls anywhere in the app.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useDashboardBackground.ts",
-          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-          "frontend/src/pages/LandingPage.tsx"
+          "frontend/src/lib/userIdentity.ts",
+          "frontend/src/hooks/community/useUserProfiles.ts",
+          "frontend/src/hooks/useQueries.ts"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useDashboardBackground.ts",
-          "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-          "frontend/src/pages/LandingPage.tsx"
+          "frontend/src/lib/userIdentity.ts",
+          "frontend/src/hooks/community/useUserProfiles.ts"
+        ]
+      },
+      {
+        "id": "REQ-98",
+        "summary": "Automatically sync/load the authenticated profile after login so the correct name and profile photo are available without manual steps, and ensure the profile is used consistently in Community (posts, comments, chat) and in Test History.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/user/UserAvatar.tsx",
+          "frontend/src/components/user/AuthProfileBootstrapper.tsx",
+          "frontend/src/components/AppLayout.tsx",
+          "frontend/src/components/testSeries/TestHistory.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/user/UserAvatar.tsx",
+          "frontend/src/components/user/AuthProfileBootstrapper.tsx",
+          "frontend/src/components/AppLayout.tsx",
+          "frontend/src/components/testSeries/TestHistory.tsx"
+        ]
+      },
+      {
+        "id": "REQ-99",
+        "summary": "Update Community chat, comments, and post headers to display: profile photo (if available), bold display name, timestamp, and message/content below the name, with a clean layout that is dark-mode compatible and does not change other Community behaviors (posting, liking, moderation, polling).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/community/ChatPanel.tsx",
+          "frontend/src/components/community/CommentsSection.tsx",
+          "frontend/src/components/community/PostCard.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/community/ChatPanel.tsx",
+          "frontend/src/components/community/CommentsSection.tsx",
+          "frontend/src/components/community/PostCard.tsx"
         ]
       }
     ]
@@ -109,11 +74,17 @@
     "frontend-implementation-plan.json",
     "frontend/src/backend.d.ts",
     "frontend/src/backend.ts",
-    "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+    "frontend/src/components/AppLayout.tsx",
+    "frontend/src/components/community/ChatPanel.tsx",
+    "frontend/src/components/community/CommentsSection.tsx",
+    "frontend/src/components/community/PostCard.tsx",
+    "frontend/src/components/testSeries/TestHistory.tsx",
+    "frontend/src/components/user/AuthProfileBootstrapper.tsx",
+    "frontend/src/components/user/UserAvatar.tsx",
     "frontend/src/declarations/backend.did.d.ts",
     "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useDashboardBackground.ts",
-    "frontend/src/pages/LandingPage.tsx",
+    "frontend/src/hooks/community/useUserProfiles.ts",
+    "frontend/src/lib/userIdentity.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

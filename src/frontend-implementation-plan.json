@@ -1,142 +1,91 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Per-user Dashboard background customization (upload + reset) on Home",
+  "title": "Consistent authenticated profile name/photo across Community and Test History (frontend)",
   "requirements": [
     {
-      "id": "REQ-57",
-      "summary": "Add a minimal background customization control section on the Dashboard/Home (/) with exact button labels.",
+      "id": "REQ-97",
+      "summary": "Remove any custom username UI and ensure all displayed names/avatars resolve only from authenticated profile fields with the required fallback order.",
       "acceptanceCriteria": [
-        "On route \"/\", the user can see a \"Change Background\" control and a \"Reset to Default\" control in a clean, study-vibe style consistent with the existing UI components.",
-        "All user-facing text is English and matches the requested button labels exactly.",
-        "Controls are responsive and usable on mobile (buttons not cramped, tap targets reasonable)."
+        "There is no input, modal, settings panel, or editable UI that allows setting or changing a username/display name.",
+        "Any existing display-name helper logic is updated to read from the authenticated profile fields and apply the fallback order (name → email → short principal).",
+        "All user-facing text remains English."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+          "path": "frontend/src/lib/userIdentity.ts",
           "operation": "create",
-          "description": "Create a small, clean control panel UI composed from existing shadcn/ui components (e.g., Button/Card) containing two buttons labeled exactly \"Change Background\" and \"Reset to Default\" and mobile-friendly layout. Verify the component's usage instructions before implementing."
+          "description": "Centralize identity rendering helpers: resolve display name with deterministic fallback (displayName → email → short principal) and derive stable initials for avatar fallback. Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/pages/LandingPage.tsx",
+          "path": "frontend/src/hooks/community/useUserProfiles.ts",
           "operation": "modify",
-          "description": "Render the new DashboardBackgroundControls component on route \"/\" in a minimal placement that fits the current layout and maintains a study vibe. Verify the component's usage instructions before implementing."
+          "description": "Replace ad-hoc displayName logic with the shared resolver from frontend/src/lib/userIdentity.ts and return a consistent resolved name for any principal; ensure email fallback is used when displayName is empty/missing. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Stop treating profile as user-editable in the UI layer: keep read hooks, but ensure any save/mutation hook is not required by UI flows for name display; update types/usage to align with authenticated profile being the only source of truth. Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-58",
-      "summary": "Enable image selection via native file picker and validate file type with clear English errors.",
+      "id": "REQ-98",
+      "summary": "Automatically load the authenticated profile after Internet Identity login and use it consistently across Community and Test History, including clean avatar fallbacks.",
       "acceptanceCriteria": [
-        "Clicking \"Change Background\" opens the native file picker and accepts common image formats.",
-        "If the selected file is not an image, the UI shows an English validation message and does not apply/save the background.",
-        "If saving fails, the UI shows an English error state; the previous background remains unchanged."
+        "After a successful Internet Identity login, the app triggers a profile sync/load flow and the UI updates to show the best available display name without requiring a refresh.",
+        "Community feed items (posts), comments, and chat messages all show the same resolved author name for a given principal.",
+        "Test History shows the signed-in user identity (resolved name and photo if available) in a consistent place (e.g., header area) without altering stored result rows or breaking existing history rendering.",
+        "If profile photo URL is missing, the UI renders a clean fallback avatar (e.g., initial/circle) without layout shift."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-          "operation": "modify",
-          "description": "Implement a hidden file input (accepting image/*) triggered by the \"Change Background\" button; validate selected file is an image (MIME type) and surface clear English errors (and upload failure errors) without applying changes on failure. Use existing UI composition patterns (e.g., ErrorBanner) and ensure previous background remains active if mutation fails. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/useDashboardBackground.ts",
+          "path": "frontend/src/components/user/UserAvatar.tsx",
           "operation": "create",
-          "description": "Add a small hook to convert selected File -> bytes -> blob-storage ExternalBlob and expose helper logic for upload progress/error handling to be used by the controls. Use the blob-storage ExternalBlob capability (fromBytes, withUploadProgress) to represent the uploadable image. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-59",
-      "summary": "Apply the selected background image only on \"/\" with full-viewport cover/center fit and a dark overlay for readability.",
-      "acceptanceCriteria": [
-        "When a background is set, route \"/\" displays it full-screen behind existing content.",
-        "The background uses a non-stretching fit (equivalent to CSS background-size: cover; background-position: center).",
-        "A dark overlay is visible above the image and below the UI content, improving text/timer readability.",
-        "Navigating away from \"/\" removes the custom background effect (no impact on other routes)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/LandingPage.tsx",
-          "operation": "modify",
-          "description": "Wrap the Dashboard page content in a route-local background layer: when a custom background URL exists, render a full-viewport background (cover + centered) behind content plus a slight dark overlay layer; ensure layering keeps existing timer/text readable and affects only \"/\"."
+          "description": "Add a reusable avatar component that displays the authenticated photo URL when present and otherwise renders a fixed-size dark-mode-friendly initials/circle fallback (no layout shift). Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/hooks/useDashboardBackground.ts",
-          "operation": "modify",
-          "description": "Expose derived background render data (e.g., direct URL from ExternalBlob) for the Dashboard page to consume so the background can be applied only on route \"/\"."
-        }
-      ]
-    },
-    {
-      "id": "REQ-60",
-      "summary": "Ensure Timer page (/timer) visuals and Streamer Mode behavior remain unchanged and free of new UI elements.",
-      "acceptanceCriteria": [
-        "On \"/timer\", the appearance and behavior remain unchanged relative to current behavior, including Streamer Mode hiding UI and transparent background handling.",
-        "No Dashboard background image or overlay is applied to \"/timer\" in any mode."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/LandingPage.tsx",
-          "operation": "modify",
-          "description": "Keep custom background and overlay implementation fully contained within the Dashboard/Home page component so it does not impact /timer or any other route."
-        },
-        {
-          "path": "frontend/src/components/SiteNav.tsx",
-          "operation": "modify",
-          "description": "Confirm no new Dashboard background controls or UI are introduced into the global nav (especially on /timer streamer mode where nav is hidden); keep controls only on the / page."
-        }
-      ]
-    },
-    {
-      "id": "REQ-61",
-      "summary": "Persist background per signed-in Internet Identity user; prompt signed-out users to sign in when attempting changes.",
-      "acceptanceCriteria": [
-        "If the user is signed in, setting a background persists it to the backend and it is restored on page reload and future visits.",
-        "If the user is signed out, clicking \"Change Background\" or \"Reset to Default\" shows an English prompt indicating sign-in is required to save the Dashboard background.",
-        "Signed-out users continue to see the default Dashboard background."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-          "operation": "modify",
-          "description": "Use the existing authorization/Internet Identity auth state to gate actions: if signed out, intercept clicks on \"Change Background\" and \"Reset to Default\" and show a clear English sign-in-required prompt; do not open picker or perform mutations while signed out. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/useDashboardBackground.ts",
-          "operation": "modify",
-          "description": "Add React Query logic to fetch the signed-in user's saved Dashboard background and to skip querying while signed out (to avoid authorization errors), returning null/default in that case."
-        },
-        {
-          "path": "frontend/src/pages/LandingPage.tsx",
-          "operation": "modify",
-          "description": "On route \"/\", read the persisted background state (when authenticated) and automatically apply it on load; when signed out, ensure the page continues to show the default background styling."
-        }
-      ]
-    },
-    {
-      "id": "REQ-63",
-      "summary": "Wire Dashboard background UI to backend methods using React Query patterns with actor availability checks and cache invalidation.",
-      "acceptanceCriteria": [
-        "On Dashboard load, the app queries for the signed-in user’s saved background and applies it if present.",
-        "After uploading a new background, the UI updates without requiring a manual refresh.",
-        "After clicking \"Reset to Default\", the UI reverts to the default background and persists the reset for that signed-in user.",
-        "React Query cache is invalidated/refetched appropriately after mutations so state stays consistent."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/useDashboardBackground.ts",
+          "path": "frontend/src/components/user/AuthProfileBootstrapper.tsx",
           "operation": "create",
-          "description": "Implement React Query hooks consistent with existing patterns (actor availability checks like in useQueries.ts): (1) query hook to load getDashboardBackground, (2) mutation hook to saveDashboardBackground, and (3) mutation hook to clearDashboardBackground; invalidate/refetch the background query after successful mutations. Use blob-storage ExternalBlob capability to upload and to render via getDirectURL(). Verify the component's usage instructions before implementing."
+          "description": "Add a small non-visual component that runs after authentication to prefetch/load the caller profile into React Query cache (using the authorization component’s getCallerUserProfile capability) so the UI updates without refresh. Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
+          "path": "frontend/src/components/AppLayout.tsx",
           "operation": "modify",
-          "description": "Integrate the new React Query hooks: trigger save mutation after valid image selection; trigger clear mutation on reset; handle pending/loading states and ensure the UI reflects updates immediately after mutation success. Use the blob-storage ExternalBlob upload progress capability where appropriate. Verify the component's usage instructions before implementing."
+          "description": "Wire AuthProfileBootstrapper into the top-level layout so profile loading runs automatically after Internet Identity login and on identity changes, without affecting streamer mode or /timer UI. Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/pages/LandingPage.tsx",
+          "path": "frontend/src/components/testSeries/TestHistory.tsx",
           "operation": "modify",
-          "description": "Consume the background query hook on load and apply/remove the background/overlay based on query results so the Dashboard restores state automatically and updates immediately after upload/reset."
+          "description": "Add a compact signed-in identity header area (resolved name + UserAvatar) above the existing history table, without changing stored rows or existing rendering behavior. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-99",
+      "summary": "Update Community chat, comments, and post headers to show avatar, bold author name, timestamp, and content below name in a clean dark-mode-compatible layout without changing other Community behaviors.",
+      "acceptanceCriteria": [
+        "Chat message rows display an avatar next to the author block, author name is visually bold, timestamp is present, and message text renders below the name line.",
+        "Comment items display an avatar (when available), bold author name, timestamp, and comment content below.",
+        "Post header displays the author avatar (when available), bold author name, and timestamp; existing admin actions (delete/block) remain unchanged.",
+        "All updated layouts look correct in both dark and light modes and remain mobile-friendly.",
+        "No changes to Streamer Mode behavior or /timer UI occur as a result of these updates."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/community/ChatPanel.tsx",
+          "operation": "modify",
+          "description": "Refactor chat rows to the required layout (UserAvatar + bold resolved author name + timestamp + message below name) while preserving admin delete, polling/refresh behavior, and existing chat functionality. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/community/CommentsSection.tsx",
+          "operation": "modify",
+          "description": "Update comment items to include UserAvatar and the required author block layout (bold name, timestamp, content below) without changing add/delete behavior or moderation permissions UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/community/PostCard.tsx",
+          "operation": "modify",
+          "description": "Update post header to include UserAvatar, bold resolved author name, and timestamp while leaving like/comment/admin block/delete behaviors unchanged; ensure mobile-friendly spacing and dark-mode compatibility. Verify the component's usage instructions before implementing."
         }
       ]
     }

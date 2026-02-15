@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 23,
-  "summary": "Study website “Focus Babu” with Pomodoro timer + Streamer Mode (/timer), site-wide Dark/Light theme toggle (persisted), dashboard-only customizable background image (per-user saved + reset), a /community page with authenticated posting/chat/admin moderation using Firebase, a /ncert section with Class 11/12 subject PDFs, and a /test-series section (navbar icon + route) providing JEE/NEET/CUET test series (PYQ/chapter-wise/full mock) with timed MCQ exam interface, results/accuracy, and saved user test history. Tagline: “Focus. Study. Repeat.”",
+  "projectStateVersion": 37,
+  "summary": "Study website “Focus Babu” with Pomodoro timer + Streamer Mode (/timer), site-wide Dark/Light theme toggle (persisted), dashboard-only customizable background image (per-user saved + reset), a /community page with authenticated posting/chat/admin moderation using Firebase, a /ncert section with Class 11/12 subject PDFs, a /test-series section (navbar icon + route) providing JEE/NEET/CUET test series including “Previous Year Real Papers” with exam-like interface and saved attempt history, and a new /daily-target section (navbar 🎯 icon) for per-user daily goals/to-do tasks with progress stats and next-day reset. Tagline: “Focus. Study. Repeat.”",
   "architectural_notes": [
     "Separate clean URL route/page at /timer for OBS Browser Source usage.",
     "Persist user settings (timer lengths, theme color, sound toggles, streamer mode, etc.) in localStorage (optional feature scope).",
@@ -14,7 +14,10 @@
     "Dark Mode must be the default theme on first visit/initial load; use a consistent palette: dark navy/black background, white/light-gray text, slightly lighter dark cards/buttons; ensure timer glow effect is tuned to look good on the dark palette across all routes (Dashboard, /timer, /community, /ncert).",
     "Add new React route/page at /test-series and a navbar entry (Test Series icon) that navigates to it."
   ],
-  "known_issues": [],
+  "known_issues": [
+    "NCERT page: Class/Subject folders do not expand/open reliably when clicked; possible routing/state bug causing broken navigation/links under /ncert.",
+    "Production deployment of Version 16 failed due to a deployment error."
+  ],
   "isFixRequest": false,
   "existing_features": [
     {
@@ -496,6 +499,286 @@
         "REQ-63"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-fix-ncert-routing-navigation-so-that-navigating-to-ncert-always-renders-the-ncert-page-correctly-and-the-ncert-entry-in-the-top-navbar-reliably-navigates-to-ncert-without-broken-links-or-blank-screens",
+      "title": "Fix NCERT routing/navigation so that navigating to \"/ncert\" always renders the NCERT page correctly and the NCERT entry in the top navbar reliably navigates to \"/ncert\" without broken links or blank screens.",
+      "reqIds": [
+        "REQ-64"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-ncert-page-interactions-so-that-each-class-section-and-each-subject-folder-expands-collapses-reliably-when-clicked-matching-a-folder-like-ux-class-subject-optional-part-chapter",
+      "title": "Update the NCERT page interactions so that each Class section and each Subject folder expands/collapses reliably when clicked, matching a folder-like UX (Class → Subject → (optional Part) → Chapter).",
+      "reqIds": [
+        "REQ-65"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-populate-the-ncert-data-source-with-working-official-ncert-public-pdf-urls-from-epathshala-and-or-ncert-nic-in-only-for-class-11-and-class-12-covering-class-11-physics-chapter-wise-class-11-chemistry-part-1-part-2-chapter-wise-class-11-biology-chapter-wise-class-12-physics-part-1-part-2-chapter-wise-class-12-chemistry-part-1-part-2-chapter-wise-and-class-12-biology-chapter-wise",
+      "title": "Populate the NCERT data source with working, official NCERT public PDF URLs (from ePathshala and/or ncert.nic.in only) for Class 11 and Class 12, covering: Class 11 Physics (chapter-wise), Class 11 Chemistry Part 1 & Part 2 (chapter-wise), Class 11 Biology (chapter-wise), Class 12 Physics Part 1 & Part 2 (chapter-wise), Class 12 Chemistry Part 1 & Part 2 (chapter-wise), and Class 12 Biology (chapter-wise).",
+      "reqIds": [
+        "REQ-66"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-required-ncert-click-flow-and-actions-so-that-when-a-user-clicks-ncert-class-subject-chapter-they-can-either-open-the-pdf-in-a-new-tab-or-open-it-in-an-in-app-pdf-viewer-and-each-chapter-row-includes-explicit-view-and-download-buttons",
+      "title": "Implement the required NCERT click flow and actions so that when a user clicks NCERT → Class → Subject → Chapter, they can either open the PDF in a new tab or open it in an in-app PDF viewer, and each chapter row includes explicit \"View\" and \"Download\" buttons.",
+      "reqIds": [
+        "REQ-67"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-ncert-page-ui-follows-the-requested-design-rules-clean-card-layout-dark-mode-compatible-mobile-friendly-fast-loading-proper-scroll-behavior-and-stability-no-page-crashes",
+      "title": "Ensure the NCERT page UI follows the requested design rules: clean card layout, dark mode compatible, mobile friendly, fast loading, proper scroll behavior, and stability (no page crashes).",
+      "reqIds": [
+        "REQ-68"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-ncert-data-model-and-ui-rendering-so-that-both-class-11-and-class-12-include-a-new-subject-named-mathematics-alongside-the-existing-subjects-without-changing-or-removing-the-existing-physics-chemistry-or-biology-subjects",
+      "title": "Extend the NCERT data model and UI rendering so that both Class 11 and Class 12 include a new subject named \"Mathematics\" alongside the existing subjects, without changing or removing the existing Physics, Chemistry, or Biology subjects.",
+      "reqIds": [
+        "REQ-69"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-populate-class-11-mathematics-with-chapter-wise-official-ncert-pdf-links-sourced-only-from-the-ncert-official-website-ncert-nic-in-each-chapter-must-have-working-view-and-download-actions-using-the-existing-chapterlist-behavior",
+      "title": "Populate Class 11 Mathematics with chapter-wise official NCERT PDF links sourced only from the NCERT official website (ncert.nic.in). Each chapter must have working \"View\" and \"Download\" actions using the existing ChapterList behavior.",
+      "reqIds": [
+        "REQ-70"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-populate-class-12-mathematics-with-chapter-wise-official-ncert-pdf-links-sourced-only-from-the-ncert-official-website-ncert-nic-in-each-chapter-must-have-working-view-and-download-actions-using-the-existing-chapterlist-behavior",
+      "title": "Populate Class 12 Mathematics with chapter-wise official NCERT PDF links sourced only from the NCERT official website (ncert.nic.in). Each chapter must have working \"View\" and \"Download\" actions using the existing ChapterList behavior.",
+      "reqIds": [
+        "REQ-71"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-ncert-link-validation-so-that-only-ncert-official-website-pdf-links-are-accepted-for-the-ncert-chapter-actions-view-download",
+      "title": "Update NCERT link validation so that only NCERT official website PDF links are accepted for the NCERT chapter actions (View/Download).",
+      "reqIds": [
+        "REQ-72"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-new-mathematics-folders-cards-expand-and-collapse-reliably-for-both-class-11-and-class-12-preserving-the-existing-folder-like-ux-class-subject-chapter-and-ensuring-the-ncert-page-remains-dark-mode-compatible-clean-book-style-and-mobile-friendly",
+      "title": "Ensure the new Mathematics folders/cards expand and collapse reliably for both Class 11 and Class 12, preserving the existing folder-like UX (Class → Subject → Chapter) and ensuring the NCERT page remains dark-mode compatible, clean book-style, and mobile-friendly.",
+      "reqIds": [
+        "REQ-73"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-in-app-pdf-viewer-route-at-pdf-viewer-that-opens-ncert-pdfs-inside-the-website-no-new-tab-and-reads-the-pdf-from-the-url-query-parameter-exactly-as-pdf-viewer-file-bookname-where-file-represents-the-pdf-url-or-an-encoded-form-of-it",
+      "title": "Add a new in-app PDF viewer route at \"/pdf-viewer\" that opens NCERT PDFs inside the website (no new tab) and reads the PDF from the URL query parameter exactly as: \"/pdf-viewer?file=bookname\" (where \"file\" represents the PDF URL or an encoded form of it).",
+      "reqIds": [
+        "REQ-74"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-ncert-chapter-view-action-in-the-chapter-list-ui-so-that-clicking-view-navigates-to-the-new-pdf-viewer-route-using-the-file-query-parameter-and-does-not-open-the-pdf-in-a-new-browser-tab",
+      "title": "Update the NCERT chapter \"View\" action (in the chapter list UI) so that clicking \"View\" navigates to the new \"/pdf-viewer\" route (using the \"file\" query parameter) and does not open the PDF in a new browser tab.",
+      "reqIds": [
+        "REQ-75"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-pdf-viewer-controls-on-the-pdf-viewer-page-zoom-in-zoom-out-page-navigation-previous-next-and-current-page-indicator-download-and-back-return-to-the-ncert-page-use-english-for-all-labels-and-messages",
+      "title": "Implement PDF viewer controls on the \"/pdf-viewer\" page: Zoom In, Zoom Out, Page navigation (previous/next and current page indicator), Download, and Back (return to the NCERT page). Use English for all labels and messages.",
+      "reqIds": [
+        "REQ-76"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-pdf-viewer-layout-minimal-clean-distraction-free-dark-mode-compatible-full-screen-uses-the-viewport-height-and-responsive-on-mobile-and-desktop",
+      "title": "Make the PDF viewer layout minimal, clean, distraction-free, dark-mode compatible, full-screen (uses the viewport height), and responsive on mobile and desktop.",
+      "reqIds": [
+        "REQ-77"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-smooth-loading-state-animation-while-the-pdf-is-loading-in-the-in-app-viewer-and-show-a-clear-english-error-state-if-the-pdf-cannot-be-loaded-or-the-file-parameter-is-missing-invalid-using-the-existing-ncert-url-validation-rules",
+      "title": "Add a smooth loading state/animation while the PDF is loading in the in-app viewer, and show a clear English error state if the PDF cannot be loaded or the \"file\" parameter is missing/invalid (using the existing NCERT URL validation rules).",
+      "reqIds": [
+        "REQ-78"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-backward-compatibility-for-any-existing-in-app-ncert-viewer-route-already-in-the-router-e-g-the-current-ncert-viewer-path-by-redirecting-or-routing-users-to-the-new-pdf-viewer-page-so-no-existing-navigation-results-in-a-blank-screen",
+      "title": "Ensure backward compatibility for any existing in-app NCERT viewer route already in the router (e.g., the current NCERT viewer path) by redirecting or routing users to the new \"/pdf-viewer\" page so no existing navigation results in a blank screen.",
+      "reqIds": [
+        "REQ-79"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-section-to-the-test-series-page-labeled-exactly-previous-year-real-papers-that-is-clearly-separated-from-the-existing-jee-neet-cuet-category-cards-and-within-it-provide-dedicated-entries-for-1-jee-main-previous-year-papers-shift-wise-where-applicable-including-at-minimum-jee-main-2024-all-shifts-jee-main-2023-all-shifts-jee-main-2022-jee-main-2021-2-neet-previous-year-full-papers-including-neet-2024-neet-2023-neet-2022-neet-2021-3-cuet-previous-year-full-papers-section-wise",
+      "title": "Add a new section to the Test Series page labeled exactly \"Previous Year Real Papers\" that is clearly separated from the existing JEE/NEET/CUET category cards, and within it provide dedicated entries for: (1) JEE Main previous year papers (shift-wise where applicable) including at minimum: \"JEE Main 2024 (All Shifts)\", \"JEE Main 2023 (All Shifts)\", \"JEE Main 2022\", \"JEE Main 2021\"; (2) NEET previous year full papers including: \"NEET 2024\", \"NEET 2023\", \"NEET 2022\", \"NEET 2021\"; (3) CUET previous year full papers (section-wise).",
+      "reqIds": [
+        "REQ-80"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-structured-frontend-data-source-for-previous-year-real-papers-that-models-real-paper-metadata-and-questions-including-exam-jee-main-neet-cuet-year-optional-shift-paper-title-total-duration-seconds-and-section-subject-breakdown-jee-physics-chemistry-mathematics-neet-physics-chemistry-biology-with-botany-zoology-cuet-section-wise-each-question-must-support-multiple-choice-options-correct-answer-and-an-optional-detailed-solution-explanation-when-available-populate-the-data-source-using-publicly-available-previous-year-question-papers-and-maintain-the-real-exam-pattern-question-counts-and-section-structure-for-each-included-paper-entry",
+      "title": "Create a structured frontend data source for \"Previous Year Real Papers\" that models real-paper metadata and questions, including: exam (JEE Main/NEET/CUET), year, (optional) shift, paper title, total duration seconds, and section/subject breakdown (JEE: Physics/Chemistry/Mathematics; NEET: Physics/Chemistry/Biology with Botany+Zoology; CUET: section-wise). Each question must support multiple-choice options, correct answer, and an optional detailed solution/explanation when available. Populate the data source using publicly available previous year question papers and maintain the real exam pattern (question counts and section structure) for each included paper entry.",
+      "reqIds": [
+        "REQ-81"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-upgrade-the-test-taking-interface-for-previous-year-real-papers-to-a-full-screen-exam-like-layout-with-a-visible-countdown-timer-one-question-per-screen-next-previous-navigation-a-question-palette-1-2-3-jump-navigation-a-mark-for-review-toggle-per-question-and-a-clear-submit-flow-the-interface-must-track-and-display-palette-statuses-for-at-least-not-visited-visited-answered-marked-for-review-and-answered-marked",
+      "title": "Upgrade the test-taking interface for Previous Year Real Papers to a full-screen, exam-like layout with: a visible countdown timer, one-question-per-screen, Next/Previous navigation, a question palette (1,2,3… jump navigation), a \"Mark for review\" toggle per question, and a clear Submit flow. The interface must track and display palette statuses for at least: not visited, visited, answered, marked for review, and answered+marked.",
+      "reqIds": [
+        "REQ-82"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-subject-section-navigation-within-previous-year-real-papers-so-that-papers-are-divided-and-presented-as-required-jee-main-by-physics-chemistry-mathematics-neet-by-physics-chemistry-biology-with-botany-zoology-within-biology-cuet-in-a-section-wise-format-the-exam-ui-must-allow-the-user-to-switch-between-these-sections-while-preserving-selected-answers-and-review-flags",
+      "title": "Implement subject/section navigation within Previous Year Real Papers so that papers are divided and presented as required: JEE Main by Physics/Chemistry/Mathematics; NEET by Physics/Chemistry/Biology (with Botany + Zoology within Biology); CUET in a section-wise format. The exam UI must allow the user to switch between these sections while preserving selected answers and review flags.",
+      "reqIds": [
+        "REQ-83"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-real-exam-timing-and-submission-behavior-for-previous-year-real-papers-jee-main-must-use-a-3-hour-timer-neet-must-use-a-3-hour-20-minute-timer-and-cuet-must-use-the-real-timing-defined-per-paper-the-exam-must-auto-submit-when-time-ends-producing-the-same-results-screen-as-manual-submission",
+      "title": "Ensure real exam timing and submission behavior for Previous Year Real Papers: JEE Main must use a 3-hour timer, NEET must use a 3-hour-20-minute timer, and CUET must use the real timing defined per paper. The exam must auto-submit when time ends, producing the same results screen as manual submission.",
+      "reqIds": [
+        "REQ-84"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-results-experience-for-previous-year-real-papers-to-show-total-score-correct-incorrect-counts-accuracy-percentage-and-when-available-in-the-data-source-a-detailed-solution-explanation-per-question-use-english-for-all-labels-and-messages-and-keep-the-ui-clean-professional-dark-mode-compatible-and-mobile-friendly",
+      "title": "Extend the results experience for Previous Year Real Papers to show: total score, correct/incorrect counts, accuracy percentage, and (when available in the data source) a detailed solution/explanation per question. Use English for all labels and messages, and keep the UI clean, professional, dark-mode compatible, and mobile friendly.",
+      "reqIds": [
+        "REQ-85"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-save-attempt-history-for-previous-year-real-papers-in-the-signed-in-user-s-account-using-the-existing-test-history-flow-and-show-a-clear-english-prompt-to-sign-in-when-the-user-is-signed-out-update-the-saved-attempt-metadata-so-that-history-can-distinguish-previous-year-real-paper-attempts-from-other-test-categories-e-g-include-a-paper-identifier-title-and-year-shift-in-the-saved-record-while-keeping-backwards-compatibility-with-existing-saved-results",
+      "title": "Save attempt history for Previous Year Real Papers in the signed-in user’s account using the existing Test History flow, and show a clear English prompt to sign in when the user is signed out. Update the saved attempt metadata so that history can distinguish previous year real paper attempts from other test categories (e.g., include a paper identifier/title and year/shift in the saved record while keeping backwards compatibility with existing saved results).",
+      "reqIds": [
+        "REQ-86"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-global-welcome-motivational-message-overlay-that-appears-when-the-website-is-opened-stays-visible-for-1-second-and-then-automatically-disappears-without-user-interaction",
+      "title": "Add a global welcome motivational message overlay that appears when the website is opened, stays visible for 1 second, and then automatically disappears without user interaction.",
+      "reqIds": [
+        "REQ-87"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-welcome-overlay-matches-the-requested-design-centered-message-dark-transparent-background-overlay-clean-minimal-study-vibe-styling-and-smooth-fade-in-fade-out-animation",
+      "title": "Ensure the welcome overlay matches the requested design: centered message, dark transparent background overlay, clean minimal study-vibe styling, and smooth fade-in + fade-out animation.",
+      "reqIds": [
+        "REQ-88"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-randomly-select-one-welcome-message-from-the-provided-list-each-time-the-website-opens-and-display-the-selected-message-in-the-overlay",
+      "title": "Randomly select one welcome message from the provided list each time the website opens, and display the selected message in the overlay.",
+      "reqIds": [
+        "REQ-89"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-do-not-show-the-welcome-overlay-in-streamer-mode-on-the-timer-route-and-ensure-it-does-not-interfere-with-the-existing-internet-identity-login-sign-out-flow",
+      "title": "Do not show the welcome overlay in Streamer Mode on the \"/timer\" route, and ensure it does not interfere with the existing Internet Identity login/sign-out flow.",
+      "reqIds": [
+        "REQ-90"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-navbar-navigation-entry-labeled-exactly-daily-target-with-a-style-target-icon-and-make-it-navigate-to-the-new-route-daily-target-without-breaking-any-existing-navbar-items-or-streamer-mode-navbar-hiding-behavior",
+      "title": "Add a new navbar navigation entry labeled exactly \"Daily Target\" with a 🎯-style target icon, and make it navigate to the new route \"/daily-target\" without breaking any existing navbar items or Streamer Mode navbar-hiding behavior.",
+      "reqIds": [
+        "REQ-91"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-tanstack-router-route-at-daily-target-that-renders-a-dedicated-dailytargetpage-component",
+      "title": "Add a new TanStack Router route at \"/daily-target\" that renders a dedicated DailyTargetPage component.",
+      "reqIds": [
+        "REQ-92"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-daily-target-page-ui-so-a-signed-in-student-can-manage-today-s-goals-as-a-to-do-list-add-multiple-tasks-mark-tasks-completed-via-checkbox-edit-tasks-and-delete-tasks-the-page-must-display-the-motivational-line-exactly-plan-today-win-tomorrow-at-the-top-and-show-task-statistics-total-tasks-completed-tasks-and-progress-percentage",
+      "title": "Implement the Daily Target page UI so a signed-in student can manage today’s goals as a to-do list: add multiple tasks, mark tasks completed via checkbox, edit tasks, and delete tasks. The page must display the motivational line exactly \"Plan Today. Win Tomorrow.\" at the top, and show task statistics: total tasks, completed tasks, and progress percentage.",
+      "reqIds": [
+        "REQ-93"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-authentication-gating-on-the-daily-target-page-signed-out-users-can-view-the-page-shell-but-must-see-a-clear-english-prompt-to-sign-in-when-they-attempt-to-add-edit-delete-check-uncheck-tasks-or-reset-for-the-next-day",
+      "title": "Add authentication gating on the Daily Target page: signed-out users can view the page shell but must see a clear English prompt to sign in when they attempt to add, edit, delete, check/uncheck tasks, or reset for the next day.",
+      "reqIds": [
+        "REQ-94"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-per-user-persistence-for-daily-target-tasks-in-the-motoko-backend-and-wire-the-daily-target-page-to-these-backend-methods-using-react-query-patterns-consistent-with-the-existing-app-actor-availability-checks-mutation-error-handling-and-query-invalidation-so-the-ui-updates-immediately",
+      "title": "Implement per-user persistence for Daily Target tasks in the Motoko backend and wire the Daily Target page to these backend methods using React Query patterns consistent with the existing app (actor availability checks, mutation error handling, and query invalidation so the UI updates immediately).",
+      "reqIds": [
+        "REQ-95"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-support-for-user-supplied-custom-usernames-in-the-ui-and-ensure-the-displayed-name-and-avatar-are-sourced-only-from-the-authenticated-profile-data-or-fallbacks-with-no-manual-editing-controls-anywhere-in-the-app",
+      "title": "Remove support for user-supplied/custom usernames in the UI and ensure the displayed name and avatar are sourced only from the authenticated profile data (or fallbacks), with no manual editing controls anywhere in the app.",
+      "reqIds": [
+        "REQ-97"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-automatically-sync-load-the-authenticated-profile-after-login-so-the-correct-name-and-profile-photo-are-available-without-manual-steps-and-ensure-the-profile-is-used-consistently-in-community-posts-comments-chat-and-in-test-history",
+      "title": "Automatically sync/load the authenticated profile after login so the correct name and profile photo are available without manual steps, and ensure the profile is used consistently in Community (posts, comments, chat) and in Test History.",
+      "reqIds": [
+        "REQ-98"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-community-chat-comments-and-post-headers-to-display-profile-photo-if-available-bold-display-name-timestamp-and-message-content-below-the-name-with-a-clean-layout-that-is-dark-mode-compatible-and-does-not-change-other-community-behaviors-posting-liking-moderation-polling",
+      "title": "Update Community chat, comments, and post headers to display: profile photo (if available), bold display name, timestamp, and message/content below the name, with a clean layout that is dark-mode compatible and does not change other Community behaviors (posting, liking, moderation, polling).",
+      "reqIds": [
+        "REQ-99"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -652,6 +935,56 @@
       "summary": "Implement backend support (Motoko, single-actor) for storing, retrieving, and clearing a per-user Dashboard background image, using Internet Identity principal as the key and using existing blob storage types already used for community post images.",
       "reqIds": [
         "REQ-62"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-41",
+      "summary": "Fix /ncert routing and folder expand/click behavior (Class/Subject/Chapter), remove broken links, and populate Class 11/12 Physics/Chemistry/Biology chapter-wise PDFs using official NCERT public sources (epathshala/ncert.nic.in) with working View (new tab or built-in viewer) + Download buttons; ensure dark-mode compatible, mobile-friendly, fast, stable UI",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-42",
+      "summary": "NCERT: Add Mathematics subject for Class 11 & 12 with chapter-wise official NCERT PDF links (NCERT site only), each chapter having working View + Download buttons; ensure routing/folder expand works reliably; keep clean book-style dark-mode-compatible, mobile-friendly layout without affecting other subjects",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-43",
+      "summary": "Add an in-app NCERT PDF viewer page (/pdf-viewer?file=...) that opens PDFs inside the website (not new tab) with embedded viewer, zoom in/out, page navigation, download + back buttons, smooth loading animation, full-screen responsive dark-mode-compatible minimal layout",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-44",
+      "summary": "Test Series: add “Previous Year Real Papers” section for JEE Main (shift-wise 2024/2023/2022/2021 etc.), NEET (2024/2023/2022/2021), and CUET real papers with real exam pattern, timers (JEE 3h, NEET 3h20, CUET per paper), subject/section-wise structure, exam-like full-screen UI (question palette, mark for review, next/prev, submit, auto-submit on timeout), results (score, correct/incorrect, accuracy, solutions if available) and save attempts to user history; use publicly available papers; dark-mode compatible and mobile-friendly",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-45",
+      "summary": "Add a 1-second welcome motivational message overlay on website open: randomly choose from preset messages, centered with smooth fade-in/out, dark transparent background overlay, clean study-vibe style; auto-dismiss after 1s; must not affect login flow and must not appear in Streamer Mode (/timer)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-46",
+      "summary": "Add a new navbar entry (🎯) labeled \"Daily Target\" linking to /daily-target page with per-user daily goals/to-do list (add/edit/delete tasks, completion checkbox), stats (total/completed/progress %), autosave per user account, reset for next day, motivational line \"Plan Today. Win Tomorrow.\", dark-mode compatible clean minimal study-vibe UI, mobile friendly, and do not disturb other features",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-47",
+      "summary": "Use Google Auth profile identity everywhere: display real name (Google displayName) + Google profile photo + timestamp for Community chat/comments/posts and Test History; disallow custom usernames/manual editing; auto-load after login; fallback to user email if no Google name; keep clean dark-mode-compatible layout (name bold, message below) without disturbing other features",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-48",
+      "summary": "Update the user identity model so the app can store and return an authenticated user profile for a principal, including: (1) display name, (2) optional email, and (3) optional profile photo URL, with a clear fallback order for display name: authenticated display name → authenticated email → short principal.",
+      "reqIds": [
+        "REQ-96"
       ],
       "status": "pending"
     }

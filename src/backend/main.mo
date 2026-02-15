@@ -2,25 +2,28 @@ import Map "mo:core/Map";
 import List "mo:core/List";
 import Nat "mo:core/Nat";
 import Principal "mo:core/Principal";
+import Text "mo:core/Text";
 import Time "mo:core/Time";
 import Runtime "mo:core/Runtime";
 import Iter "mo:core/Iter";
-import Migration "migration"; // Needed to be able to convert deployed code to new code including migration extension.
 import MixinAuthorization "authorization/MixinAuthorization";
 import Storage "blob-storage/Storage";
 import MixinStorage "blob-storage/Mixin";
 import AccessControl "authorization/access-control";
+import Migration "migration";
 
-// Data migration needs to be performed due to new dashboardBackground actor variable.
 (with migration = Migration.run)
 actor {
   // Initialize the user system state
   let accessControlState = AccessControl.initState();
+
   include MixinAuthorization(accessControlState);
   include MixinStorage();
 
   type UserProfile = {
     displayName : Text;
+    email : ?Text;
+    photoUrl : ?Text;
   };
 
   type Comment = {
@@ -73,9 +76,15 @@ actor {
     timestamp : Time.Time;
   };
 
+  type TestCategory = {
+    #mockTest;
+    #previousYearPaperYear : Nat;
+  };
+
   type TestResult = {
     exam : Text;
-    category : Text;
+    category : TestCategory;
+    subCategory : ?Text;
     timestamp : Time.Time;
     totalQuestions : Nat;
     correctCount : Nat;
@@ -84,12 +93,20 @@ actor {
     accuracy : Nat;
   };
 
+  type DailyTask = {
+    day : Text;
+    target : Text;
+    completed : Bool;
+    timestamp : Time.Time;
+  };
+
   let userProfiles = Map.empty<Principal, UserProfile>();
   let posts = Map.empty<Nat, Post>();
   let chatMessages = Map.empty<Nat, ChatMessage>();
   let blockedUsers = Map.empty<Principal, Bool>();
   let testHistories = Map.empty<Principal, List.List<TestResult>>();
   let dashboardBackground = Map.empty<Principal, Storage.ExternalBlob>();
+  let dailyTasks = Map.empty<Principal, DailyTask>();
 
   var nextPostId = 0;
   var nextCommentId = 0;
@@ -141,7 +158,10 @@ actor {
     postId;
   };
 
-  public query func getAllPosts() : async [PostView] {
+  public query ({ caller }) func getAllPosts() : async [PostView] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view posts");
+    };
     let postArray = posts.toArray();
     postArray.map(func((_, post)) { toPostView(post) });
   };
@@ -199,7 +219,10 @@ actor {
     };
   };
 
-  public query func getComments(postId : Nat) : async [CommentView] {
+  public query ({ caller }) func getComments(postId : Nat) : async [CommentView] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view comments");
+    };
     switch (posts.get(postId)) {
       case (null) { [] };
       case (?post) {
@@ -228,7 +251,10 @@ actor {
     messageId;
   };
 
-  public query func getChatMessages() : async [ChatMessageView] {
+  public query ({ caller }) func getChatMessages() : async [ChatMessageView] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view chat messages");
+    };
     let messageArray = chatMessages.toArray();
     messageArray.map(func((_, message)) { toChatMessageView(message) });
   };
@@ -359,5 +385,71 @@ actor {
       Runtime.trap("Unauthorized: Only users can clear dashboard backgrounds");
     };
     dashboardBackground.remove(caller);
+  };
+
+  // Daily Target Functionality
+  public shared ({ caller }) func setDailyTarget(day : Text, target : Text) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can set daily targets");
+    };
+
+    let newDailyTask : DailyTask = {
+      day;
+      target;
+      completed = false;
+      timestamp = Time.now();
+    };
+
+    dailyTasks.add(caller, newDailyTask);
+  };
+
+  public query ({ caller }) func getDailyTarget() : async ?DailyTask {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can get daily targets");
+    };
+    dailyTasks.get(caller);
+  };
+
+  public query ({ caller }) func getDailyTaskStatus(day : Text) : async Text {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can get task status");
+    };
+
+    switch (dailyTasks.get(caller)) {
+      case (null) {
+        "Incomplete" : Text;
+      };
+      case (?task) {
+        if (task.day == day and task.completed) {
+          "Complete" : Text;
+        } else {
+          "Incomplete" : Text;
+        };
+      };
+    };
+  };
+
+  public shared ({ caller }) func markDailyTargetCompleted(day : Text) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can mark tasks as completed");
+    };
+
+    switch (dailyTasks.get(caller)) {
+      case (null) {
+        Runtime.trap("No daily task set for this day. Please set a daily target first!");
+      };
+      case (?dailyTask) {
+        if (dailyTask.day != day) {
+          Runtime.trap("No daily task set for this day. Please set a daily target first!");
+        };
+        if (dailyTask.completed) {
+          Runtime.trap("Task for the day is already marked as completed!");
+        };
+        let updatedTask : DailyTask = {
+          dailyTask with completed = true; timestamp = Time.now();
+        };
+        dailyTasks.add(caller, updatedTask);
+      };
+    };
   };
 };

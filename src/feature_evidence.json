@@ -2,11 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-a-clean-minimal-dashboard-ui-control-section-on-the-home-dashboard-page-route-that-includes-a-button-labeled-exactly-change-background-and-a-button-labeled-exactly-reset-to-default",
-      "featureTitle": "Add a clean, minimal Dashboard UI control section on the Home/Dashboard page (route \"/\") that includes a button labeled exactly \"Change Background\" and a button labeled exactly \"Reset to Default\".",
+      "featureId": "feature-remove-support-for-user-supplied-custom-usernames-in-the-ui-and-ensure-the-displayed-name-and-avatar-are-sourced-only-from-the-authenticated-profile-data-or-fallbacks-with-no-manual-editing-controls-anywhere-in-the-app",
+      "featureTitle": "Remove support for user-supplied/custom usernames in the UI and ensure the displayed name and avatar are sourced only from the authenticated profile data (or fallbacks), with no manual editing controls anywhere in the app.",
       "files": [
-        "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-        "frontend/src/pages/LandingPage.tsx"
+        "frontend/src/hooks/community/useUserProfiles.ts",
+        "frontend/src/lib/userIdentity.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -18,16 +18,18 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-57"
+        "REQ-97"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-allow-the-user-to-select-an-image-from-their-device-gallery-files-when-clicking-change-background-validate-that-the-selected-file-is-an-image-and-show-a-clear-english-error-message-if-the-file-is-invalid-or-the-upload-fails",
-      "featureTitle": "Allow the user to select an image from their device (gallery/files) when clicking \"Change Background\"; validate that the selected file is an image and show a clear English error message if the file is invalid or the upload fails.",
+      "featureId": "feature-automatically-sync-load-the-authenticated-profile-after-login-so-the-correct-name-and-profile-photo-are-available-without-manual-steps-and-ensure-the-profile-is-used-consistently-in-community-posts-comments-chat-and-in-test-history",
+      "featureTitle": "Automatically sync/load the authenticated profile after login so the correct name and profile photo are available without manual steps, and ensure the profile is used consistently in Community (posts, comments, chat) and in Test History.",
       "files": [
-        "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-        "frontend/src/hooks/useDashboardBackground.ts"
+        "frontend/src/components/AppLayout.tsx",
+        "frontend/src/components/testSeries/TestHistory.tsx",
+        "frontend/src/components/user/AuthProfileBootstrapper.tsx",
+        "frontend/src/components/user/UserAvatar.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -39,16 +41,17 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-58"
+        "REQ-98"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-apply-the-selected-image-as-the-background-only-on-the-dashboard-home-page-route-the-background-must-cover-the-full-viewport-be-properly-fitted-without-stretching-cover-centered-and-include-a-slight-dark-overlay-layer-to-preserve-readability-of-the-existing-timer-and-text",
-      "featureTitle": "Apply the selected image as the background only on the Dashboard/Home page (route \"/\"): the background must cover the full viewport, be properly fitted without stretching (cover + centered), and include a slight dark overlay layer to preserve readability of the existing timer and text.",
+      "featureId": "feature-update-community-chat-comments-and-post-headers-to-display-profile-photo-if-available-bold-display-name-timestamp-and-message-content-below-the-name-with-a-clean-layout-that-is-dark-mode-compatible-and-does-not-change-other-community-behaviors-posting-liking-moderation-polling",
+      "featureTitle": "Update Community chat, comments, and post headers to display: profile photo (if available), bold display name, timestamp, and message/content below the name, with a clean layout that is dark-mode compatible and does not change other Community behaviors (posting, liking, moderation, polling).",
       "files": [
-        "frontend/src/hooks/useDashboardBackground.ts",
-        "frontend/src/pages/LandingPage.tsx"
+        "frontend/src/components/community/ChatPanel.tsx",
+        "frontend/src/components/community/CommentsSection.tsx",
+        "frontend/src/components/community/PostCard.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -60,71 +63,7 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-59"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-ensure-the-custom-dashboard-background-does-not-affect-the-timer-page-at-timer-including-streamer-mode-and-transparent-background-behavior-and-does-not-introduce-any-new-ui-elements-onto-streamer-mode-views",
-      "featureTitle": "Ensure the custom Dashboard background does not affect the Timer page at \"/timer\" (including Streamer Mode and transparent background behavior) and does not introduce any new UI elements onto Streamer Mode views.",
-      "files": [
-        "frontend/src/pages/LandingPage.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-60"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-persist-the-dashboard-background-per-user-account-signed-in-users-internet-identity-must-have-their-selected-background-saved-to-their-account-and-restored-automatically-on-returning-to-the-dashboard-signed-out-users-can-view-the-default-background-and-must-see-a-clear-english-prompt-to-sign-in-if-they-attempt-to-change-or-reset-the-dashboard-background",
-      "featureTitle": "Persist the Dashboard background per user account: signed-in users (Internet Identity) must have their selected background saved to their account and restored automatically on returning to the Dashboard; signed-out users can view the default background and must see a clear English prompt to sign in if they attempt to change or reset the Dashboard background.",
-      "files": [
-        "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-        "frontend/src/hooks/useDashboardBackground.ts",
-        "frontend/src/pages/LandingPage.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-61"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-wire-the-dashboard-ui-to-the-backend-methods-using-react-query-patterns-consistent-with-existing-hooks-e-g-actor-availability-checks-query-invalidation-on-mutation-so-that-after-upload-reset-the-ui-updates-immediately-and-restores-state-on-load",
-      "featureTitle": "Wire the Dashboard UI to the backend methods using React Query patterns consistent with existing hooks (e.g., actor availability checks, query invalidation on mutation) so that after upload/reset the UI updates immediately and restores state on load.",
-      "files": [
-        "frontend/src/components/dashboard/DashboardBackgroundControls.tsx",
-        "frontend/src/hooks/useDashboardBackground.ts",
-        "frontend/src/pages/LandingPage.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-63"
+        "REQ-99"
       ],
       "confidence": "high"
     }

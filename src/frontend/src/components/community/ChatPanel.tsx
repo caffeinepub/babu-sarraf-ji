@@ -4,10 +4,11 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Send, Trash2, MessageSquare } from 'lucide-react';
 import { useGetChatMessages, useSendMessage } from '../../hooks/community/useChat';
-import { useDisplayName } from '../../hooks/community/useUserProfiles';
+import { useDisplayName, useUserProfile } from '../../hooks/community/useUserProfiles';
 import { useAuthState } from '../../hooks/useAuthState';
 import { useIsCallerAdmin, useDeleteChatMessage } from '../../hooks/community/useModeration';
 import { ScrollArea } from '../ui/scroll-area';
+import UserAvatar from '../user/UserAvatar';
 import ErrorBanner from './ErrorBanner';
 
 export default function ChatPanel() {
@@ -102,15 +103,18 @@ function ChatMessage({
 }) {
   const authorPrincipal = message.author.toString();
   const displayName = useDisplayName(authorPrincipal);
+  const { data: profile } = useUserProfile(authorPrincipal);
   const timestamp = new Date(Number(message.timestamp) / 1000000);
   const timeStr = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   return (
-    <div className="flex items-start justify-between gap-2 p-2 rounded hover:bg-accent/50 transition-colors">
+    <div className="flex items-start gap-3 p-2 rounded hover:bg-accent/50 transition-colors">
+      <UserAvatar displayName={displayName} photoUrl={profile?.photoUrl} size="sm" />
       <div className="flex-1 min-w-0">
-        <p className="text-xs text-muted-foreground mb-1">
-          <span className="font-semibold text-foreground">{displayName}</span> · {timeStr}
-        </p>
+        <div className="flex items-baseline gap-2 mb-1">
+          <span className="font-bold text-sm">{displayName}</span>
+          <span className="text-xs text-muted-foreground">{timeStr}</span>
+        </div>
         <p className="text-sm break-words">{message.content}</p>
       </div>
       {isAdmin && (

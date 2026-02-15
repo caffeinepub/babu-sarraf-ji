@@ -13,7 +13,10 @@ interface TestResultsProps {
 }
 
 export default function TestResults({ result, userAnswers, saveStatus, onBackToList }: TestResultsProps) {
-  const questions = getTestQuestions(result.exam, result.category);
+  // Extract category string for display and question lookup
+  const categoryString = result.subCategory || 'Mock Test';
+  
+  const questions = getTestQuestions(result.exam, categoryString);
   const correctCount = Number(result.correctCount);
   const incorrectCount = Number(result.incorrectCount);
   const totalQuestions = Number(result.totalQuestions);
@@ -25,7 +28,7 @@ export default function TestResults({ result, userAnswers, saveStatus, onBackToL
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">Test Completed!</h1>
         <p className="text-muted-foreground">
-          {result.exam} - {result.category}
+          {result.exam} - {categoryString}
         </p>
       </div>
 

@@ -1,6 +1,6 @@
 import { BookOpen } from 'lucide-react';
 import SiteNav from '../components/SiteNav';
-import SubjectCard from '../components/ncert/SubjectCard';
+import ClassSection from '../components/ncert/ClassSection';
 import { ncertData } from '../lib/ncertData';
 import { getCopyrightText, getAppIdentifier } from '../lib/branding';
 
@@ -9,7 +9,7 @@ export default function NcertPage() {
   const appIdentifier = getAppIdentifier();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <SiteNav />
 
       {/* Header */}
@@ -22,37 +22,16 @@ export default function NcertPage() {
             <h1 className="text-3xl font-bold">NCERT Books</h1>
           </div>
           <p className="text-muted-foreground">
-            Access chapter-wise NCERT books for Physics, Chemistry, and Biology
+            Access official chapter-wise NCERT books for Class 11 & 12 - Physics, Chemistry, Biology, and Mathematics
           </p>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
-        <div className="max-w-5xl mx-auto space-y-12">
-          {/* Class 11 Section */}
-          <section>
-            <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
-              <span className="text-primary">Class 11</span>
-            </h2>
-            <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1">
-              <SubjectCard subject={ncertData.class11.subjects.physics} />
-              <SubjectCard subject={ncertData.class11.subjects.chemistry} />
-              <SubjectCard subject={ncertData.class11.subjects.biology} />
-            </div>
-          </section>
-
-          {/* Class 12 Section */}
-          <section>
-            <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
-              <span className="text-primary">Class 12</span>
-            </h2>
-            <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1">
-              <SubjectCard subject={ncertData.class12.subjects.physics} />
-              <SubjectCard subject={ncertData.class12.subjects.chemistry} />
-              <SubjectCard subject={ncertData.class12.subjects.biology} />
-            </div>
-          </section>
+        <div className="max-w-5xl mx-auto space-y-6">
+          <ClassSection classData={ncertData.class11} />
+          <ClassSection classData={ncertData.class12} />
         </div>
       </main>
 

@@ -4,7 +4,10 @@ import LandingPage from './pages/LandingPage';
 import TimerPage from './pages/TimerPage';
 import CommunityPage from './pages/CommunityPage';
 import NcertPage from './pages/NcertPage';
+import NcertPdfViewerPage from './pages/NcertPdfViewerPage';
+import PdfViewerPage from './pages/PdfViewerPage';
 import TestSeriesPage from './pages/TestSeriesPage';
+import DailyTargetPage from './pages/DailyTargetPage';
 import AppLayout from './components/AppLayout';
 
 const queryClient = new QueryClient({
@@ -44,15 +47,42 @@ const ncertRoute = createRoute({
   component: NcertPage,
 });
 
+const ncertPdfViewerRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/ncert/viewer',
+  component: NcertPdfViewerPage,
+});
+
+const pdfViewerRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/pdf-viewer',
+  component: PdfViewerPage,
+});
+
 const testSeriesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/test-series',
   component: TestSeriesPage,
 });
 
-const routeTree = rootRoute.addChildren([indexRoute, timerRoute, communityRoute, ncertRoute, testSeriesRoute]);
+const dailyTargetRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/daily-target',
+  component: DailyTargetPage,
+});
 
-const router = createRouter({ routeTree });
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  timerRoute,
+  communityRoute,
+  ncertRoute,
+  ncertPdfViewerRoute,
+  pdfViewerRoute,
+  testSeriesRoute,
+  dailyTargetRoute,
+]);
+
+const router = createRouter({ routeTree, defaultNotFoundComponent: () => <LandingPage /> });
 
 function App() {
   return (

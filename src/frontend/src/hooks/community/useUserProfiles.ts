@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useActor } from '../useActor';
 import type { UserProfile } from '../../backend';
 import { Principal } from '@dfinity/principal';
+import { resolveDisplayName } from '@/lib/userIdentity';
 
 export function useUserProfile(principalString: string) {
   const { actor, isFetching: actorFetching } = useActor();
@@ -24,14 +25,5 @@ export function useUserProfile(principalString: string) {
 
 export function useDisplayName(principalString: string) {
   const { data: profile } = useUserProfile(principalString);
-  
-  if (profile?.displayName) {
-    return profile.displayName;
-  }
-  
-  if (principalString) {
-    return `${principalString.slice(0, 8)}...${principalString.slice(-4)}`;
-  }
-  
-  return 'Anonymous';
+  return resolveDisplayName(profile, principalString);
 }

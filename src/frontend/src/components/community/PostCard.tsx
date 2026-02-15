@@ -3,9 +3,10 @@ import { Button } from '../ui/button';
 import { Heart, Trash2, Ban } from 'lucide-react';
 import type { PostView } from '../../backend';
 import { useLikePost } from '../../hooks/community/usePosts';
-import { useDisplayName } from '../../hooks/community/useUserProfiles';
+import { useDisplayName, useUserProfile } from '../../hooks/community/useUserProfiles';
 import { useAuthState } from '../../hooks/useAuthState';
 import { useIsCallerAdmin, useDeletePost, useBlockUser } from '../../hooks/community/useModeration';
+import UserAvatar from '../user/UserAvatar';
 import CommentsSection from './CommentsSection';
 import { useState } from 'react';
 import ErrorBanner from './ErrorBanner';
@@ -17,6 +18,7 @@ interface PostCardProps {
 export default function PostCard({ post }: PostCardProps) {
   const authorPrincipal = post.author.toString();
   const displayName = useDisplayName(authorPrincipal);
+  const { data: profile } = useUserProfile(authorPrincipal);
   const { isAuthenticated, principalString } = useAuthState();
   const { data: isAdmin = false } = useIsCallerAdmin();
   const likePost = useLikePost();
@@ -67,9 +69,12 @@ export default function PostCard({ post }: PostCardProps) {
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
 
       <div className="flex items-start justify-between mb-4">
-        <div>
-          <p className="font-semibold">{displayName}</p>
-          <p className="text-xs text-muted-foreground">{timeAgo}</p>
+        <div className="flex items-center gap-3">
+          <UserAvatar displayName={displayName} photoUrl={profile?.photoUrl} size="md" />
+          <div>
+            <p className="font-bold">{displayName}</p>
+            <p className="text-xs text-muted-foreground">{timeAgo}</p>
+          </div>
         </div>
         {isAdmin && (
           <div className="flex gap-2">

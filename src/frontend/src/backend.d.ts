@@ -14,6 +14,13 @@ export class ExternalBlob {
     static fromBytes(blob: Uint8Array<ArrayBuffer>): ExternalBlob;
     withUploadProgress(onProgress: (percentage: number) => void): ExternalBlob;
 }
+export type TestCategory = {
+    __kind__: "previousYearPaperYear";
+    previousYearPaperYear: bigint;
+} | {
+    __kind__: "mockTest";
+    mockTest: null;
+};
 export type Time = bigint;
 export interface PostView {
     id: bigint;
@@ -31,6 +38,12 @@ export interface ChatMessageView {
     author: Principal;
     timestamp: Time;
 }
+export interface DailyTask {
+    day: string;
+    completed: boolean;
+    target: string;
+    timestamp: Time;
+}
 export interface CommentView {
     id: bigint;
     content: string;
@@ -39,14 +52,17 @@ export interface CommentView {
 }
 export interface UserProfile {
     displayName: string;
+    photoUrl?: string;
+    email?: string;
 }
 export interface TestResult {
+    subCategory?: string;
     exam: string;
     score: bigint;
     totalQuestions: bigint;
     incorrectCount: bigint;
     timestamp: Time;
-    category: string;
+    category: TestCategory;
     correctCount: bigint;
     accuracy: bigint;
 }
@@ -69,14 +85,18 @@ export interface backendInterface {
     getCallerUserRole(): Promise<UserRole>;
     getChatMessages(): Promise<Array<ChatMessageView>>;
     getComments(postId: bigint): Promise<Array<CommentView>>;
+    getDailyTarget(): Promise<DailyTask | null>;
+    getDailyTaskStatus(day: string): Promise<string>;
     getDashboardBackground(): Promise<ExternalBlob | null>;
     getTestHistory(): Promise<Array<TestResult>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;
     likePost(postId: bigint): Promise<void>;
+    markDailyTargetCompleted(day: string): Promise<void>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
     saveDashboardBackground(image: ExternalBlob): Promise<void>;
     saveTestResult(result: TestResult): Promise<void>;
     sendMessage(content: string): Promise<bigint>;
+    setDailyTarget(day: string, target: string): Promise<void>;
     unblockUser(user: Principal): Promise<void>;
 }

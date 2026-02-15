@@ -1,4 +1,4 @@
-import { Home, Users, BookOpen, ClipboardList } from 'lucide-react';
+import { Home, Users, BookOpen, ClipboardList, Target } from 'lucide-react';
 import { useNavigate, useRouterState } from '@tanstack/react-router';
 import { Button } from './ui/button';
 import LoginButton from './LoginButton';
@@ -26,6 +26,14 @@ export default function SiteNav() {
     return null;
   }
 
+  const handleNavigation = (path: string) => {
+    try {
+      navigate({ to: path });
+    } catch (error) {
+      console.error('Navigation error:', error);
+    }
+  };
+
   return (
     <nav className="w-full border-b border-border bg-card/40 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
@@ -37,16 +45,16 @@ export default function SiteNav() {
           <Button
             variant={currentPath === '/' ? 'default' : 'ghost'}
             size="sm"
-            onClick={() => navigate({ to: '/' })}
+            onClick={() => handleNavigation('/')}
             className="gap-2"
           >
             <Home className="h-4 w-4" />
             <span className="hidden sm:inline">Home</span>
           </Button>
           <Button
-            variant={currentPath === '/ncert' ? 'default' : 'ghost'}
+            variant={currentPath.startsWith('/ncert') ? 'default' : 'ghost'}
             size="sm"
-            onClick={() => navigate({ to: '/ncert' })}
+            onClick={() => handleNavigation('/ncert')}
             className="gap-2"
           >
             <BookOpen className="h-4 w-4" />
@@ -55,16 +63,25 @@ export default function SiteNav() {
           <Button
             variant={currentPath === '/test-series' ? 'default' : 'ghost'}
             size="sm"
-            onClick={() => navigate({ to: '/test-series' })}
+            onClick={() => handleNavigation('/test-series')}
             className="gap-2"
           >
             <ClipboardList className="h-4 w-4" />
             <span className="hidden sm:inline">Test Series</span>
           </Button>
           <Button
+            variant={currentPath === '/daily-target' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => handleNavigation('/daily-target')}
+            className="gap-2"
+          >
+            <Target className="h-4 w-4" />
+            <span className="hidden sm:inline">Daily Target</span>
+          </Button>
+          <Button
             variant={currentPath === '/community' ? 'default' : 'ghost'}
             size="sm"
-            onClick={() => navigate({ to: '/community' })}
+            onClick={() => handleNavigation('/community')}
             className="gap-2"
           >
             <Users className="h-4 w-4" />

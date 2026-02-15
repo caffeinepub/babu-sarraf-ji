@@ -3,9 +3,10 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Trash2, Send } from 'lucide-react';
 import { useGetComments, useAddComment } from '../../hooks/community/useComments';
-import { useDisplayName } from '../../hooks/community/useUserProfiles';
+import { useDisplayName, useUserProfile } from '../../hooks/community/useUserProfiles';
 import { useAuthState } from '../../hooks/useAuthState';
 import { useIsCallerAdmin, useDeleteComment } from '../../hooks/community/useModeration';
+import UserAvatar from '../user/UserAvatar';
 import ErrorBanner from './ErrorBanner';
 
 interface CommentsSectionProps {
@@ -49,7 +50,7 @@ export default function CommentsSection({ postId }: CommentsSectionProps) {
     <div className="border-t border-border/50 pt-4 space-y-3">
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         {comments.map((comment) => (
           <CommentItem
             key={comment.id.toString()}
@@ -94,20 +95,22 @@ function CommentItem({
 }) {
   const authorPrincipal = comment.author.toString();
   const displayName = useDisplayName(authorPrincipal);
+  const { data: profile } = useUserProfile(authorPrincipal);
   const timestamp = new Date(Number(comment.timestamp) / 1000000);
   const timeAgo = getTimeAgo(timestamp);
 
   return (
-    <div className="flex items-start justify-between gap-2 text-sm">
-      <div className="flex-1">
-        <p>
-          <span className="font-semibold">{displayName}</span>{' '}
-          <span className="text-muted-foreground text-xs">{timeAgo}</span>
-        </p>
-        <p className="text-muted-foreground">{comment.content}</p>
+    <div className="flex items-start gap-3">
+      <UserAvatar displayName={displayName} photoUrl={profile?.photoUrl} size="sm" />
+      <div className="flex-1 min-w-0">
+        <div className="flex items-baseline gap-2 mb-1">
+          <span className="font-bold text-sm">{displayName}</span>
+          <span className="text-xs text-muted-foreground">{timeAgo}</span>
+        </div>
+        <p className="text-sm text-muted-foreground break-words">{comment.content}</p>
       </div>
       {isAdmin && (
-        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => onDelete(comment.id)}>
+        <Button variant="ghost" size="icon" className="h-6 w-6 flex-shrink-0" onClick={() => onDelete(comment.id)}>
           <Trash2 className="h-3 w-3 text-destructive" />
         </Button>
       )}
