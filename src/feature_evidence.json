@@ -5,7 +5,7 @@
       "featureId": "feature-remove-support-for-user-supplied-custom-usernames-in-the-ui-and-ensure-the-displayed-name-and-avatar-are-sourced-only-from-the-authenticated-profile-data-or-fallbacks-with-no-manual-editing-controls-anywhere-in-the-app",
       "featureTitle": "Remove support for user-supplied/custom usernames in the UI and ensure the displayed name and avatar are sourced only from the authenticated profile data (or fallbacks), with no manual editing controls anywhere in the app.",
       "files": [
-        "frontend/src/hooks/community/useUserProfiles.ts",
+        "frontend/src/components/user/ProfileSetupModal.tsx",
         "frontend/src/lib/userIdentity.ts"
       ],
       "components": [
@@ -18,7 +18,7 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-97"
+        "REQ-100"
       ],
       "confidence": "high"
     },
@@ -26,10 +26,7 @@
       "featureId": "feature-automatically-sync-load-the-authenticated-profile-after-login-so-the-correct-name-and-profile-photo-are-available-without-manual-steps-and-ensure-the-profile-is-used-consistently-in-community-posts-comments-chat-and-in-test-history",
       "featureTitle": "Automatically sync/load the authenticated profile after login so the correct name and profile photo are available without manual steps, and ensure the profile is used consistently in Community (posts, comments, chat) and in Test History.",
       "files": [
-        "frontend/src/components/AppLayout.tsx",
-        "frontend/src/components/testSeries/TestHistory.tsx",
-        "frontend/src/components/user/AuthProfileBootstrapper.tsx",
-        "frontend/src/components/user/UserAvatar.tsx"
+        "frontend/src/components/user/AuthProfileBootstrapper.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -41,17 +38,15 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-98"
+        "REQ-101"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-update-community-chat-comments-and-post-headers-to-display-profile-photo-if-available-bold-display-name-timestamp-and-message-content-below-the-name-with-a-clean-layout-that-is-dark-mode-compatible-and-does-not-change-other-community-behaviors-posting-liking-moderation-polling",
-      "featureTitle": "Update Community chat, comments, and post headers to display: profile photo (if available), bold display name, timestamp, and message/content below the name, with a clean layout that is dark-mode compatible and does not change other Community behaviors (posting, liking, moderation, polling).",
+      "featureId": "feature-add-a-new-navbar-navigation-entry-labeled-exactly-study-room-with-a-video-camera-icon-or-style-that-opens-the-google-meet-link-https-meet-google-com-fzn-cjad-ofe-in-a-new-tab",
+      "featureTitle": "Add a new navbar navigation entry labeled exactly 'Study Room' with a video camera icon (🎥 or 📹 style) that opens the Google Meet link https://meet.google.com/fzn-cjad-ofe in a new tab.",
       "files": [
-        "frontend/src/components/community/ChatPanel.tsx",
-        "frontend/src/components/community/CommentsSection.tsx",
-        "frontend/src/components/community/PostCard.tsx"
+        "frontend/src/components/SiteNav.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -63,7 +58,69 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-99"
+        "REQ-103"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-show-a-confirmation-popup-before-redirecting-to-the-google-meet-link-with-the-message-you-are-joining-focus-babu-study-room-and-provide-options-to-proceed-or-cancel",
+      "featureTitle": "Show a confirmation popup before redirecting to the Google Meet link with the message 'You are joining Focus Babu Study Room.' and provide options to proceed or cancel.",
+      "files": [
+        "frontend/src/components/SiteNav.tsx",
+        "frontend/src/components/studyRoom/StudyRoomConfirmDialog.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-104"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-small-description-section-on-the-study-room-page-or-in-the-confirmation-dialog-that-reads-join-live-group-study-session-and-stay-focused-together",
+      "featureTitle": "Add a small description section on the Study Room page or in the confirmation dialog that reads: 'Join live group study session and stay focused together.'",
+      "files": [
+        "frontend/src/components/studyRoom/StudyRoomConfirmDialog.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-105"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-study-room-feature-navbar-entry-confirmation-popup-and-link-redirect-is-fully-responsive-mobile-friendly-and-matches-the-existing-clean-study-vibe-design-with-dark-mode-compatibility",
+      "featureTitle": "Ensure the Study Room feature (navbar entry, confirmation popup, and link redirect) is fully responsive, mobile-friendly, and matches the existing clean study-vibe design with dark-mode compatibility.",
+      "files": [
+        "frontend/src/components/SiteNav.tsx",
+        "frontend/src/components/studyRoom/StudyRoomConfirmDialog.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-106"
       ],
       "confidence": "high"
     }

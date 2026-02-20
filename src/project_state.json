@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 37,
+  "projectStateVersion": 39,
   "summary": "Study website “Focus Babu” with Pomodoro timer + Streamer Mode (/timer), site-wide Dark/Light theme toggle (persisted), dashboard-only customizable background image (per-user saved + reset), a /community page with authenticated posting/chat/admin moderation using Firebase, a /ncert section with Class 11/12 subject PDFs, a /test-series section (navbar icon + route) providing JEE/NEET/CUET test series including “Previous Year Real Papers” with exam-like interface and saved attempt history, and a new /daily-target section (navbar 🎯 icon) for per-user daily goals/to-do tasks with progress stats and next-day reset. Tagline: “Focus. Study. Repeat.”",
   "architectural_notes": [
     "Separate clean URL route/page at /timer for OBS Browser Source usage.",
@@ -760,23 +760,57 @@
       "id": "feature-remove-support-for-user-supplied-custom-usernames-in-the-ui-and-ensure-the-displayed-name-and-avatar-are-sourced-only-from-the-authenticated-profile-data-or-fallbacks-with-no-manual-editing-controls-anywhere-in-the-app",
       "title": "Remove support for user-supplied/custom usernames in the UI and ensure the displayed name and avatar are sourced only from the authenticated profile data (or fallbacks), with no manual editing controls anywhere in the app.",
       "reqIds": [
+        "REQ-100",
         "REQ-97"
       ],
-      "version": 1
+      "version": 2
     },
     {
       "id": "feature-automatically-sync-load-the-authenticated-profile-after-login-so-the-correct-name-and-profile-photo-are-available-without-manual-steps-and-ensure-the-profile-is-used-consistently-in-community-posts-comments-chat-and-in-test-history",
       "title": "Automatically sync/load the authenticated profile after login so the correct name and profile photo are available without manual steps, and ensure the profile is used consistently in Community (posts, comments, chat) and in Test History.",
       "reqIds": [
+        "REQ-101",
         "REQ-98"
       ],
-      "version": 1
+      "version": 2
     },
     {
       "id": "feature-update-community-chat-comments-and-post-headers-to-display-profile-photo-if-available-bold-display-name-timestamp-and-message-content-below-the-name-with-a-clean-layout-that-is-dark-mode-compatible-and-does-not-change-other-community-behaviors-posting-liking-moderation-polling",
       "title": "Update Community chat, comments, and post headers to display: profile photo (if available), bold display name, timestamp, and message/content below the name, with a clean layout that is dark-mode compatible and does not change other Community behaviors (posting, liking, moderation, polling).",
       "reqIds": [
         "REQ-99"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-navbar-navigation-entry-labeled-exactly-study-room-with-a-video-camera-icon-or-style-that-opens-the-google-meet-link-https-meet-google-com-fzn-cjad-ofe-in-a-new-tab",
+      "title": "Add a new navbar navigation entry labeled exactly 'Study Room' with a video camera icon (🎥 or 📹 style) that opens the Google Meet link https://meet.google.com/fzn-cjad-ofe in a new tab.",
+      "reqIds": [
+        "REQ-103"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-show-a-confirmation-popup-before-redirecting-to-the-google-meet-link-with-the-message-you-are-joining-focus-babu-study-room-and-provide-options-to-proceed-or-cancel",
+      "title": "Show a confirmation popup before redirecting to the Google Meet link with the message 'You are joining Focus Babu Study Room.' and provide options to proceed or cancel.",
+      "reqIds": [
+        "REQ-104"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-small-description-section-on-the-study-room-page-or-in-the-confirmation-dialog-that-reads-join-live-group-study-session-and-stay-focused-together",
+      "title": "Add a small description section on the Study Room page or in the confirmation dialog that reads: 'Join live group study session and stay focused together.'",
+      "reqIds": [
+        "REQ-105"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-study-room-feature-navbar-entry-confirmation-popup-and-link-redirect-is-fully-responsive-mobile-friendly-and-matches-the-existing-clean-study-vibe-design-with-dark-mode-compatibility",
+      "title": "Ensure the Study Room feature (navbar entry, confirmation popup, and link redirect) is fully responsive, mobile-friendly, and matches the existing clean study-vibe design with dark-mode compatibility.",
+      "reqIds": [
+        "REQ-106"
       ],
       "version": 1
     }
@@ -975,16 +1009,24 @@
       "status": "pending"
     },
     {
-      "id": "AR-47",
-      "summary": "Use Google Auth profile identity everywhere: display real name (Google displayName) + Google profile photo + timestamp for Community chat/comments/posts and Test History; disallow custom usernames/manual editing; auto-load after login; fallback to user email if no Google name; keep clean dark-mode-compatible layout (name bold, message below) without disturbing other features",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
       "id": "AR-48",
       "summary": "Update the user identity model so the app can store and return an authenticated user profile for a principal, including: (1) display name, (2) optional email, and (3) optional profile photo URL, with a clear fallback order for display name: authenticated display name → authenticated email → short principal.",
       "reqIds": [
         "REQ-96"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-49",
+      "summary": "Add Study Room navbar entry (video camera icon) linking to Google Meet at https://meet.google.com/fzn-cjad-ofe in new tab, show confirmation popup before redirect with message You are joining Focus Babu Study Room, add description on page Join live group study session and stay focused together, keep clean study-vibe design, dark-mode compatible, mobile-friendly",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-52",
+      "summary": "Update Community chat, comments, and post headers to display: profile photo (if available), bold display name, timestamp, and message/content below the name, with a clean layout that is dark-mode compatible and does not change other Community behaviors (posting, liking, moderation, polling).",
+      "reqIds": [
+        "REQ-102"
       ],
       "status": "pending"
     }

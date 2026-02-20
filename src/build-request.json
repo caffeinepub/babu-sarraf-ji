@@ -1,34 +1,16 @@
 {
   "kind": "build_request",
-  "title": "Use authenticated profile name/photo consistently across Community and Test History",
+  "title": "Update user profile display to show Google account name and photo across Community and add Study Room link",
+  "projectName": "Focus Babu",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-96",
-      "text": "Update the user identity model so the app can store and return an authenticated user profile for a principal, including: (1) display name, (2) optional email, and (3) optional profile photo URL, with a clear fallback order for display name: authenticated display name → authenticated email → short principal.",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-6"
-        ],
-        "quotes": [
-          "Show user’s real name from Google (Gmail) account.",
-          "If Google name is not available, fallback to registered email."
-        ]
-      },
-      "acceptanceCriteria": [
-        "The backend exposes a user profile shape that includes a display name plus optional email and optional profile photo URL for a user principal.",
-        "There is a deterministic, documented fallback order used by the frontend for name display: displayName → email → short principal.",
-        "Existing community post/comment/chat and test history APIs continue to work (no breaking Candid changes without a migration strategy)."
-      ]
-    },
-    {
-      "id": "REQ-97",
+      "id": "REQ-100",
       "text": "Remove support for user-supplied/custom usernames in the UI and ensure the displayed name and avatar are sourced only from the authenticated profile data (or fallbacks), with no manual editing controls anywhere in the app.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-latest"
         ],
         "quotes": [
           "Do not allow custom username.",
@@ -36,18 +18,18 @@
         ]
       },
       "acceptanceCriteria": [
-        "There is no input, modal, settings panel, or editable UI that allows setting or changing a username/display name.",
-        "Any existing display-name helper logic is updated to read from the authenticated profile fields and apply the fallback order (name → email → short principal).",
-        "All user-facing text remains English."
+        "All UI components that previously allowed username editing are removed or disabled",
+        "Display name is derived exclusively from authenticated profile data",
+        "No text input or edit controls for username exist anywhere in the app"
       ]
     },
     {
-      "id": "REQ-98",
+      "id": "REQ-101",
       "text": "Automatically sync/load the authenticated profile after login so the correct name and profile photo are available without manual steps, and ensure the profile is used consistently in Community (posts, comments, chat) and in Test History.",
-      "target": "both",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-latest"
         ],
         "quotes": [
           "Name should automatically load after login.",
@@ -55,46 +37,131 @@
         ]
       },
       "acceptanceCriteria": [
-        "After a successful Internet Identity login, the app triggers a profile sync/load flow and the UI updates to show the best available display name without requiring a refresh.",
-        "Community feed items (posts), comments, and chat messages all show the same resolved author name for a given principal.",
-        "Test History shows the signed-in user identity (resolved name and photo if available) in a consistent place (e.g., header area) without altering stored result rows or breaking existing history rendering.",
-        "If profile photo URL is missing, the UI renders a clean fallback avatar (e.g., initial/circle) without layout shift."
+        "Profile data is fetched automatically after successful Internet Identity login",
+        "Profile name and photo are immediately available for use across all features",
+        "Community posts, comments, and chat messages display the authenticated profile data",
+        "Test History displays the authenticated profile data"
       ]
     },
     {
-      "id": "REQ-99",
+      "id": "REQ-102",
       "text": "Update Community chat, comments, and post headers to display: profile photo (if available), bold display name, timestamp, and message/content below the name, with a clean layout that is dark-mode compatible and does not change other Community behaviors (posting, liking, moderation, polling).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-latest"
         ],
         "quotes": [
-          "Display: Real Name (from Gmail) Profile photo (Google account DP) Timestamp",
-          "Design: Clean layout Name bold Message below name Dark mode compatible Do not disturb other features."
+          "Display: Real Name (from Gmail), Profile photo (Google account DP), Timestamp",
+          "Name bold, Message below name, Dark mode compatible"
         ]
       },
       "acceptanceCriteria": [
-        "Chat message rows display an avatar next to the author block, author name is visually bold, timestamp is present, and message text renders below the name line.",
-        "Comment items display an avatar (when available), bold author name, timestamp, and comment content below.",
-        "Post header displays the author avatar (when available), bold author name, and timestamp; existing admin actions (delete/block) remain unchanged.",
-        "All updated layouts look correct in both dark and light modes and remain mobile-friendly.",
-        "No changes to Streamer Mode behavior or /timer UI occur as a result of these updates."
+        "Chat messages show profile photo (when available), bold display name, timestamp, and message content below",
+        "Comments show profile photo (when available), bold display name, timestamp, and comment text below",
+        "Post headers show profile photo (when available), bold display name, and timestamp",
+        "Layout is clean, properly spaced, and works in both dark and light modes",
+        "Existing Community features (posting, liking, deleting, moderation) continue to work unchanged"
+      ]
+    },
+    {
+      "id": "REQ-103",
+      "text": "Add a new navbar navigation entry labeled exactly 'Study Room' with a video camera icon (🎥 or 📹 style) that opens the Google Meet link https://meet.google.com/fzn-cjad-ofe in a new tab.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "Add a new icon in navbar: 🎥 or 📹 icon, Name: Study Room",
+          "https://meet.google.com/fzn-cjad-ofe",
+          "Open link in new tab."
+        ]
+      },
+      "acceptanceCriteria": [
+        "A new 'Study Room' entry appears in the top navbar with a video camera icon",
+        "Clicking the Study Room entry opens the Google Meet link in a new browser tab",
+        "The navbar entry is styled consistently with other navbar items",
+        "The Study Room entry does not break existing navbar behavior or Streamer Mode navbar hiding"
+      ]
+    },
+    {
+      "id": "REQ-104",
+      "text": "Show a confirmation popup before redirecting to the Google Meet link with the message 'You are joining Focus Babu Study Room.' and provide options to proceed or cancel.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "Show confirmation popup before redirect: 'You are joining Focus Babu Study Room.'"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When the user clicks the Study Room navbar entry, a confirmation dialog appears",
+        "The dialog displays the exact message: 'You are joining Focus Babu Study Room.'",
+        "The dialog provides clear 'Proceed' and 'Cancel' buttons",
+        "Clicking 'Proceed' opens the Google Meet link in a new tab",
+        "Clicking 'Cancel' closes the dialog without navigation",
+        "The confirmation dialog styling matches the app's clean study-vibe design and is dark-mode compatible"
+      ]
+    },
+    {
+      "id": "REQ-105",
+      "text": "Add a small description section on the Study Room page or in the confirmation dialog that reads: 'Join live group study session and stay focused together.'",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "Add small description on page: 'Join live group study session and stay focused together.'"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The description text 'Join live group study session and stay focused together.' is displayed in the confirmation popup or on a dedicated Study Room page",
+        "The text is clearly visible and properly styled",
+        "The description fits the clean study-vibe aesthetic and is dark-mode compatible"
+      ]
+    },
+    {
+      "id": "REQ-106",
+      "text": "Ensure the Study Room feature (navbar entry, confirmation popup, and link redirect) is fully responsive, mobile-friendly, and matches the existing clean study-vibe design with dark-mode compatibility.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "Keep design clean and study vibe.",
+          "Dark mode compatible.",
+          "Mobile friendly."
+        ]
+      },
+      "acceptanceCriteria": [
+        "The Study Room navbar entry is properly sized and positioned on mobile devices",
+        "The confirmation popup is responsive and displays correctly on all screen sizes",
+        "All Study Room UI elements work correctly in both dark and light modes",
+        "The feature does not introduce any visual inconsistencies with the existing app design"
       ]
     }
   ],
   "constraints": [
-    "Authentication must remain Internet Identity-based (no Google/Firebase/Auth0 OAuth integration).",
-    "Do not edit files under frontend/src/components/ui or any frontend immutablePaths listed in SYSTEM_CONTEXT.",
-    "Use English for all user-facing text.",
-    "Do not introduce new real-time transport (no WebSockets); keep existing polling/react-query patterns.",
-    "Do not disturb existing Community moderation permissions; enforce permissions on the backend as currently implemented."
+    "Respect the single-actor backend architecture; keep all Motoko logic in the main actor file",
+    "Do not modify immutable frontend paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui",
+    "Use only the specified tech stack: React, TypeScript, Tailwind CSS, Shadcn, React Query for frontend",
+    "Do not introduce Firebase or any external authentication systems; continue using Internet Identity",
+    "Preserve all existing Community features: posting, commenting, chat, liking, moderation, and polling behavior",
+    "Do not break Streamer Mode behavior or the /timer route functionality",
+    "Maintain backward compatibility with existing user profile data structures"
   ],
   "nonGoals": [
-    "Implementing Google Authentication / fetching Gmail profile data directly from Google APIs.",
-    "Allowing users to manually set or edit a username/display name.",
-    "Changing the Community data model for posts/comments/chat beyond adding/reading profile metadata.",
-    "Redesigning the overall site theme or modifying Pomodoro/NCERT/Daily Target behaviors."
+    "Adding new authentication providers beyond Internet Identity",
+    "Creating a full Study Room page with video conferencing features (only redirect to Google Meet)",
+    "Allowing users to customize their display name or profile photo within the app",
+    "Modifying the backend schema to store Google account credentials",
+    "Adding real-time video chat functionality within the app",
+    "Creating a separate Study Room scheduling or management system"
   ],
   "imageRequirements": {
     "required": [],

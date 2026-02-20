@@ -8,12 +8,12 @@ export function resolveDisplayName(
   profile: UserProfile | null | undefined,
   principalString: string
 ): string {
-  // First priority: displayName
+  // First priority: displayName from profile
   if (profile?.displayName && profile.displayName.trim()) {
     return profile.displayName.trim();
   }
 
-  // Second priority: email
+  // Second priority: email from profile
   if (profile?.email && profile.email.trim()) {
     return profile.email.trim();
   }
@@ -23,7 +23,7 @@ export function resolveDisplayName(
     return `${principalString.slice(0, 8)}...${principalString.slice(-4)}`;
   }
 
-  return 'Anonymous';
+  return 'User';
 }
 
 /**
@@ -32,7 +32,7 @@ export function resolveDisplayName(
  */
 export function deriveInitials(displayName: string): string {
   if (!displayName || !displayName.trim()) {
-    return '?';
+    return 'U';
   }
 
   const trimmed = displayName.trim();

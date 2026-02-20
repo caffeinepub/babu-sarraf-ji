@@ -1,33 +1,30 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-15T11:44:16.006Z",
-  "summary": "Diff adds backend user profile fields (displayName/email/photoUrl) with a migration, frontend deterministic name fallback utilities, a post-login profile prefetch bootstrapper, and UI updates to show avatar/name/timestamps in Community components and Test History. However, Community non-admin users likely cannot fetch other users’ profiles due to backend authorization on getUserProfile, preventing consistent name/photo display across authors.",
+  "generatedAt": "2026-02-20T05:11:14.242Z",
+  "summary": "The diff implements the Study Room navigation feature with confirmation dialog (REQ-103 through REQ-106) and adds profile bootstrapping infrastructure (REQ-101), but does not implement the Community UI updates for profile photos/display names (REQ-102) or remove username editing controls (REQ-100). Profile display in posts, comments, and chat remains unchanged.",
   "missing_requirements": [
     {
-      "id": "REQ-98",
-      "requirement": "Ensure Community (posts, comments, chat) shows the same resolved author name (and photo if available) for a given principal.",
-      "reason": "Frontend attempts to load other users’ profiles via actor.getUserProfile(principal), but backend getUserProfile traps unless caller==user or caller is admin. This prevents regular users from accessing other authors’ profile data, so Community cannot consistently display authenticated names/photos for other principals (will fall back to short principal).",
-      "evidence": [
-        "backend/main.mo (getUserProfile authorization check)",
-        "frontend/src/hooks/community/useUserProfiles.ts (calls actor.getUserProfile for arbitrary principalString)"
-      ]
+      "id": "REQ-100",
+      "requirement": "Remove support for user-supplied/custom usernames in the UI and ensure the displayed name and avatar are sourced only from the authenticated profile data (or fallbacks), with no manual editing controls anywhere in the app.",
+      "reason": "No evidence of removal of username editing controls. The ProfileSetupModal.tsx was added but content is not shown in the diff. No modifications to existing profile editing components are visible.",
+      "evidence": []
+    },
+    {
+      "id": "REQ-102",
+      "requirement": "Update Community chat, comments, and post headers to display: profile photo (if available), bold display name, timestamp, and message/content below the name, with a clean layout that is dark-mode compatible.",
+      "reason": "No modifications to Community components are present in the diff. No changes to chat messages, comments, or post headers to add profile photos or update display name formatting.",
+      "evidence": []
     }
   ],
   "hallucinated_features": [],
-  "confidence": 0.72,
+  "confidence": 0.92,
   "changed_files": [
-    "backend/main.mo",
-    "backend/migration.mo",
     "frontend-file-summaries.txt",
-    "frontend/src/components/AppLayout.tsx",
-    "frontend/src/components/community/ChatPanel.tsx",
-    "frontend/src/components/community/CommentsSection.tsx",
-    "frontend/src/components/community/PostCard.tsx",
-    "frontend/src/components/testSeries/TestHistory.tsx",
+    "frontend/src/components/SiteNav.tsx",
+    "frontend/src/components/studyRoom/StudyRoomConfirmDialog.tsx",
     "frontend/src/components/user/AuthProfileBootstrapper.tsx",
-    "frontend/src/components/user/UserAvatar.tsx",
-    "frontend/src/hooks/community/useUserProfiles.ts",
+    "frontend/src/components/user/ProfileSetupModal.tsx",
     "frontend/src/lib/userIdentity.ts",
     "project_state.json"
   ]
