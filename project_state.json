@@ -1,0 +1,1675 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 59,
+  "summary": "Study website “Focus Babu” with Pomodoro timer + Streamer Mode (/timer), site-wide Dark/Light theme toggle (persisted), dashboard-only customizable background image (per-user saved + reset), a /community page with authenticated posting/chat/admin moderation using Firebase, a /ncert section with Class 11/12 subject PDFs, a /test-series section (navbar icon + route) providing JEE/NEET/CUET test series including “Previous Year Real Papers” with exam-like interface and saved attempt history, and a new /daily-target section (navbar 🎯 icon) for per-user daily goals/to-do tasks with progress stats and next-day reset. Tagline: “Focus. Study. Repeat.”",
+  "architectural_notes": [
+    "Separate clean URL route/page at /timer for OBS Browser Source usage.",
+    "Persist user settings (timer lengths, theme color, sound toggles, streamer mode, etc.) in localStorage (optional feature scope).",
+    "Color theme selection should apply consistently to all timer visuals (ring, digits, progress animation, glow) across normal and Streamer Mode, and persist via localStorage.",
+    "Social media icons (Instagram, X) should be hidden automatically in Streamer Mode (/timer overlay view).",
+    "Add site-wide theme system (Dark/Light) with smooth transition; default Dark; persist preference and apply to all components (background, timer, text, buttons, cards) including /timer Streamer Mode.",
+    "Add Firebase stack for community: Firebase Auth (Google), Firestore (posts/comments/chat), Firebase Storage (image uploads), and real-time listeners for chat/feed updates.",
+    "Implement role-based moderation via Firestore-stored roles (admin assigned manually) enforced with Firebase Security Rules; only logged-in users can post/comment/chat.",
+    "Add new /ncert route and navbar entry (book icon) for NCERT resources; organize content by Class (11/12) -> Subject -> Chapter list with PDF view/download actions.",
+    "Dark Mode must be the default theme on first visit/initial load; use a consistent palette: dark navy/black background, white/light-gray text, slightly lighter dark cards/buttons; ensure timer glow effect is tuned to look good on the dark palette across all routes (Dashboard, /timer, /community, /ncert).",
+    "Add new React route/page at /test-series and a navbar entry (Test Series icon) that navigates to it."
+  ],
+  "known_issues": [
+    "NCERT page: Class/Subject folders do not expand/open reliably when clicked; possible routing/state bug causing broken navigation/links under /ncert.",
+    "Production deployment of Version 16 failed due to a deployment error.",
+    "Dashboard background upload is broken: images uploaded from gallery do not apply correctly; file handling/storage issue needs fixing."
+  ],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-the-main-landing-page-for-the-study-website-named-babu-sarraf-ji-with-the-tagline-text-focus-study-repeat-and-a-minimal-layout-that-prominently-features-the-pomodoro-timer",
+      "title": "Create the main landing page for the study website named “Babu Sarraf Ji” with the tagline text “Focus. Study. Repeat.” and a minimal layout that prominently features the Pomodoro timer.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-fully-functional-pomodoro-focus-timer-with-defaults-of-25-minutes-focus-and-5-minutes-break-supporting-start-pause-reset-and-skip-session",
+      "title": "Implement a fully functional Pomodoro focus timer with defaults of 25 minutes focus and 5 minutes break, supporting: start, pause, reset, and skip session.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-allow-the-user-to-manually-set-focus-duration-and-break-duration-before-and-or-between-sessions-with-input-validation-that-prevents-invalid-durations",
+      "title": "Allow the user to manually set focus duration and break duration before and/or between sessions, with input validation that prevents invalid durations.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-circular-animated-progress-indicator-for-the-timer-progress-ring-with-smooth-countdown-animation-and-a-soft-glowing-appearance-in-dark-mode",
+      "title": "Add a circular animated progress indicator for the timer (progress ring) with smooth countdown animation and a soft glowing appearance in dark mode.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-timer-color-customization-with-preset-options-red-green-blue-purple-and-a-custom-color-picker-option-that-updates-the-progress-ring-and-related-accents",
+      "title": "Provide timer color customization with preset options (Red, Green, Blue, Purple) and a custom color picker option that updates the progress ring and related accents.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-sound-features-a-soft-ticking-sound-toggle-on-off-during-active-countdown-and-a-bell-sound-that-plays-when-a-session-completes",
+      "title": "Implement sound features: a soft ticking sound toggle (ON/OFF) during active countdown and a bell sound that plays when a session completes.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-show-a-motivational-quote-when-the-timer-starts-e-g-discipline-beats-motivation-ensuring-the-quote-is-visible-and-styled-consistently-with-the-minimal-ui",
+      "title": "Show a motivational quote when the timer starts (e.g., “Discipline beats motivation.”), ensuring the quote is visible and styled consistently with the minimal UI.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-coherent-study-vibe-visual-theme-across-the-site-default-dark-mode-deep-navy-black-minimal-distraction-free-layout-modern-student-aesthetic-font-and-a-subtle-animated-gradient-background",
+      "title": "Apply a coherent “study vibe” visual theme across the site: default dark mode (deep navy/black), minimal distraction-free layout, modern student-aesthetic font, and a subtle animated gradient background.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-obs-studio-compatible-separate-route-page-at-timer-that-can-be-used-as-a-clean-browser-source-and-include-a-streamer-mode-toggle-that-changes-the-layout-behavior",
+      "title": "Add an OBS Studio compatible separate route/page at “/timer” that can be used as a clean browser source, and include a “Streamer Mode” toggle that changes the layout behavior.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-when-streamer-mode-is-on-render-only-the-countdown-timer-no-settings-panel-and-no-buttons-other-than-the-countdown-display-with-an-option-for-a-transparent-background-for-overlay-use",
+      "title": "When Streamer Mode is ON, render only the countdown/timer (no settings panel and no buttons other than the countdown display), with an option for a transparent background for overlay use.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-app-is-fully-responsive-mobile-desktop-lightweight-and-performs-smoothly-in-chrome-no-login-required-all-functionality-runs-client-side",
+      "title": "Ensure the app is fully responsive (mobile + desktop), lightweight, and performs smoothly in Chrome; no login required; all functionality runs client-side.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-persist-user-settings-in-browser-storage-localstorage-including-focus-break-durations-selected-timer-color-including-custom-ticking-toggle-and-streamer-mode-preferences",
+      "title": "Persist user settings in browser storage (localStorage), including focus/break durations, selected timer color (including custom), ticking toggle, and Streamer Mode preferences.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-optional-advanced-study-metrics-a-daily-session-counter-and-a-streak-counter-based-on-completed-focus-sessions-persisted-in-localstorage-and-displayed-in-the-non-streamer-ui-only",
+      "title": "Implement optional advanced study metrics: a daily session counter and a streak counter based on completed focus sessions, persisted in localStorage and displayed in the non-streamer UI only.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-an-optional-lo-fi-background-music-toggle-with-a-lightweight-audio-asset-and-ensure-it-can-be-enabled-disabled-without-interfering-with-ticking-bell-sounds",
+      "title": "Implement an optional lo-fi background music toggle with a lightweight audio asset and ensure it can be enabled/disabled without interfering with ticking/bell sounds.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-required-static-assets-to-the-frontend-generated-images-and-audio-and-reference-them-directly-from-the-frontend-not-via-backend",
+      "title": "Add required static assets to the frontend (generated images and audio) and reference them directly from the frontend (not via backend).",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-timer-color-preset-themes-to-include-orange-neon-and-white-in-addition-to-the-existing-presets-red-green-blue-purple-while-keeping-the-existing-custom-color-picker",
+      "title": "Extend the timer color preset themes to include: Orange, Neon, and White in addition to the existing presets (Red, Green, Blue, Purple), while keeping the existing custom color picker.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-when-the-user-changes-the-timer-color-via-preset-or-custom-picker-apply-the-selected-color-consistently-to-the-timer-circle-progress-ring-the-countdown-numbers-the-progress-animation-styling-and-the-glow-effect",
+      "title": "When the user changes the timer color (via preset or custom picker), apply the selected color consistently to: the timer circle/progress ring, the countdown numbers, the progress animation styling, and the glow effect.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-persist-the-selected-timer-color-in-localstorage-so-it-is-restored-on-reload-and-remains-active-in-streamer-mode-including-on-the-timer-route",
+      "title": "Persist the selected timer color in localStorage so it is restored on reload and remains active in Streamer Mode (including on the /timer route).",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-footer-social-links-to-include-clickable-instagram-and-x-twitter-icons-that-open-in-a-new-tab-and-point-to-the-provided-profiles-https-instagram-com-babu-sarraf-ji-and-https-x-com-babu-sarraf-ji-keep-icon-styling-minimal-modern-with-proper-spacing-a-soft-glow-hover-effect-matching-the-dark-study-vibe-theme-and-ensure-the-icons-are-responsive-on-mobile-and-desktop",
+      "title": "Update the footer social links to include clickable Instagram and X (Twitter) icons that open in a new tab and point to the provided profiles: https://instagram.com/babu_sarraf_ji and https://x.com/babu_sarraf_ji. Keep icon styling minimal/modern with proper spacing, a soft glow hover effect matching the dark “study vibe” theme, and ensure the icons are responsive on mobile and desktop.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-same-instagram-and-x-social-icon-links-to-the-top-right-corner-of-the-landing-page-header-near-the-existing-header-profile-area-using-the-same-minimal-modern-style-spacing-and-soft-glow-hover-effect-these-header-icons-must-open-the-provided-links-in-a-new-tab",
+      "title": "Add the same Instagram and X social icon links to the top-right corner of the landing page header (near the existing header/profile area), using the same minimal modern style, spacing, and soft glow hover effect. These header icons must open the provided links in a new tab.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-optional-follow-text-under-the-timer-in-non-streamer-mode-follow-for-daily-study-motivation-babu-sarraf-ji-ensure-it-fits-the-minimal-study-aesthetic-and-does-not-appear-in-streamer-mode",
+      "title": "Add optional follow text under the timer in non-streamer mode: “Follow for daily study motivation – @babu_sarraf_ji”. Ensure it fits the minimal study aesthetic and does not appear in Streamer Mode.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-any-social-icons-rendered-on-the-timer-route-are-automatically-hidden-when-streamer-mode-is-enabled-to-keep-the-browser-source-overlay-clean",
+      "title": "Ensure any social icons rendered on the /timer route are automatically hidden when Streamer Mode is enabled (to keep the browser-source overlay clean).",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-site-wide-dark-mode-light-mode-toggle-with-a-small-icon-button-in-the-top-right-corner-moon-icon-dark-mode-sun-icon-light-mode-with-dark-mode-as-the-default-a-smooth-animated-transition-between-themes-and-persistence-of-the-user-s-preference-in-localstorage-the-selected-theme-must-apply-across-the-entire-website-background-timer-text-buttons-cards-including-the-timer-streamer-mode-view",
+      "title": "Implement a site-wide Dark Mode / Light Mode toggle with a small icon button in the top-right corner (Moon icon = Dark Mode, Sun icon = Light Mode), with Dark Mode as the default, a smooth animated transition between themes, and persistence of the user’s preference in localStorage. The selected theme must apply across the entire website (background, timer, text, buttons, cards) including the /timer Streamer Mode view.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-community-page-at-route-community-and-add-a-community-icon-entry-in-the-site-navigation-so-users-can-navigate-to-it-from-the-main-ui-use-a-group-people-style-icon",
+      "title": "Add a new Community page at route \"/community\" and add a Community icon entry in the site navigation so users can navigate to it from the main UI (use a group/people style icon).",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-internet-identity-based-authentication-gating-for-community-features-users-must-be-signed-in-to-create-posts-comment-or-send-chat-messages-signed-out-users-can-browse-the-community-feed-but-see-clear-english-prompts-to-sign-in-to-participate",
+      "title": "Add Internet Identity-based authentication gating for Community features: users must be signed in to create posts, comment, or send chat messages; signed-out users can browse the community feed but see clear English prompts to sign in to participate.",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-community-posting-signed-in-users-can-create-a-post-with-1-an-uploaded-image-of-today-s-target-and-2-a-short-caption-posts-must-appear-in-a-community-feed-ordered-latest-first-and-each-feed-item-must-display-user-identity-info-display-name-derived-from-principal-or-a-simple-profile-name-time-posted-image-caption-and-a-like-button",
+      "title": "Implement Community posting: signed-in users can create a post with (1) an uploaded image of “Today’s Target” and (2) a short caption. Posts must appear in a community feed ordered latest-first, and each feed item must display user identity info (display name derived from principal or a simple profile name), time posted, image, caption, and a Like button.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-comments-under-each-community-post-signed-in-users-can-add-a-comment-comments-render-under-the-post-in-chronological-order-and-show-author-identity-info-and-timestamp",
+      "title": "Add comments under each Community post: signed-in users can add a comment; comments render under the post in chronological order and show author identity info and timestamp.",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-simple-group-chat-section-on-the-community-page-where-signed-in-users-can-send-messages-including-emojis-and-see-a-shared-room-feed-displaying-sender-identity-info-and-timestamps-implement-near-real-time-updates-using-periodic-polling-refetching-no-websockets",
+      "title": "Add a simple group chat section on the Community page where signed-in users can send messages (including emojis) and see a shared room feed displaying sender identity info and timestamps. Implement “near real-time” updates using periodic polling/refetching (no WebSockets).",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-moderator-admin-system-where-the-site-owner-is-admin-admin-can-delete-any-post-delete-any-comment-delete-any-chat-message-and-block-users-normal-users-can-create-posts-comments-chat-messages-but-cannot-delete-other-users-content-enforce-permissions-on-the-backend-not-just-via-ui",
+      "title": "Implement a moderator/admin system where the site owner is Admin. Admin can delete any post, delete any comment, delete any chat message, and block users. Normal users can create posts/comments/chat messages but cannot delete other users’ content. Enforce permissions on the backend (not just via UI).",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-community-ui-is-clean-simple-mobile-friendly-and-consistent-with-the-existing-dark-study-vibe-design-while-also-looking-good-in-light-mode-use-english-for-all-user-facing-text-labels-buttons-errors-empty-states",
+      "title": "Ensure Community UI is clean, simple, mobile-friendly, and consistent with the existing “dark study vibe” design, while also looking good in Light Mode; use English for all user-facing text (labels, buttons, errors, empty states).",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-route-at-ncert-to-the-react-router-so-that-navigating-to-ncert-renders-a-dedicated-ncert-page",
+      "title": "Add a new route at \"/ncert\" to the React router so that navigating to /ncert renders a dedicated NCERT page.",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-top-navbar-to-include-a-new-ncert-navigation-entry-with-a-book-icon-style-using-an-available-icon-set-such-as-lucide-react-and-make-it-navigate-to-ncert-when-clicked",
+      "title": "Update the top navbar to include a new \"NCERT\" navigation entry with a book icon (📘-style, using an available icon set such as lucide-react), and make it navigate to \"/ncert\" when clicked.",
+      "reqIds": [
+        "REQ-33"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-the-ncert-page-ui-with-two-clearly-separated-sections-class-11-and-class-12-each-section-must-present-subject-folders-cards-for-physics-chemistry-and-biology-in-a-clean-minimal-book-style-layout",
+      "title": "Create the NCERT page UI with two clearly separated sections: \"Class 11\" and \"Class 12\". Each section must present subject folders/cards for Physics, Chemistry, and Biology in a clean, minimal, book-style layout.",
+      "reqIds": [
+        "REQ-34"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-within-each-subject-for-both-class-11-and-class-12-render-a-chapter-wise-list-where-each-chapter-row-provides-actions-to-view-open-the-pdf-in-browser-and-to-download-the-pdf",
+      "title": "Within each subject (for both Class 11 and Class 12), render a chapter-wise list where each chapter row provides actions to view/open the PDF in-browser and to download the PDF.",
+      "reqIds": [
+        "REQ-35"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-ncert-page-matches-the-existing-site-design-constraints-clean-study-vibe-minimal-and-distraction-free-dark-mode-compatible-and-looks-good-in-light-mode-consistent-card-styling-with-existing-ui-components-and-fully-responsive",
+      "title": "Ensure the NCERT page matches the existing site design constraints: clean study vibe, minimal and distraction-free, dark-mode compatible (and looks good in light mode), consistent card styling with existing UI components, and fully responsive.",
+      "reqIds": [
+        "REQ-36"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-dark-mode-is-the-default-theme-on-first-visit-and-loads-automatically-when-the-website-opens-no-light-theme-flash-before-react-mounts",
+      "title": "Ensure Dark Mode is the default theme on first visit and loads automatically when the website opens (no light-theme flash before React mounts).",
+      "reqIds": [
+        "REQ-37"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-global-dark-mode-color-palette-to-match-a-clean-minimal-study-vibe-with-a-dark-navy-black-background-white-light-gray-text-and-cards-buttons-using-a-slightly-lighter-dark-shade-apply-consistently-across-dashboard-landing-timer-community-and-ncert",
+      "title": "Update the global Dark Mode color palette to match a clean, minimal “study vibe” with a dark navy/black background, white/light-gray text, and cards/buttons using a slightly lighter dark shade; apply consistently across Dashboard (landing), /timer, /community, and /ncert.",
+      "reqIds": [
+        "REQ-38"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-adjust-the-pomodoro-timer-glow-styling-so-it-looks-visually-pleasing-and-readable-against-the-updated-dark-navy-black-background-across-both-the-main-dashboard-timer-and-the-timer-route-including-streamer-mode",
+      "title": "Adjust the Pomodoro timer glow styling so it looks visually pleasing and readable against the updated dark navy/black background across both the main dashboard timer and the /timer route (including Streamer Mode).",
+      "reqIds": [
+        "REQ-39"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-rename-the-website-from-babu-sarraf-ji-to-focus-babu-everywhere-it-appears-in-the-frontend-ui-specifically-covering-the-navbar-logo-area-browser-tab-page-title-login-related-ui-dashboard-landing-page-footer-community-page-and-ncert-page-ensure-there-are-no-remaining-visible-references-to-babu-sarraf-ji-in-these-locations",
+      "title": "Rename the website from “Babu Sarraf Ji” to “Focus Babu” everywhere it appears in the frontend UI, specifically covering: the navbar/logo area, browser tab page title, login-related UI, dashboard/landing page, footer, Community page, and NCERT page. Ensure there are no remaining visible references to “Babu Sarraf Ji” in these locations.",
+      "reqIds": [
+        "REQ-40"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-tagline-text-across-the-site-is-exactly-focus-study-repeat-and-remains-consistent-with-the-existing-dark-study-vibe-design-no-redesign",
+      "title": "Ensure the tagline text across the site is exactly: “Focus. Study. Repeat.” and remains consistent with the existing dark “study vibe” design (no redesign).",
+      "reqIds": [
+        "REQ-41"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-landing-page-logo-asset-and-references-so-the-displayed-logo-matches-the-new-site-name-focus-babu-including-updating-the-image-source-path-and-accessible-text-alt",
+      "title": "Update the landing page logo asset and references so the displayed logo matches the new site name “Focus Babu”, including updating the image source path and accessible text (alt).",
+      "reqIds": [
+        "REQ-42"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-test-series-entry-to-the-top-navbar-that-uses-a-chart-or-note-style-icon-lucide-react-and-navigates-to-the-new-route-test-series",
+      "title": "Add a new \"Test Series\" entry to the top navbar that uses a chart or note-style icon (lucide-react) and navigates to the new route \"/test-series\".",
+      "reqIds": [
+        "REQ-43"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-react-route-test-series-to-the-tanstack-router-and-render-a-dedicated-testseriespage-component",
+      "title": "Add a new React route \"/test-series\" to the TanStack Router and render a dedicated TestSeriesPage component.",
+      "reqIds": [
+        "REQ-44"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-test-series-page-ui-with-three-clearly-separated-sections-jee-neet-and-cuet-each-section-must-present-test-categories-5-years-pyq-tests-chapter-wise-tests-and-full-syllabus-mock-test",
+      "title": "Implement the Test Series page UI with three clearly separated sections: \"JEE\", \"NEET\", and \"CUET\". Each section must present test categories: \"5 Years PYQ Tests\", \"Chapter-wise Tests\", and \"Full Syllabus Mock Test\".",
+      "reqIds": [
+        "REQ-45"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-timed-online-mcq-test-taking-interface-for-test-series-tests-with-an-exam-like-distraction-free-layout-one-question-per-screen-multiple-choice-options-a-visible-countdown-timer-during-the-test-next-previous-navigation-and-a-submit-button",
+      "title": "Create a timed online MCQ test-taking interface for Test Series tests with an exam-like, distraction-free layout: one question per screen, multiple-choice options, a visible countdown timer during the test, Next/Previous navigation, and a Submit button.",
+      "reqIds": [
+        "REQ-46"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-after-test-submission-show-an-immediate-results-screen-that-includes-score-correct-vs-incorrect-counts-and-accuracy-percentage-and-clearly-indicates-which-answers-were-correct-incorrect",
+      "title": "After test submission, show an immediate results screen that includes: Score, Correct vs Incorrect counts, and Accuracy percentage, and clearly indicates which answers were correct/incorrect.",
+      "reqIds": [
+        "REQ-47"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-integrate-the-frontend-test-series-results-flow-with-backend-test-history-after-submission-persist-the-attempt-for-signed-in-users-for-signed-out-users-show-an-english-prompt-to-sign-in-to-save-history-while-still-allowing-them-to-view-results",
+      "title": "Integrate the frontend Test Series results flow with backend test history: after submission, persist the attempt for signed-in users; for signed-out users, show an English prompt to sign in to save history, while still allowing them to view results.",
+      "reqIds": [
+        "REQ-49"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-test-history-view-on-the-test-series-page-or-within-the-test-series-section-that-shows-the-signed-in-user-s-saved-attempts-in-reverse-chronological-order-with-key-stats-exam-category-date-time-score-accuracy",
+      "title": "Add a \"Test History\" view on the Test Series page (or within the Test Series section) that shows the signed-in user’s saved attempts in reverse chronological order, with key stats (exam, category, date/time, score, accuracy).",
+      "reqIds": [
+        "REQ-50"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-user-provided-focus-babu-logo-image-to-the-frontend-as-a-static-asset-and-reference-it-from-the-ui-do-not-route-the-image-through-the-backend",
+      "title": "Add the user-provided Focus Babu logo image to the frontend as a static asset and reference it from the UI (do not route the image through the backend).",
+      "reqIds": [
+        "REQ-51"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-top-navbar-to-display-the-focus-babu-logo-in-the-top-left-area-the-logo-must-be-clickable-and-navigate-to-the-homepage-route",
+      "title": "Update the top navbar to display the Focus Babu logo in the top-left area; the logo must be clickable and navigate to the homepage route \"/\".",
+      "reqIds": [
+        "REQ-52"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-subtle-hover-effect-to-the-navbar-logo-soft-glow-and-or-gentle-scale-while-keeping-the-overall-design-clean-and-professional",
+      "title": "Add a subtle hover effect to the navbar logo (soft glow and/or gentle scale) while keeping the overall design clean and professional.",
+      "reqIds": [
+        "REQ-53"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-navbar-logo-is-responsive-it-should-automatically-resize-appropriately-on-mobile-viewports-not-too-big-not-cropped-and-keeps-aspect-ratio",
+      "title": "Ensure the navbar logo is responsive: it should automatically resize appropriately on mobile viewports (not too big, not cropped, and keeps aspect ratio).",
+      "reqIds": [
+        "REQ-54"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-display-the-focus-babu-logo-centered-on-the-app-s-login-page-screen-the-ui-surface-where-the-user-is-prompted-to-sign-in-with-an-appropriate-size-and-clean-spacing-the-centered-logo-must-be-clickable-and-navigate-to-the-homepage-route",
+      "title": "Display the Focus Babu logo centered on the app’s login page/screen (the UI surface where the user is prompted to sign in), with an appropriate size and clean spacing; the centered logo must be clickable and navigate to the homepage route \"/\".",
+      "reqIds": [
+        "REQ-55"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-automatically-hide-the-focus-babu-logo-in-streamer-mode-so-it-never-appears-in-the-streamer-mode-view",
+      "title": "Automatically hide the Focus Babu logo in Streamer Mode so it never appears in the Streamer Mode view.",
+      "reqIds": [
+        "REQ-56"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-clean-minimal-dashboard-ui-control-section-on-the-home-dashboard-page-route-that-includes-a-button-labeled-exactly-change-background-and-a-button-labeled-exactly-reset-to-default",
+      "title": "Add a clean, minimal Dashboard UI control section on the Home/Dashboard page (route \"/\") that includes a button labeled exactly \"Change Background\" and a button labeled exactly \"Reset to Default\".",
+      "reqIds": [
+        "REQ-57"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-allow-the-user-to-select-an-image-from-their-device-gallery-files-when-clicking-change-background-validate-that-the-selected-file-is-an-image-and-show-a-clear-english-error-message-if-the-file-is-invalid-or-the-upload-fails",
+      "title": "Allow the user to select an image from their device (gallery/files) when clicking \"Change Background\"; validate that the selected file is an image and show a clear English error message if the file is invalid or the upload fails.",
+      "reqIds": [
+        "REQ-58"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-the-selected-image-as-the-background-only-on-the-dashboard-home-page-route-the-background-must-cover-the-full-viewport-be-properly-fitted-without-stretching-cover-centered-and-include-a-slight-dark-overlay-layer-to-preserve-readability-of-the-existing-timer-and-text",
+      "title": "Apply the selected image as the background only on the Dashboard/Home page (route \"/\"): the background must cover the full viewport, be properly fitted without stretching (cover + centered), and include a slight dark overlay layer to preserve readability of the existing timer and text.",
+      "reqIds": [
+        "REQ-59"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-custom-dashboard-background-does-not-affect-the-timer-page-at-timer-including-streamer-mode-and-transparent-background-behavior-and-does-not-introduce-any-new-ui-elements-onto-streamer-mode-views",
+      "title": "Ensure the custom Dashboard background does not affect the Timer page at \"/timer\" (including Streamer Mode and transparent background behavior) and does not introduce any new UI elements onto Streamer Mode views.",
+      "reqIds": [
+        "REQ-60"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-persist-the-dashboard-background-per-user-account-signed-in-users-internet-identity-must-have-their-selected-background-saved-to-their-account-and-restored-automatically-on-returning-to-the-dashboard-signed-out-users-can-view-the-default-background-and-must-see-a-clear-english-prompt-to-sign-in-if-they-attempt-to-change-or-reset-the-dashboard-background",
+      "title": "Persist the Dashboard background per user account: signed-in users (Internet Identity) must have their selected background saved to their account and restored automatically on returning to the Dashboard; signed-out users can view the default background and must see a clear English prompt to sign in if they attempt to change or reset the Dashboard background.",
+      "reqIds": [
+        "REQ-61"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-wire-the-dashboard-ui-to-the-backend-methods-using-react-query-patterns-consistent-with-existing-hooks-e-g-actor-availability-checks-query-invalidation-on-mutation-so-that-after-upload-reset-the-ui-updates-immediately-and-restores-state-on-load",
+      "title": "Wire the Dashboard UI to the backend methods using React Query patterns consistent with existing hooks (e.g., actor availability checks, query invalidation on mutation) so that after upload/reset the UI updates immediately and restores state on load.",
+      "reqIds": [
+        "REQ-63"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-ncert-routing-navigation-so-that-navigating-to-ncert-always-renders-the-ncert-page-correctly-and-the-ncert-entry-in-the-top-navbar-reliably-navigates-to-ncert-without-broken-links-or-blank-screens",
+      "title": "Fix NCERT routing/navigation so that navigating to \"/ncert\" always renders the NCERT page correctly and the NCERT entry in the top navbar reliably navigates to \"/ncert\" without broken links or blank screens.",
+      "reqIds": [
+        "REQ-64"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-ncert-page-interactions-so-that-each-class-section-and-each-subject-folder-expands-collapses-reliably-when-clicked-matching-a-folder-like-ux-class-subject-optional-part-chapter",
+      "title": "Update the NCERT page interactions so that each Class section and each Subject folder expands/collapses reliably when clicked, matching a folder-like UX (Class → Subject → (optional Part) → Chapter).",
+      "reqIds": [
+        "REQ-65"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-populate-the-ncert-data-source-with-working-official-ncert-public-pdf-urls-from-epathshala-and-or-ncert-nic-in-only-for-class-11-and-class-12-covering-class-11-physics-chapter-wise-class-11-chemistry-part-1-part-2-chapter-wise-class-11-biology-chapter-wise-class-12-physics-part-1-part-2-chapter-wise-class-12-chemistry-part-1-part-2-chapter-wise-and-class-12-biology-chapter-wise",
+      "title": "Populate the NCERT data source with working, official NCERT public PDF URLs (from ePathshala and/or ncert.nic.in only) for Class 11 and Class 12, covering: Class 11 Physics (chapter-wise), Class 11 Chemistry Part 1 & Part 2 (chapter-wise), Class 11 Biology (chapter-wise), Class 12 Physics Part 1 & Part 2 (chapter-wise), Class 12 Chemistry Part 1 & Part 2 (chapter-wise), and Class 12 Biology (chapter-wise).",
+      "reqIds": [
+        "REQ-66"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-required-ncert-click-flow-and-actions-so-that-when-a-user-clicks-ncert-class-subject-chapter-they-can-either-open-the-pdf-in-a-new-tab-or-open-it-in-an-in-app-pdf-viewer-and-each-chapter-row-includes-explicit-view-and-download-buttons",
+      "title": "Implement the required NCERT click flow and actions so that when a user clicks NCERT → Class → Subject → Chapter, they can either open the PDF in a new tab or open it in an in-app PDF viewer, and each chapter row includes explicit \"View\" and \"Download\" buttons.",
+      "reqIds": [
+        "REQ-67"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-ncert-page-ui-follows-the-requested-design-rules-clean-card-layout-dark-mode-compatible-mobile-friendly-fast-loading-proper-scroll-behavior-and-stability-no-page-crashes",
+      "title": "Ensure the NCERT page UI follows the requested design rules: clean card layout, dark mode compatible, mobile friendly, fast loading, proper scroll behavior, and stability (no page crashes).",
+      "reqIds": [
+        "REQ-68"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-ncert-data-model-and-ui-rendering-so-that-both-class-11-and-class-12-include-a-new-subject-named-mathematics-alongside-the-existing-subjects-without-changing-or-removing-the-existing-physics-chemistry-or-biology-subjects",
+      "title": "Extend the NCERT data model and UI rendering so that both Class 11 and Class 12 include a new subject named \"Mathematics\" alongside the existing subjects, without changing or removing the existing Physics, Chemistry, or Biology subjects.",
+      "reqIds": [
+        "REQ-69"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-populate-class-11-mathematics-with-chapter-wise-official-ncert-pdf-links-sourced-only-from-the-ncert-official-website-ncert-nic-in-each-chapter-must-have-working-view-and-download-actions-using-the-existing-chapterlist-behavior",
+      "title": "Populate Class 11 Mathematics with chapter-wise official NCERT PDF links sourced only from the NCERT official website (ncert.nic.in). Each chapter must have working \"View\" and \"Download\" actions using the existing ChapterList behavior.",
+      "reqIds": [
+        "REQ-70"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-populate-class-12-mathematics-with-chapter-wise-official-ncert-pdf-links-sourced-only-from-the-ncert-official-website-ncert-nic-in-each-chapter-must-have-working-view-and-download-actions-using-the-existing-chapterlist-behavior",
+      "title": "Populate Class 12 Mathematics with chapter-wise official NCERT PDF links sourced only from the NCERT official website (ncert.nic.in). Each chapter must have working \"View\" and \"Download\" actions using the existing ChapterList behavior.",
+      "reqIds": [
+        "REQ-71"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-ncert-link-validation-so-that-only-ncert-official-website-pdf-links-are-accepted-for-the-ncert-chapter-actions-view-download",
+      "title": "Update NCERT link validation so that only NCERT official website PDF links are accepted for the NCERT chapter actions (View/Download).",
+      "reqIds": [
+        "REQ-72"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-new-mathematics-folders-cards-expand-and-collapse-reliably-for-both-class-11-and-class-12-preserving-the-existing-folder-like-ux-class-subject-chapter-and-ensuring-the-ncert-page-remains-dark-mode-compatible-clean-book-style-and-mobile-friendly",
+      "title": "Ensure the new Mathematics folders/cards expand and collapse reliably for both Class 11 and Class 12, preserving the existing folder-like UX (Class → Subject → Chapter) and ensuring the NCERT page remains dark-mode compatible, clean book-style, and mobile-friendly.",
+      "reqIds": [
+        "REQ-73"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-in-app-pdf-viewer-route-at-pdf-viewer-that-opens-ncert-pdfs-inside-the-website-no-new-tab-and-reads-the-pdf-from-the-url-query-parameter-exactly-as-pdf-viewer-file-bookname-where-file-represents-the-pdf-url-or-an-encoded-form-of-it",
+      "title": "Add a new in-app PDF viewer route at \"/pdf-viewer\" that opens NCERT PDFs inside the website (no new tab) and reads the PDF from the URL query parameter exactly as: \"/pdf-viewer?file=bookname\" (where \"file\" represents the PDF URL or an encoded form of it).",
+      "reqIds": [
+        "REQ-74"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-ncert-chapter-view-action-in-the-chapter-list-ui-so-that-clicking-view-navigates-to-the-new-pdf-viewer-route-using-the-file-query-parameter-and-does-not-open-the-pdf-in-a-new-browser-tab",
+      "title": "Update the NCERT chapter \"View\" action (in the chapter list UI) so that clicking \"View\" navigates to the new \"/pdf-viewer\" route (using the \"file\" query parameter) and does not open the PDF in a new browser tab.",
+      "reqIds": [
+        "REQ-75"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-pdf-viewer-controls-on-the-pdf-viewer-page-zoom-in-zoom-out-page-navigation-previous-next-and-current-page-indicator-download-and-back-return-to-the-ncert-page-use-english-for-all-labels-and-messages",
+      "title": "Implement PDF viewer controls on the \"/pdf-viewer\" page: Zoom In, Zoom Out, Page navigation (previous/next and current page indicator), Download, and Back (return to the NCERT page). Use English for all labels and messages.",
+      "reqIds": [
+        "REQ-76"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-pdf-viewer-layout-minimal-clean-distraction-free-dark-mode-compatible-full-screen-uses-the-viewport-height-and-responsive-on-mobile-and-desktop",
+      "title": "Make the PDF viewer layout minimal, clean, distraction-free, dark-mode compatible, full-screen (uses the viewport height), and responsive on mobile and desktop.",
+      "reqIds": [
+        "REQ-77"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-smooth-loading-state-animation-while-the-pdf-is-loading-in-the-in-app-viewer-and-show-a-clear-english-error-state-if-the-pdf-cannot-be-loaded-or-the-file-parameter-is-missing-invalid-using-the-existing-ncert-url-validation-rules",
+      "title": "Add a smooth loading state/animation while the PDF is loading in the in-app viewer, and show a clear English error state if the PDF cannot be loaded or the \"file\" parameter is missing/invalid (using the existing NCERT URL validation rules).",
+      "reqIds": [
+        "REQ-78"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-backward-compatibility-for-any-existing-in-app-ncert-viewer-route-already-in-the-router-e-g-the-current-ncert-viewer-path-by-redirecting-or-routing-users-to-the-new-pdf-viewer-page-so-no-existing-navigation-results-in-a-blank-screen",
+      "title": "Ensure backward compatibility for any existing in-app NCERT viewer route already in the router (e.g., the current NCERT viewer path) by redirecting or routing users to the new \"/pdf-viewer\" page so no existing navigation results in a blank screen.",
+      "reqIds": [
+        "REQ-79"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-section-to-the-test-series-page-labeled-exactly-previous-year-real-papers-that-is-clearly-separated-from-the-existing-jee-neet-cuet-category-cards-and-within-it-provide-dedicated-entries-for-1-jee-main-previous-year-papers-shift-wise-where-applicable-including-at-minimum-jee-main-2024-all-shifts-jee-main-2023-all-shifts-jee-main-2022-jee-main-2021-2-neet-previous-year-full-papers-including-neet-2024-neet-2023-neet-2022-neet-2021-3-cuet-previous-year-full-papers-section-wise",
+      "title": "Add a new section to the Test Series page labeled exactly \"Previous Year Real Papers\" that is clearly separated from the existing JEE/NEET/CUET category cards, and within it provide dedicated entries for: (1) JEE Main previous year papers (shift-wise where applicable) including at minimum: \"JEE Main 2024 (All Shifts)\", \"JEE Main 2023 (All Shifts)\", \"JEE Main 2022\", \"JEE Main 2021\"; (2) NEET previous year full papers including: \"NEET 2024\", \"NEET 2023\", \"NEET 2022\", \"NEET 2021\"; (3) CUET previous year full papers (section-wise).",
+      "reqIds": [
+        "REQ-80"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-structured-frontend-data-source-for-previous-year-real-papers-that-models-real-paper-metadata-and-questions-including-exam-jee-main-neet-cuet-year-optional-shift-paper-title-total-duration-seconds-and-section-subject-breakdown-jee-physics-chemistry-mathematics-neet-physics-chemistry-biology-with-botany-zoology-cuet-section-wise-each-question-must-support-multiple-choice-options-correct-answer-and-an-optional-detailed-solution-explanation-when-available-populate-the-data-source-using-publicly-available-previous-year-question-papers-and-maintain-the-real-exam-pattern-question-counts-and-section-structure-for-each-included-paper-entry",
+      "title": "Create a structured frontend data source for \"Previous Year Real Papers\" that models real-paper metadata and questions, including: exam (JEE Main/NEET/CUET), year, (optional) shift, paper title, total duration seconds, and section/subject breakdown (JEE: Physics/Chemistry/Mathematics; NEET: Physics/Chemistry/Biology with Botany+Zoology; CUET: section-wise). Each question must support multiple-choice options, correct answer, and an optional detailed solution/explanation when available. Populate the data source using publicly available previous year question papers and maintain the real exam pattern (question counts and section structure) for each included paper entry.",
+      "reqIds": [
+        "REQ-81"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-upgrade-the-test-taking-interface-for-previous-year-real-papers-to-a-full-screen-exam-like-layout-with-a-visible-countdown-timer-one-question-per-screen-next-previous-navigation-a-question-palette-1-2-3-jump-navigation-a-mark-for-review-toggle-per-question-and-a-clear-submit-flow-the-interface-must-track-and-display-palette-statuses-for-at-least-not-visited-visited-answered-marked-for-review-and-answered-marked",
+      "title": "Upgrade the test-taking interface for Previous Year Real Papers to a full-screen, exam-like layout with: a visible countdown timer, one-question-per-screen, Next/Previous navigation, a question palette (1,2,3… jump navigation), a \"Mark for review\" toggle per question, and a clear Submit flow. The interface must track and display palette statuses for at least: not visited, visited, answered, marked for review, and answered+marked.",
+      "reqIds": [
+        "REQ-82"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-subject-section-navigation-within-previous-year-real-papers-so-that-papers-are-divided-and-presented-as-required-jee-main-by-physics-chemistry-mathematics-neet-by-physics-chemistry-biology-with-botany-zoology-within-biology-cuet-in-a-section-wise-format-the-exam-ui-must-allow-the-user-to-switch-between-these-sections-while-preserving-selected-answers-and-review-flags",
+      "title": "Implement subject/section navigation within Previous Year Real Papers so that papers are divided and presented as required: JEE Main by Physics/Chemistry/Mathematics; NEET by Physics/Chemistry/Biology (with Botany + Zoology within Biology); CUET in a section-wise format. The exam UI must allow the user to switch between these sections while preserving selected answers and review flags.",
+      "reqIds": [
+        "REQ-83"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-real-exam-timing-and-submission-behavior-for-previous-year-real-papers-jee-main-must-use-a-3-hour-timer-neet-must-use-a-3-hour-20-minute-timer-and-cuet-must-use-the-real-timing-defined-per-paper-the-exam-must-auto-submit-when-time-ends-producing-the-same-results-screen-as-manual-submission",
+      "title": "Ensure real exam timing and submission behavior for Previous Year Real Papers: JEE Main must use a 3-hour timer, NEET must use a 3-hour-20-minute timer, and CUET must use the real timing defined per paper. The exam must auto-submit when time ends, producing the same results screen as manual submission.",
+      "reqIds": [
+        "REQ-84"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-results-experience-for-previous-year-real-papers-to-show-total-score-correct-incorrect-counts-accuracy-percentage-and-when-available-in-the-data-source-a-detailed-solution-explanation-per-question-use-english-for-all-labels-and-messages-and-keep-the-ui-clean-professional-dark-mode-compatible-and-mobile-friendly",
+      "title": "Extend the results experience for Previous Year Real Papers to show: total score, correct/incorrect counts, accuracy percentage, and (when available in the data source) a detailed solution/explanation per question. Use English for all labels and messages, and keep the UI clean, professional, dark-mode compatible, and mobile friendly.",
+      "reqIds": [
+        "REQ-85"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-save-attempt-history-for-previous-year-real-papers-in-the-signed-in-user-s-account-using-the-existing-test-history-flow-and-show-a-clear-english-prompt-to-sign-in-when-the-user-is-signed-out-update-the-saved-attempt-metadata-so-that-history-can-distinguish-previous-year-real-paper-attempts-from-other-test-categories-e-g-include-a-paper-identifier-title-and-year-shift-in-the-saved-record-while-keeping-backwards-compatibility-with-existing-saved-results",
+      "title": "Save attempt history for Previous Year Real Papers in the signed-in user’s account using the existing Test History flow, and show a clear English prompt to sign in when the user is signed out. Update the saved attempt metadata so that history can distinguish previous year real paper attempts from other test categories (e.g., include a paper identifier/title and year/shift in the saved record while keeping backwards compatibility with existing saved results).",
+      "reqIds": [
+        "REQ-86"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-global-welcome-motivational-message-overlay-that-appears-when-the-website-is-opened-stays-visible-for-1-second-and-then-automatically-disappears-without-user-interaction",
+      "title": "Add a global welcome motivational message overlay that appears when the website is opened, stays visible for 1 second, and then automatically disappears without user interaction.",
+      "reqIds": [
+        "REQ-87"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-welcome-overlay-matches-the-requested-design-centered-message-dark-transparent-background-overlay-clean-minimal-study-vibe-styling-and-smooth-fade-in-fade-out-animation",
+      "title": "Ensure the welcome overlay matches the requested design: centered message, dark transparent background overlay, clean minimal study-vibe styling, and smooth fade-in + fade-out animation.",
+      "reqIds": [
+        "REQ-88"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-randomly-select-one-welcome-message-from-the-provided-list-each-time-the-website-opens-and-display-the-selected-message-in-the-overlay",
+      "title": "Randomly select one welcome message from the provided list each time the website opens, and display the selected message in the overlay.",
+      "reqIds": [
+        "REQ-89"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-do-not-show-the-welcome-overlay-in-streamer-mode-on-the-timer-route-and-ensure-it-does-not-interfere-with-the-existing-internet-identity-login-sign-out-flow",
+      "title": "Do not show the welcome overlay in Streamer Mode on the \"/timer\" route, and ensure it does not interfere with the existing Internet Identity login/sign-out flow.",
+      "reqIds": [
+        "REQ-90"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-navbar-navigation-entry-labeled-exactly-daily-target-with-a-style-target-icon-and-make-it-navigate-to-the-new-route-daily-target-without-breaking-any-existing-navbar-items-or-streamer-mode-navbar-hiding-behavior",
+      "title": "Add a new navbar navigation entry labeled exactly \"Daily Target\" with a 🎯-style target icon, and make it navigate to the new route \"/daily-target\" without breaking any existing navbar items or Streamer Mode navbar-hiding behavior.",
+      "reqIds": [
+        "REQ-91"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-tanstack-router-route-at-daily-target-that-renders-a-dedicated-dailytargetpage-component",
+      "title": "Add a new TanStack Router route at \"/daily-target\" that renders a dedicated DailyTargetPage component.",
+      "reqIds": [
+        "REQ-92"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-daily-target-page-ui-so-a-signed-in-student-can-manage-today-s-goals-as-a-to-do-list-add-multiple-tasks-mark-tasks-completed-via-checkbox-edit-tasks-and-delete-tasks-the-page-must-display-the-motivational-line-exactly-plan-today-win-tomorrow-at-the-top-and-show-task-statistics-total-tasks-completed-tasks-and-progress-percentage",
+      "title": "Implement the Daily Target page UI so a signed-in student can manage today’s goals as a to-do list: add multiple tasks, mark tasks completed via checkbox, edit tasks, and delete tasks. The page must display the motivational line exactly \"Plan Today. Win Tomorrow.\" at the top, and show task statistics: total tasks, completed tasks, and progress percentage.",
+      "reqIds": [
+        "REQ-93"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-authentication-gating-on-the-daily-target-page-signed-out-users-can-view-the-page-shell-but-must-see-a-clear-english-prompt-to-sign-in-when-they-attempt-to-add-edit-delete-check-uncheck-tasks-or-reset-for-the-next-day",
+      "title": "Add authentication gating on the Daily Target page: signed-out users can view the page shell but must see a clear English prompt to sign in when they attempt to add, edit, delete, check/uncheck tasks, or reset for the next day.",
+      "reqIds": [
+        "REQ-94"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-per-user-persistence-for-daily-target-tasks-in-the-motoko-backend-and-wire-the-daily-target-page-to-these-backend-methods-using-react-query-patterns-consistent-with-the-existing-app-actor-availability-checks-mutation-error-handling-and-query-invalidation-so-the-ui-updates-immediately",
+      "title": "Implement per-user persistence for Daily Target tasks in the Motoko backend and wire the Daily Target page to these backend methods using React Query patterns consistent with the existing app (actor availability checks, mutation error handling, and query invalidation so the UI updates immediately).",
+      "reqIds": [
+        "REQ-95"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-support-for-user-supplied-custom-usernames-in-the-ui-and-ensure-the-displayed-name-and-avatar-are-sourced-only-from-the-authenticated-profile-data-or-fallbacks-with-no-manual-editing-controls-anywhere-in-the-app",
+      "title": "Remove support for user-supplied/custom usernames in the UI and ensure the displayed name and avatar are sourced only from the authenticated profile data (or fallbacks), with no manual editing controls anywhere in the app.",
+      "reqIds": [
+        "REQ-100",
+        "REQ-97"
+      ],
+      "version": 2
+    },
+    {
+      "id": "feature-automatically-sync-load-the-authenticated-profile-after-login-so-the-correct-name-and-profile-photo-are-available-without-manual-steps-and-ensure-the-profile-is-used-consistently-in-community-posts-comments-chat-and-in-test-history",
+      "title": "Automatically sync/load the authenticated profile after login so the correct name and profile photo are available without manual steps, and ensure the profile is used consistently in Community (posts, comments, chat) and in Test History.",
+      "reqIds": [
+        "REQ-101",
+        "REQ-98"
+      ],
+      "version": 2
+    },
+    {
+      "id": "feature-update-community-chat-comments-and-post-headers-to-display-profile-photo-if-available-bold-display-name-timestamp-and-message-content-below-the-name-with-a-clean-layout-that-is-dark-mode-compatible-and-does-not-change-other-community-behaviors-posting-liking-moderation-polling",
+      "title": "Update Community chat, comments, and post headers to display: profile photo (if available), bold display name, timestamp, and message/content below the name, with a clean layout that is dark-mode compatible and does not change other Community behaviors (posting, liking, moderation, polling).",
+      "reqIds": [
+        "REQ-99"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-navbar-navigation-entry-labeled-exactly-study-room-with-a-video-camera-icon-or-style-that-opens-the-google-meet-link-https-meet-google-com-fzn-cjad-ofe-in-a-new-tab",
+      "title": "Add a new navbar navigation entry labeled exactly 'Study Room' with a video camera icon (🎥 or 📹 style) that opens the Google Meet link https://meet.google.com/fzn-cjad-ofe in a new tab.",
+      "reqIds": [
+        "REQ-103"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-show-a-confirmation-popup-before-redirecting-to-the-google-meet-link-with-the-message-you-are-joining-focus-babu-study-room-and-provide-options-to-proceed-or-cancel",
+      "title": "Show a confirmation popup before redirecting to the Google Meet link with the message 'You are joining Focus Babu Study Room.' and provide options to proceed or cancel.",
+      "reqIds": [
+        "REQ-104"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-small-description-section-on-the-study-room-page-or-in-the-confirmation-dialog-that-reads-join-live-group-study-session-and-stay-focused-together",
+      "title": "Add a small description section on the Study Room page or in the confirmation dialog that reads: 'Join live group study session and stay focused together.'",
+      "reqIds": [
+        "REQ-105"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-study-room-feature-navbar-entry-confirmation-popup-and-link-redirect-is-fully-responsive-mobile-friendly-and-matches-the-existing-clean-study-vibe-design-with-dark-mode-compatibility",
+      "title": "Ensure the Study Room feature (navbar entry, confirmation popup, and link redirect) is fully responsive, mobile-friendly, and matches the existing clean study-vibe design with dark-mode compatibility.",
+      "reqIds": [
+        "REQ-106"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-study-mode-entry-to-the-top-navbar-in-sitenav-tsx-using-a-style-icon-use-a-lucide-react-icon-such-as-belloff-or-a-combination-or-render-the-emoji-directly-with-the-label-study-mode-the-entry-must-follow-the-same-styling-conventions-as-existing-navbar-items-must-not-appear-in-streamer-mode-when-the-navbar-is-hidden-and-must-not-break-any-existing-navbar-items",
+      "title": "Add a new 'Study Mode' entry to the top navbar in SiteNav.tsx using a 🚫📱-style icon (use a lucide-react icon such as BellOff or a combination, or render the emoji directly) with the label 'Study Mode'. The entry must follow the same styling conventions as existing navbar items, must not appear in Streamer Mode when the navbar is hidden, and must not break any existing navbar items.",
+      "reqIds": [
+        "REQ-107"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-when-the-user-clicks-study-mode-in-the-navbar-display-a-fullscreen-overlay-popup-with-the-heading-activate-focus-mode-now-a-clear-instruction-list-containing-exactly-turn-on-do-not-disturb-enable-focus-mode-on-your-phone-and-keep-only-focus-babu-open-and-a-single-cta-button-labeled-exactly-start-deep-focus-the-overlay-must-use-a-clean-dark-ui-be-mobile-friendly-and-be-dismissible-e-g-via-an-x-close-button-or-pressing-escape",
+      "title": "When the user clicks 'Study Mode' in the navbar, display a fullscreen overlay popup with the heading 'Activate Focus Mode Now 🔥', a clear instruction list containing exactly: 'Turn on Do Not Disturb', 'Enable Focus Mode on your phone', and 'Keep only Focus Babu open', and a single CTA button labeled exactly 'Start Deep Focus'. The overlay must use a clean dark UI, be mobile-friendly, and be dismissible (e.g., via an X/close button or pressing Escape).",
+      "reqIds": [
+        "REQ-108"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-when-the-user-clicks-start-deep-focus-in-the-study-mode-overlay-1-request-the-browser-fullscreen-api-on-the-document-root-element-2-hide-the-navbar-sitenav-3-hide-all-social-link-components-sociallinks-4-hide-all-non-essential-ui-elements-settings-panels-duration-controls-color-controls-sound-controls-music-controls-metrics-panel-follow-text-background-controls-theme-toggle-button-so-that-only-the-pomodoro-timer-progressring-countdown-display-start-pause-reset-controls-and-a-minimal-surrounding-container-remain-visible-the-study-mode-active-state-must-be-tracked-in-react-state-so-exiting-fullscreen-escape-key-or-browser-button-or-a-dedicated-exit-focus-mode-button-restores-the-full-ui",
+      "title": "When the user clicks 'Start Deep Focus' in the Study Mode overlay: (1) request the browser Fullscreen API on the document root element; (2) hide the navbar (SiteNav); (3) hide all social link components (SocialLinks); (4) hide all non-essential UI elements (settings panels, duration controls, color controls, sound controls, music controls, metrics panel, follow text, background controls, theme toggle button) so that only the Pomodoro timer (ProgressRing + countdown display + start/pause/reset controls) and a minimal surrounding container remain visible. The Study Mode active state must be tracked in React state so exiting fullscreen (Escape key or browser button) or a dedicated 'Exit Focus Mode' button restores the full UI.",
+      "reqIds": [
+        "REQ-109"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-while-study-mode-is-active-fullscreen-distraction-free-display-an-optional-3-hour-deep-focus-session-panel-below-the-timer-that-shows-1-a-motivational-quote-randomly-selected-from-the-existing-quotes-library-frontend-src-lib-quotes-ts-2-a-countdown-timer-initialized-to-3-hours-10800-seconds-that-counts-down-in-real-time-and-stops-at-zero-this-panel-is-only-visible-in-study-mode-and-must-not-interfere-with-the-pomodoro-timer-countdown",
+      "title": "While Study Mode is active (fullscreen, distraction-free), display an optional '3-Hour Deep Focus Session' panel below the timer that shows: (1) a motivational quote randomly selected from the existing quotes library (frontend/src/lib/quotes.ts); (2) a countdown timer initialized to 3 hours (10800 seconds) that counts down in real time and stops at zero. This panel is only visible in Study Mode and must not interfere with the Pomodoro timer countdown.",
+      "reqIds": [
+        "REQ-110"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-study-mode-feature-does-not-affect-the-streamer-mode-or-timer-route-in-any-way-the-study-mode-navbar-entry-must-not-appear-on-the-timer-route-when-streamer-mode-hides-the-navbar-the-study-mode-overlay-must-not-auto-open-on-the-timer-route-and-activating-study-mode-from-the-main-dashboard-must-not-change-any-state-on-the-timer-route",
+      "title": "Ensure the Study Mode feature does not affect the Streamer Mode or /timer route in any way: the 'Study Mode' navbar entry must not appear on the /timer route when Streamer Mode hides the navbar, the Study Mode overlay must not auto-open on the /timer route, and activating Study Mode from the main dashboard must not change any state on the /timer route.",
+      "reqIds": [
+        "REQ-111"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-landingpage-and-pomodorotimer-container-background-to-a-deep-dark-blue-and-black-gradient-e-g-from-0a0a1a-to-000510-that-replaces-or-overrides-the-current-animated-gradient-giving-the-dashboard-a-powerful-premium-dark-aesthetic-this-gradient-must-only-apply-on-the-dashboard-route-and-must-not-affect-the-timer-route-or-any-other-page",
+      "title": "Update the LandingPage and PomodoroTimer container background to a deep dark blue and black gradient (e.g., from #0a0a1a to #000510) that replaces or overrides the current animated gradient, giving the dashboard a powerful, premium dark aesthetic. This gradient must only apply on the dashboard route ('/') and must not affect the /timer route or any other page.",
+      "reqIds": [
+        "REQ-112"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-soft-glowing-slowly-animated-radial-blob-gradient-element-directly-behind-the-pomodoro-timer-circle-on-the-dashboard-the-glow-should-pulse-gently-using-a-css-keyframe-animation-and-use-the-current-timer-accent-color-or-a-default-deep-blue-purple-tone-with-low-opacity-so-it-does-not-obscure-the-timer",
+      "title": "Add a soft, glowing, slowly animated radial/blob gradient element directly behind the Pomodoro timer circle on the dashboard. The glow should pulse gently using a CSS keyframe animation and use the current timer accent color (or a default deep blue/purple tone) with low opacity so it does not obscure the timer.",
+      "reqIds": [
+        "REQ-113"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-subtle-floating-particles-animation-to-the-dashboard-background-route-particles-must-be-very-small-low-opacity-dots-or-specks-that-drift-slowly-upward-or-randomly-implement-using-lightweight-css-animations-or-a-minimal-canvas-svg-approach-no-heavy-third-party-particle-libraries-particle-count-must-be-low-20-40-max-to-keep-performance-smooth-on-mobile",
+      "title": "Add a subtle floating particles animation to the dashboard background (route '/'). Particles must be very small, low-opacity dots or specks that drift slowly upward or randomly. Implement using lightweight CSS animations or a minimal canvas/SVG approach — no heavy third-party particle libraries. Particle count must be low (20–40 max) to keep performance smooth on mobile.",
+      "reqIds": [
+        "REQ-114"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enhance-the-progressring-component-so-the-timer-circle-has-a-smooth-neon-glow-effect-the-glow-must-use-the-currently-selected-timer-accent-color-leveraging-the-existing-hextoglowstyle-or-color-utility-in-frontend-src-lib-color-ts-and-appear-as-a-distinct-sharp-outer-glow-on-the-progress-arc-not-a-blurry-shadow-increase-the-glow-intensity-slightly-compared-to-the-current-implementation-to-give-a-neon-appearance",
+      "title": "Enhance the ProgressRing component so the timer circle has a smooth neon glow effect. The glow must use the currently selected timer accent color (leveraging the existing hexToGlowStyle or color utility in frontend/src/lib/color.ts) and appear as a distinct, sharp outer glow on the progress arc — not a blurry shadow. Increase the glow intensity slightly compared to the current implementation to give a neon appearance.",
+      "reqIds": [
+        "REQ-115"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-clean-minimal-sharp-modern-font-to-the-pomodoro-timer-countdown-display-the-large-time-digits-use-space-grotesk-already-configured-in-tailwind-config-js-or-a-comparable-monospaced-geometric-font-for-the-countdown-numbers-specifically-ensuring-they-look-crisp-and-study-focused-rather-than-decorative",
+      "title": "Apply a clean, minimal, sharp modern font to the Pomodoro timer countdown display (the large time digits). Use 'Space Grotesk' (already configured in tailwind.config.js) or a comparable monospaced/geometric font for the countdown numbers specifically, ensuring they look crisp and study-focused rather than decorative.",
+      "reqIds": [
+        "REQ-116"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-static-motivational-line-reading-exactly-stay-locked-in-displayed-below-the-pomodoro-timer-circle-on-the-dashboard-in-non-streamer-non-study-mode-views-style-it-in-a-small-muted-but-visible-text-e-g-letter-spaced-uppercase-or-subdued-font-weight-consistent-with-the-minimal-study-vibe-this-line-must-be-separate-from-and-must-not-replace-the-existing-motivational-quote-shown-when-the-timer-starts",
+      "title": "Add a static motivational line reading exactly \"Stay Locked In.\" displayed below the Pomodoro timer circle on the dashboard in non-Streamer, non-Study-Mode views. Style it in a small, muted but visible text (e.g., letter-spaced uppercase or subdued font weight), consistent with the minimal study vibe. This line must be separate from (and must not replace) the existing motivational quote shown when the timer starts.",
+      "reqIds": [
+        "REQ-117"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-smooth-visual-ticking-animation-effect-visual-only-no-new-audio-to-the-timer-display-while-the-timer-is-counting-down-this-can-be-a-subtle-scale-pulse-on-the-countdown-digits-or-a-brief-brightness-opacity-flicker-in-sync-with-each-second-tick-the-animation-must-be-lightweight-css-only-keyframe-not-js-interval-driven-per-frame-and-imperceptible-on-first-glance-but-satisfying-on-closer-look",
+      "title": "Add a smooth visual ticking animation effect (visual only, no new audio) to the timer display while the timer is counting down. This can be a subtle scale pulse on the countdown digits or a brief brightness/opacity flicker in sync with each second tick. The animation must be lightweight (CSS-only keyframe, not JS interval-driven per frame) and imperceptible on first glance but satisfying on closer look.",
+      "reqIds": [
+        "REQ-118"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-card-panel-styling-on-the-dashboard-for-the-settings-panels-durationcontrols-colorcontrols-soundcontrols-musiccontrols-metricspanel-dashboardbackgroundcontrols-to-use-soft-shadow-cards-with-a-slightly-elevated-dark-surface-and-a-subtle-box-shadow-that-creates-depth-against-the-dark-background-cards-must-not-look-flat-they-should-feel-premium-and-layered",
+      "title": "Update the card/panel styling on the dashboard for the settings panels (DurationControls, ColorControls, SoundControls, MusicControls, MetricsPanel, DashboardBackgroundControls) to use soft shadow cards with a slightly elevated dark surface and a subtle box-shadow that creates depth against the dark background. Cards must not look flat; they should feel premium and layered.",
+      "reqIds": [
+        "REQ-119"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-session-completed-celebration-animation-that-triggers-on-the-dashboard-when-a-pomodoro-focus-session-completes-the-animation-should-be-a-brief-1-5-2-seconds-non-blocking-overlay-or-inline-effect-for-example-a-centered-text-pop-in-with-fade-out-or-a-small-toast-notification-with-a-fire-emoji-it-must-not-block-the-ui-and-must-automatically-dismiss-do-not-trigger-this-animation-in-streamer-mode",
+      "title": "Add a 'Session Completed 🔥' celebration animation that triggers on the dashboard when a Pomodoro focus session completes. The animation should be a brief (1.5–2 seconds), non-blocking overlay or inline effect — for example, a centered text pop-in with fade-out, or a small toast notification with a fire emoji. It must not block the UI and must automatically dismiss. Do not trigger this animation in Streamer Mode.",
+      "reqIds": [
+        "REQ-120"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-improve-the-overall-dashboard-layout-landingpage-and-pomodorotimer-for-a-premium-distraction-free-feel-increase-vertical-spacing-between-the-timer-and-the-control-panels-ensure-the-timer-and-all-its-elements-are-centered-horizontally-and-vertically-within-the-viewport-reduce-visual-clutter-by-tightening-the-grouping-of-secondary-controls-and-ensure-sufficient-breathing-room-between-each-section-the-layout-must-remain-fully-responsive-and-mobile-friendly",
+      "title": "Improve the overall dashboard layout (LandingPage and PomodoroTimer) for a premium, distraction-free feel: increase vertical spacing between the timer and the control panels, ensure the timer and all its elements are centered horizontally and vertically within the viewport, reduce visual clutter by tightening the grouping of secondary controls, and ensure sufficient breathing room between each section. The layout must remain fully responsive and mobile-friendly.",
+      "reqIds": [
+        "REQ-121"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-uploaded-focus-babu-logo-image-the-graduation-cap-target-open-book-illustration-with-focus-babu-text-to-the-frontend-as-a-static-asset-at-frontend-public-assets-generated-focus-babu-logo-png-replacing-the-existing-logo-asset-update-all-references-in-focusbabulogo-tsx-and-any-other-components-that-currently-reference-the-old-logo-file-path-so-they-point-to-the-new-asset",
+      "title": "Add the uploaded Focus Babu logo image (the graduation-cap + target + open-book illustration with 'FOCUS BABU' text) to the frontend as a static asset at frontend/public/assets/generated/focus-babu-logo.png, replacing the existing logo asset. Update all references in FocusBabuLogo.tsx and any other components that currently reference the old logo file path so they point to the new asset.",
+      "reqIds": [
+        "REQ-132"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-focusbabulogo-component-frontend-src-components-focusbabulogo-tsx-to-render-the-new-logo-image-with-proper-sizing-in-the-navbar-variant-the-logo-must-be-no-taller-than-40px-auto-width-aspect-ratio-preserved-in-the-centered-login-variant-it-must-be-no-larger-than-120px-wide-add-comfortable-padding-margin-around-the-logo-so-it-is-clean-and-balanced-not-cramped",
+      "title": "Update the FocusBabuLogo component (frontend/src/components/FocusBabuLogo.tsx) to render the new logo image with proper sizing: in the navbar variant the logo must be no taller than 40px (auto width, aspect ratio preserved); in the centered/login variant it must be no larger than 120px wide. Add comfortable padding/margin around the logo so it is clean and balanced, not cramped.",
+      "reqIds": [
+        "REQ-133"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-slight-glow-effect-to-the-logo-in-dark-mode-in-the-dark-theme-the-logo-image-should-have-a-soft-subtle-drop-shadow-or-filter-glow-using-a-light-white-or-brand-orange-tone-at-low-opacity-consistent-with-the-existing-neon-glow-aesthetic-used-on-the-timer-the-glow-must-not-appear-or-be-significantly-reduced-in-light-mode",
+      "title": "Apply a slight glow effect to the logo in dark mode: in the dark theme the logo image should have a soft, subtle drop-shadow or filter glow using a light/white or brand-orange tone at low opacity, consistent with the existing neon glow aesthetic used on the timer. The glow must not appear (or be significantly reduced) in light mode.",
+      "reqIds": [
+        "REQ-134"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-smooth-hover-scale-animation-to-the-focusbabulogo-component-on-mouse-hover-the-logo-scales-up-slightly-e-g-scale-1-05-1-08-with-a-smooth-css-transition-150-200ms-ease-this-applies-in-both-the-navbar-and-login-page-variants",
+      "title": "Add a smooth hover scale animation to the FocusBabuLogo component: on mouse hover, the logo scales up slightly (e.g., scale 1.05–1.08) with a smooth CSS transition (150–200ms ease). This applies in both the navbar and login-page variants.",
+      "reqIds": [
+        "REQ-135"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-focusbabulogo-component-is-fully-responsive-on-mobile-viewports-the-logo-must-automatically-resize-to-a-smaller-size-on-small-screens-e-g-navbar-variant-max-height-32px-on-mobile-must-never-overflow-its-container-must-never-be-cropped-and-must-always-preserve-its-aspect-ratio",
+      "title": "Ensure the FocusBabuLogo component is fully responsive on mobile viewports: the logo must automatically resize to a smaller size on small screens (e.g., navbar variant max-height ~32px on mobile), must never overflow its container, must never be cropped, and must always preserve its aspect ratio.",
+      "reqIds": [
+        "REQ-136"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-focusbabulogo-component-is-hidden-when-streamer-mode-is-active-this-applies-to-both-the-navbar-placement-and-any-other-placement-where-the-logo-currently-renders-e-g-within-the-timer-route-or-any-layout-that-is-visible-in-streamer-mode-the-logo-must-not-appear-in-the-streamer-mode-view",
+      "title": "Ensure the FocusBabuLogo component is hidden when Streamer Mode is active. This applies to both the navbar placement and any other placement where the logo currently renders (e.g., within the /timer route or any layout that is visible in Streamer Mode). The logo must not appear in the Streamer Mode view.",
+      "reqIds": [
+        "REQ-137"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-and-add-a-favicon-for-the-focus-babu-app-using-the-new-logo-image-place-a-square-icon-cropped-version-of-the-logo-as-frontend-public-favicon-ico-and-or-frontend-public-favicon-png-update-frontend-index-html-to-reference-the-new-favicon-so-the-browser-tab-displays-the-focus-babu-logo-icon",
+      "title": "Generate and add a favicon for the Focus Babu app using the new logo image. Place a square/icon-cropped version of the logo as frontend/public/favicon.ico (and/or frontend/public/favicon.png). Update frontend/index.html to reference the new favicon so the browser tab displays the Focus Babu logo icon.",
+      "reqIds": [
+        "REQ-138"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-new-logo-image-asset-is-optimized-for-fast-loading-the-file-stored-at-frontend-public-assets-generated-focus-babu-logo-png-must-be-reasonably-compressed-target-under-150kb-for-the-main-logo-without-visible-quality-degradation-the-favicon-variant-must-also-be-compact-under-20kb",
+      "title": "Ensure the new logo image asset is optimized for fast loading: the file stored at frontend/public/assets/generated/focus-babu-logo.png must be reasonably compressed (target under 150KB for the main logo) without visible quality degradation. The favicon variant must also be compact (under 20KB).",
+      "reqIds": [
+        "REQ-139"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-increase-the-diameter-of-the-pomodoro-timer-s-circular-progress-ring-progressring-component-by-at-least-30-40-compared-to-its-current-size-on-the-dashboard-route-the-svg-viewbox-radius-circumference-and-stroke-width-must-all-be-updated-consistently-so-the-circle-remains-perfectly-round-with-no-distortion-the-neon-glow-effect-must-scale-proportionally-with-the-new-circle-size",
+      "title": "Increase the diameter of the Pomodoro timer's circular progress ring (ProgressRing component) by at least 30–40% compared to its current size on the dashboard (route '/'). The SVG viewBox, radius, circumference, and stroke-width must all be updated consistently so the circle remains perfectly round with no distortion. The neon glow effect must scale proportionally with the new circle size.",
+      "reqIds": [
+        "REQ-140"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-scale-the-countdown-time-digits-mm-ss-display-inside-the-timer-proportionally-to-match-the-enlarged-circle-the-font-size-of-the-countdown-numbers-must-increase-so-they-remain-visually-centered-and-dominant-within-the-new-circle-diameter-maintaining-the-existing-space-grotesk-geometric-font-the-session-label-text-e-g-focus-break-and-any-sub-labels-should-also-scale-proportionally",
+      "title": "Scale the countdown time digits (MM:SS display) inside the timer proportionally to match the enlarged circle. The font size of the countdown numbers must increase so they remain visually centered and dominant within the new circle diameter, maintaining the existing Space Grotesk / geometric font. The session label text (e.g., 'Focus', 'Break') and any sub-labels should also scale proportionally.",
+      "reqIds": [
+        "REQ-141"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-responsive-sizing-so-that-on-desktop-viewports-the-timer-renders-at-the-full-enlarged-size-large-bold-dominant-focus-style-and-on-mobile-viewports-the-timer-is-slightly-smaller-but-still-visually-dominant-and-prominently-featured-use-tailwind-responsive-classes-sm-md-lg-breakpoints-or-css-clamp-viewport-units-to-achieve-this-the-timer-must-never-overflow-its-container-or-cause-horizontal-scrolling-on-any-screen-size",
+      "title": "Apply responsive sizing so that on desktop viewports the timer renders at the full enlarged size (large, bold, dominant focus style), and on mobile viewports the timer is slightly smaller but still visually dominant and prominently featured. Use Tailwind responsive classes (sm/md/lg breakpoints) or CSS clamp/viewport units to achieve this. The timer must never overflow its container or cause horizontal scrolling on any screen size.",
+      "reqIds": [
+        "REQ-143"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-streamer-mode-layout-on-the-timer-route-is-completely-unaffected-by-the-timer-size-increase-the-progressring-and-countdown-display-on-timer-must-continue-to-use-its-existing-sizing-behavior-independent-of-the-dashboard-enlargement-do-not-apply-the-new-enlarged-sizing-to-the-timer-route",
+      "title": "Ensure the Streamer Mode layout on the /timer route is completely unaffected by the timer size increase. The ProgressRing and countdown display on /timer must continue to use its existing sizing behavior (independent of the dashboard enlargement). Do not apply the new enlarged sizing to the /timer route.",
+      "reqIds": [
+        "REQ-144"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-broken-image-file-handling-in-dashboardbackgroundcontrols-tsx-and-usedashboardbackground-ts-so-that-when-a-signed-in-user-selects-an-image-from-their-device-the-file-is-read-correctly-via-filereader-as-a-base64-blob-data-url-converted-to-the-blob-format-expected-by-the-backend-actor-and-uploaded-without-error-the-fix-must-eliminate-any-current-broken-file-handling-or-storage-issue-that-prevents-the-background-from-applying",
+      "title": "Fix the broken image file handling in DashboardBackgroundControls.tsx and useDashboardBackground.ts so that when a signed-in user selects an image from their device, the file is read correctly (via FileReader as a base64/blob data URL), converted to the blob format expected by the backend actor, and uploaded without error. The fix must eliminate any current broken file handling or storage issue that prevents the background from applying.",
+      "reqIds": [
+        "REQ-145"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-client-side-file-validation-in-dashboardbackgroundcontrols-tsx-before-upload-accept-only-jpg-png-and-webp-formats-validate-via-file-mime-type-enforce-a-maximum-file-size-of-5mb-and-display-a-clear-english-error-message-e-g-invalid-file-type-please-upload-a-jpg-png-or-webp-image-or-file-too-large-maximum-size-is-5mb-if-validation-fails",
+      "title": "Add client-side file validation in DashboardBackgroundControls.tsx before upload: accept only JPG, PNG, and WEBP formats (validate via file MIME type), enforce a maximum file size of 5MB, and display a clear English error message (e.g., 'Invalid file type. Please upload a JPG, PNG, or WEBP image.' or 'File too large. Maximum size is 5MB.') if validation fails.",
+      "reqIds": [
+        "REQ-146"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-show-a-loading-animation-spinner-or-progress-indicator-in-the-dashboardbackgroundcontrols-ui-while-the-image-is-being-uploaded-to-the-backend-and-display-a-success-message-reading-exactly-background-updated-successfully-once-the-upload-and-background-application-completes-successfully",
+      "title": "Show a loading animation (spinner or progress indicator) in the DashboardBackgroundControls UI while the image is being uploaded to the backend, and display a success message reading exactly 'Background Updated Successfully' once the upload and background application completes successfully.",
+      "reqIds": [
+        "REQ-147"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-after-a-successful-upload-immediately-apply-the-selected-image-as-the-dashboard-background-in-landingpage-tsx-with-css-background-size-cover-background-position-center-no-stretching-and-a-dark-overlay-of-50-70-opacity-layered-over-the-image-to-preserve-readability-of-the-timer-and-text-the-background-must-cover-the-full-viewport-on-all-screen-sizes",
+      "title": "After a successful upload, immediately apply the selected image as the dashboard background in LandingPage.tsx with CSS background-size: cover, background-position: center, no stretching, and a dark overlay of 50–70% opacity layered over the image to preserve readability of the timer and text. The background must cover the full viewport on all screen sizes.",
+      "reqIds": [
+        "REQ-148"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-reset-to-default-button-in-dashboardbackgroundcontrols-tsx-correctly-calls-the-backend-clearbackground-method-invalidates-the-relevant-react-query-cache-and-removes-the-custom-background-from-the-dashboard-ui-immediately-after-reset-restoring-the-default-dashboard-appearance-gradient-background-no-overlay-image",
+      "title": "Ensure the 'Reset to Default' button in DashboardBackgroundControls.tsx correctly calls the backend clearBackground method, invalidates the relevant React Query cache, and removes the custom background from the dashboard UI immediately after reset — restoring the default dashboard appearance (gradient background, no overlay image).",
+      "reqIds": [
+        "REQ-149"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-per-user-background-persistence-flow-works-end-to-end-after-a-signed-in-user-uploads-a-background-it-must-be-saved-to-their-account-via-the-backend-savebackground-method-on-returning-to-the-dashboard-page-reload-or-re-navigation-the-saved-background-must-be-fetched-via-the-getbackground-query-and-automatically-restored-signed-out-users-must-see-a-clear-english-prompt-to-sign-in-when-attempting-to-upload-or-reset",
+      "title": "Ensure the per-user background persistence flow works end-to-end: after a signed-in user uploads a background, it must be saved to their account via the backend saveBackground method; on returning to the dashboard (page reload or re-navigation), the saved background must be fetched via the getBackground query and automatically restored. Signed-out users must see a clear English prompt to sign in when attempting to upload or reset.",
+      "reqIds": [
+        "REQ-150"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-custom-dashboard-background-image-and-its-dark-overlay-are-only-applied-on-the-dashboard-route-and-do-not-appear-on-the-timer-route-including-streamer-mode-and-transparent-background-community-ncert-test-series-daily-target-or-any-other-page",
+      "title": "Ensure the custom dashboard background image and its dark overlay are only applied on the dashboard route ('/') and do not appear on the /timer route (including Streamer Mode and transparent background), /community, /ncert, /test-series, /daily-target, or any other page.",
+      "reqIds": [
+        "REQ-151"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-web-app-manifest-file-at-frontend-public-manifest-json-with-the-following-values-name-focus-babu-short-name-focusbabu-description-focus-study-repeat-start-url-display-fullscreen-orientation-portrait-theme-color-0a0a1a-background-color-000000-and-an-icons-array-referencing-the-existing-logo-asset-at-assets-generated-focus-babu-logo-png-in-multiple-sizes-at-minimum-192x192-and-512x512-include-a-maskable-icon-entry-so-android-adaptive-icons-render-correctly",
+      "title": "Create a Web App Manifest file at frontend/public/manifest.json with the following values: name = 'Focus Babu', short_name = 'FocusBabu', description = 'Focus. Study. Repeat.', start_url = '/', display = 'fullscreen', orientation = 'portrait', theme_color = '#0a0a1a', background_color = '#000000', and an icons array referencing the existing logo asset at /assets/generated/focus-babu-logo.png in multiple sizes (at minimum 192x192 and 512x512). Include a maskable icon entry so Android adaptive icons render correctly.",
+      "reqIds": [
+        "REQ-152"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-frontend-index-html-to-include-a-link-rel-manifest-href-manifest-json-tag-in-the-head-alongside-the-existing-theme-color-meta-tag-set-to-0a0a1a-and-an-apple-mobile-web-app-capable-meta-tag-so-the-pwa-is-recognized-on-both-android-and-ios",
+      "title": "Update frontend/index.html to include a <link rel='manifest' href='/manifest.json'> tag in the <head>, alongside the existing theme-color meta tag set to '#0a0a1a' and an apple-mobile-web-app-capable meta tag so the PWA is recognized on both Android and iOS.",
+      "reqIds": [
+        "REQ-153"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-service-worker-file-at-frontend-public-sw-js-that-implements-a-cache-first-strategy-for-basic-offline-support-on-the-install-event-pre-cache-the-app-shell-index-html-main-js-css-bundles-the-logo-asset-at-assets-generated-focus-babu-logo-png-and-the-manifest-on-fetch-serve-cached-responses-when-available-and-fall-back-to-the-network-use-a-versioned-cache-name-e-g-focus-babu-v1-and-clear-old-caches-on-the-activate-event",
+      "title": "Create a Service Worker file at frontend/public/sw.js that implements a cache-first strategy for basic offline support. On the 'install' event, pre-cache the app shell (index.html, main JS/CSS bundles, the logo asset at /assets/generated/focus-babu-logo.png, and the manifest). On 'fetch', serve cached responses when available and fall back to the network. Use a versioned cache name (e.g., 'focus-babu-v1') and clear old caches on the 'activate' event.",
+      "reqIds": [
+        "REQ-154"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-an-install-app-banner-popup-component-in-the-react-app-that-listens-for-the-browser-s-beforeinstallprompt-event-when-the-event-fires-capture-it-and-display-a-non-blocking-bottom-banner-or-floating-card-with-the-text-install-focus-babu-app-and-a-button-labeled-install-clicking-install-triggers-the-deferred-prompt-clicking-a-dismiss-close-button-hides-the-banner-permanently-for-the-session-the-banner-must-match-the-existing-dark-study-vibe-design-dark-background-white-text-consistent-with-the-app-s-color-scheme-and-must-be-fully-responsive-on-mobile-and-desktop",
+      "title": "Implement an 'Install App' banner/popup component in the React app that listens for the browser's 'beforeinstallprompt' event. When the event fires, capture it and display a non-blocking bottom banner (or floating card) with the text 'Install Focus Babu App' and a button labeled 'Install'. Clicking 'Install' triggers the deferred prompt. Clicking a dismiss/close button hides the banner permanently for the session. The banner must match the existing dark study-vibe design (dark background, white text, consistent with the app's color scheme) and must be fully responsive on mobile and desktop.",
+      "reqIds": [
+        "REQ-157"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-configure-the-manifest-display-mode-as-fullscreen-so-that-when-the-focus-babu-pwa-is-launched-from-the-android-home-screen-it-opens-without-the-browser-s-address-bar-or-navigation-ui-also-add-a-standalone-display-mode-fallback-in-the-icons-so-the-splash-screen-background-matches-the-dark-background-color-000000",
+      "title": "Configure the manifest display mode as 'fullscreen' so that when the Focus Babu PWA is launched from the Android home screen, it opens without the browser's address bar or navigation UI. Also add a standalone display-mode fallback in the icons so the splash screen background matches the dark background color (#000000).",
+      "reqIds": [
+        "REQ-158"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-wake-lock-api-navigator-wakelock-request-screen-in-the-pomodoro-timer-logic-usepomodorotimer-ts-or-pomodorotimer-tsx-acquire-a-screen-wake-lock-when-the-focus-timer-starts-counting-down-release-the-wake-lock-when-the-timer-is-paused-reset-or-a-session-completes-store-the-wakelocksentinel-reference-in-a-react-ref-and-release-it-via-sentinel-release-on-cleanup-if-navigator-wakelock-is-unavailable-or-the-request-throws-an-error-catch-it-silently-and-trigger-the-fallback-message-instead-of-crashing",
+      "title": "Implement the Wake Lock API (navigator.wakeLock.request('screen')) in the Pomodoro timer logic (usePomodoroTimer.ts or PomodoroTimer.tsx): acquire a screen wake lock when the focus timer starts counting down, release the wake lock when the timer is paused, reset, or a session completes. Store the WakeLockSentinel reference in a React ref and release it via sentinel.release() on cleanup. If navigator.wakeLock is unavailable or the request throws an error, catch it silently and trigger the fallback message instead of crashing.",
+      "reqIds": [
+        "REQ-159"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-display-a-small-non-blocking-fallback-message-reading-exactly-please-disable-screen-sleep-manually-in-the-pomodorotimer-ui-when-the-wake-lock-request-fails-or-the-api-is-unavailable-the-message-should-appear-near-the-timer-controls-be-styled-consistently-with-the-minimal-dark-study-vibe-theme-small-muted-text-and-auto-dismiss-or-remain-visible-only-while-the-timer-is-running",
+      "title": "Display a small, non-blocking fallback message reading exactly 'Please disable screen sleep manually.' in the PomodoroTimer UI when the Wake Lock request fails or the API is unavailable. The message should appear near the timer controls, be styled consistently with the minimal dark study-vibe theme (small muted text), and auto-dismiss or remain visible only while the timer is running.",
+      "reqIds": [
+        "REQ-160"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-increase-the-diameter-of-the-pomodoro-timer-s-circular-progress-ring-progressring-component-by-40-50-compared-to-its-current-rendered-size-on-the-dashboard-route-update-the-svg-viewbox-radius-circumference-and-stroke-width-values-consistently-so-the-circle-remains-perfectly-round-with-no-distortion-the-neon-glow-filter-must-scale-proportionally-with-the-new-circle-size-apply-this-enlarged-size-only-on-the-dashboard-route-the-timer-route-streamer-mode-must-continue-using-its-existing-independent-sizing",
+      "title": "Increase the diameter of the Pomodoro timer's circular progress ring (ProgressRing component) by 40–50% compared to its current rendered size on the dashboard (route '/'). Update the SVG viewBox, radius, circumference, and stroke-width values consistently so the circle remains perfectly round with no distortion. The neon glow filter must scale proportionally with the new circle size. Apply this enlarged size only on the dashboard route; the /timer route (Streamer Mode) must continue using its existing independent sizing.",
+      "reqIds": [
+        "REQ-161"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-scale-the-countdown-time-digits-mm-ss-display-and-the-session-label-text-e-g-focus-break-inside-the-timer-proportionally-to-match-the-enlarged-circle-on-the-dashboard-increase-the-font-size-of-the-countdown-numbers-so-they-remain-visually-centered-and-dominant-within-the-new-circle-diameter-the-digits-must-use-the-existing-space-grotesk-font-and-be-rendered-bold-and-center-aligned",
+      "title": "Scale the countdown time digits (MM:SS display) and the session label text (e.g., 'Focus', 'Break') inside the timer proportionally to match the enlarged circle on the dashboard. Increase the font size of the countdown numbers so they remain visually centered and dominant within the new circle diameter. The digits must use the existing Space Grotesk font and be rendered bold and center-aligned.",
+      "reqIds": [
+        "REQ-162"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-responsive-sizing-to-the-enlarged-dashboard-timer-so-that-on-desktop-viewports-it-renders-at-the-full-enlarged-size-large-bold-dominant-and-on-mobile-viewports-it-is-slightly-smaller-but-still-visually-dominant-and-prominently-featured-use-tailwind-responsive-classes-sm-md-lg-breakpoints-or-css-clamp-viewport-units-the-timer-must-never-overflow-its-container-or-cause-horizontal-scrolling-on-any-screen-size",
+      "title": "Apply responsive sizing to the enlarged dashboard timer so that on desktop viewports it renders at the full enlarged size (large, bold, dominant), and on mobile viewports it is slightly smaller but still visually dominant and prominently featured. Use Tailwind responsive classes (sm/md/lg breakpoints) or CSS clamp/viewport units. The timer must never overflow its container or cause horizontal scrolling on any screen size.",
+      "reqIds": [
+        "REQ-163"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-improve-the-neon-glow-effect-on-the-progressring-s-progress-arc-on-the-dashboard-to-be-more-intense-and-visually-striking-consistent-with-a-study-vibe-aesthetic-the-glow-must-use-the-currently-selected-timer-accent-color-via-the-existing-color-utility-in-frontend-src-lib-color-ts-and-appear-as-a-sharp-distinct-outer-glow-on-the-arc-stroke-not-a-blurry-shadow-ensure-the-glow-scales-with-the-enlarged-circle-and-remains-smooth-no-flicker-or-lag",
+      "title": "Improve the neon glow effect on the ProgressRing's progress arc on the dashboard to be more intense and visually striking, consistent with a 'study vibe' aesthetic. The glow must use the currently selected timer accent color (via the existing color utility in frontend/src/lib/color.ts) and appear as a sharp, distinct outer glow on the arc stroke — not a blurry shadow. Ensure the glow scales with the enlarged circle and remains smooth (no flicker or lag).",
+      "reqIds": [
+        "REQ-164"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-new-react-component-onboardingpollmodal-frontend-src-components-onboardingpollmodal-tsx-that-renders-a-centered-full-screen-modal-overlay-the-modal-must-implement-a-2-step-poll-step-1-asks-what-s-your-name-with-a-required-text-input-placeholder-enter-your-name-and-a-next-button-that-advances-to-step-2-only-when-the-name-field-is-non-empty-step-2-asks-which-exam-are-you-preparing-for-with-four-selectable-card-options-neet-jee-school-other-exam-the-user-must-select-exactly-one-before-proceeding-step-2-has-a-start-my-focus-journey-button-both-steps-must-have-a-small-skip-option-below-the-primary-button-the-modal-must-use-smooth-slide-animation-css-transition-between-steps-the-selected-exam-card-must-show-a-glow-border-highlight-the-overlay-must-prevent-page-scroll-while-open-overflow-hidden-on-body-the-entire-modal-must-be-centered-dark-themed-and-fully-mobile-responsive",
+      "title": "Create a new React component `OnboardingPollModal` (frontend/src/components/OnboardingPollModal.tsx) that renders a centered full-screen modal overlay. The modal must implement a 2-step poll: Step 1 asks 'What's your name?' with a required text input (placeholder: 'Enter your name') and a 'Next' button that advances to Step 2 only when the name field is non-empty. Step 2 asks 'Which exam are you preparing for?' with four selectable card options: NEET, JEE, SCHOOL, OTHER EXAM — the user must select exactly one before proceeding. Step 2 has a 'Start My Focus Journey' button. Both steps must have a small 'Skip' option below the primary button. The modal must use smooth slide animation (CSS transition) between steps. The selected exam card must show a glow border highlight. The overlay must prevent page scroll while open (overflow: hidden on body). The entire modal must be centered, dark-themed, and fully mobile responsive.",
+      "reqIds": [
+        "REQ-166"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-first-visit-detection-and-localstorage-persistence-logic-for-the-onboarding-poll-check-localstorage-for-the-keys-focusbabu-username-and-focusbabu-examtype-on-app-load-if-both-keys-are-absent-first-visit-or-data-cleared-show-the-onboardingpollmodal-on-successful-submission-save-username-string-and-examtype-one-of-neet-jee-school-other-to-localstorage-after-saving-never-show-the-modal-again-unless-localstorage-is-cleared-when-the-user-clicks-skip-close-the-modal-without-saving-and-do-not-show-it-again-for-the-current-session-but-show-again-on-next-visit-since-localstorage-was-not-written",
+      "title": "Implement the first-visit detection and localStorage persistence logic for the onboarding poll. Check localStorage for the keys `focusBabu_userName` and `focusBabu_examType` on app load. If both keys are absent (first visit or data cleared), show the `OnboardingPollModal`. On successful submission, save `userName` (string) and `examType` (one of: 'NEET' | 'JEE' | 'SCHOOL' | 'OTHER') to localStorage. After saving, never show the modal again unless localStorage is cleared. When the user clicks 'Skip', close the modal without saving and do not show it again for the current session (but show again on next visit since localStorage was not written).",
+      "reqIds": [
+        "REQ-167"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-after-the-onboarding-poll-is-submitted-display-a-personalized-welcome-message-inside-the-modal-before-it-dismisses-or-as-a-brief-overlay-welcome-name-let-s-crack-your-exam-for-neet-welcome-name-let-s-crack-your-neet-for-jee-stay-focused-name-jee-warrior-for-school-and-other-exam-welcome-name-let-s-crush-your-exam-the-message-must-be-visible-for-approximately-1-5-2-seconds-before-the-modal-closes-and-the-app-proceeds-normally-style-the-message-in-a-large-bold-centered-font-consistent-with-the-dark-study-vibe-theme",
+      "title": "After the onboarding poll is submitted, display a personalized welcome message inside the modal (before it dismisses) or as a brief overlay: 'Welcome, [Name]! Let's crack your [Exam] 🔥'. For NEET: 'Welcome, [Name]! Let's crack your NEET 🔥'. For JEE: 'Stay focused, [Name] – JEE warrior 💪'. For SCHOOL and OTHER EXAM: 'Welcome, [Name]! Let's crush your [Exam] 🔥'. The message must be visible for approximately 1.5–2 seconds before the modal closes and the app proceeds normally. Style the message in a large, bold, centered font consistent with the dark study-vibe theme.",
+      "reqIds": [
+        "REQ-168"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-exam-type-based-accent-color-personalization-to-the-dashboard-read-focusbabu-examtype-from-localstorage-on-app-load-map-the-exam-type-to-an-accent-color-neet-green-22c55e-jee-blue-3b82f6-school-yellow-eab308-other-purple-a855f7-use-this-accent-color-as-the-default-timer-color-on-the-dashboard-progressring-countdown-digits-glow-if-the-user-has-not-manually-selected-a-custom-timer-color-via-colorcontrols-if-the-user-later-changes-the-timer-color-manually-their-manual-selection-takes-precedence-the-exam-accent-only-serves-as-the-initial-default-color-when-no-manual-color-is-stored",
+      "title": "Apply exam-type-based accent color personalization to the dashboard. Read `focusBabu_examType` from localStorage on app load. Map the exam type to an accent color: NEET → green (#22c55e), JEE → blue (#3b82f6), SCHOOL → yellow (#eab308), OTHER → purple (#a855f7). Use this accent color as the default timer color on the dashboard (ProgressRing, countdown digits, glow) if the user has not manually selected a custom timer color via ColorControls. If the user later changes the timer color manually, their manual selection takes precedence. The exam accent only serves as the initial/default color when no manual color is stored.",
+      "reqIds": [
+        "REQ-169"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-change-exam-option-to-the-dashboard-settings-area-this-can-be-placed-within-the-existing-colorcontrols-panel-or-as-a-small-standalone-button-link-near-the-settings-panels-on-the-dashboard-non-streamer-non-study-mode-view-clicking-change-exam-clears-the-focusbabu-examtype-localstorage-key-and-re-opens-the-onboardingpollmodal-at-step-2-only-exam-selection-pre-filling-the-existing-username-so-the-user-does-not-need-to-re-enter-their-name-on-re-submission-update-focusbabu-examtype-in-localstorage-and-update-the-dashboard-accent-color-accordingly",
+      "title": "Add a 'Change Exam' option to the dashboard settings area. This can be placed within the existing ColorControls panel or as a small standalone button/link near the settings panels on the dashboard (non-Streamer, non-Study-Mode view). Clicking 'Change Exam' clears the `focusBabu_examType` localStorage key and re-opens the `OnboardingPollModal` at Step 2 only (exam selection), pre-filling the existing userName so the user does not need to re-enter their name. On re-submission, update `focusBabu_examType` in localStorage and update the dashboard accent color accordingly.",
+      "reqIds": [
+        "REQ-170"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-integrate-the-onboardingpollmodal-into-the-app-s-root-layout-applayout-tsx-or-app-tsx-the-modal-must-render-on-top-of-all-other-content-z-index-above-the-welcome-motivation-overlay-navbar-and-all-page-content-it-must-not-appear-on-the-timer-route-streamer-mode-it-must-not-interfere-with-the-existing-internet-identity-login-flow-the-welcomemotivationoverlay-or-the-pwa-install-banner-the-render-order-should-be-welcomemotivationoverlay-appears-first-1-second-then-after-it-dismisses-or-simultaneously-if-already-dismissed-check-and-potentially-show-the-onboardingpollmodal",
+      "title": "Integrate the `OnboardingPollModal` into the app's root layout (AppLayout.tsx or App.tsx). The modal must render on top of all other content (z-index above the welcome motivation overlay, navbar, and all page content). It must not appear on the /timer route (Streamer Mode). It must not interfere with the existing Internet Identity login flow, the WelcomeMotivationOverlay, or the PWA install banner. The render order should be: WelcomeMotivationOverlay appears first (1 second), then after it dismisses (or simultaneously if already dismissed), check and potentially show the OnboardingPollModal.",
+      "reqIds": [
+        "REQ-171"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-new-react-component-focustree-frontend-src-components-pomodorotimer-focustree-tsx-that-renders-a-minimal-aesthetic-svg-illustration-of-a-growing-focus-tree-the-svg-must-be-centered-behind-the-time-digits-inside-the-progressring-circle-using-absolute-positioning-so-it-does-not-shift-or-obscure-the-countdown-numbers-or-session-label-the-tree-must-look-clean-and-modern-not-cartoonish-use-simple-geometric-svg-paths-for-trunk-branches-and-foliage-apply-a-soft-green-neon-glow-effect-filter-drop-shadow-using-a-green-accent-color-e-g-22c55e-or-4ade80-at-low-opacity-so-it-does-not-overpower-the-timer-digits-the-component-must-accept-a-progress-prop-number-0-100-representing-how-much-of-the-current-focus-session-has-elapsed",
+      "title": "Create a new React component `FocusTree` (frontend/src/components/PomodoroTimer/FocusTree.tsx) that renders a minimal, aesthetic SVG illustration of a growing focus tree. The SVG must be centered behind the time digits inside the ProgressRing circle, using absolute positioning so it does not shift or obscure the countdown numbers or session label. The tree must look clean and modern (not cartoonish) — use simple geometric SVG paths for trunk, branches, and foliage. Apply a soft green neon glow effect (filter: drop-shadow) using a green accent color (e.g., #22c55e or #4ade80) at low opacity so it does not overpower the timer digits. The component must accept a `progress` prop (number 0–100) representing how much of the current focus session has elapsed.",
+      "reqIds": [
+        "REQ-172"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-growth-animation-logic-for-the-focustree-component-the-tree-s-visual-state-must-transition-smoothly-through-five-growth-stages-based-on-the-progress-prop-0-seed-tiny-dot-or-sprout-shape-25-small-plant-short-stem-with-small-leaves-50-medium-plant-taller-stem-more-foliage-75-almost-full-tree-branching-structure-100-fully-grown-glowing-tree-complete-canopy-with-intensified-neon-glow-use-css-keyframe-transitions-or-svg-attribute-interpolation-via-react-state-style-so-growth-animation-is-smooth-and-lag-free-the-tree-must-not-jump-between-stages-abruptly-interpolate-svg-path-scales-or-opacity-smoothly-do-not-use-any-heavy-animation-libraries",
+      "title": "Implement the growth animation logic for the FocusTree component. The tree's visual state must transition smoothly through five growth stages based on the `progress` prop: 0% → seed (tiny dot or sprout shape), 25% → small plant (short stem with small leaves), 50% → medium plant (taller stem, more foliage), 75% → almost full tree (branching structure), 100% → fully grown glowing tree (complete canopy with intensified neon glow). Use CSS keyframe transitions or SVG attribute interpolation (via React state/style) so growth animation is smooth and lag-free. The tree must not jump between stages abruptly — interpolate SVG path scales or opacity smoothly. Do not use any heavy animation libraries.",
+      "reqIds": [
+        "REQ-173"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-wire-the-focustree-component-to-the-pomodoro-timer-state-in-pomodorotimer-tsx-and-usepomodorotimer-ts-compute-the-progress-value-as-the-percentage-of-elapsed-time-within-the-current-focus-session-progress-focusdurationseconds-remainingseconds-focusdurationseconds-100-clamped-to-0-100-when-the-timer-is-running-the-tree-grows-in-real-time-as-time-elapses-when-the-timer-is-paused-the-tree-freezes-at-its-current-growth-stage-do-not-animate-while-paused-when-the-timer-reset-button-is-pressed-the-tree-must-reset-back-to-the-seed-stage-progress-0-the-tree-must-only-grow-during-focus-sessions-do-not-advance-the-tree-during-break-sessions",
+      "title": "Wire the FocusTree component to the Pomodoro timer state in PomodoroTimer.tsx and usePomodoroTimer.ts. Compute the `progress` value as the percentage of elapsed time within the current focus session: `progress = ((focusDurationSeconds - remainingSeconds) / focusDurationSeconds) * 100`, clamped to 0–100. When the timer is running, the tree grows in real time as time elapses. When the timer is paused, the tree freezes at its current growth stage (do not animate while paused). When the timer reset button is pressed, the tree must reset back to the seed stage (progress = 0). The tree must only grow during focus sessions — do not advance the tree during break sessions.",
+      "reqIds": [
+        "REQ-174"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-responsive-sizing-to-the-focustree-svg-component-on-mobile-viewports-below-sm-md-breakpoint-the-tree-must-be-slightly-smaller-so-it-fits-comfortably-inside-the-smaller-timer-circle-on-desktop-viewports-the-tree-should-be-larger-and-more-prominent-use-tailwind-responsive-classes-or-css-viewport-clamp-units-to-achieve-this-the-tree-must-always-remain-centered-inside-the-timer-circle-on-all-screen-sizes",
+      "title": "Apply responsive sizing to the FocusTree SVG component. On mobile viewports (below sm/md breakpoint), the tree must be slightly smaller so it fits comfortably inside the smaller timer circle. On desktop viewports, the tree should be larger and more prominent. Use Tailwind responsive classes or CSS viewport/clamp units to achieve this. The tree must always remain centered inside the timer circle on all screen sizes.",
+      "reqIds": [
+        "REQ-176"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-forest-mode-each-time-a-pomodoro-focus-session-completes-not-a-break-session-add-one-small-tree-icon-to-a-forest-display-area-shown-below-the-main-timer-on-the-dashboard-route-display-the-accumulated-trees-as-small-tree-emojis-or-minimal-svg-tree-icons-e-g-in-a-row-wrap-layout-with-a-label-showing-the-daily-tree-count-e-g-today-s-forest-3-trees-persist-the-daily-tree-count-in-localstorage-using-a-date-keyed-entry-reset-to-0-automatically-at-the-start-of-a-new-calendar-day-forest-mode-display-must-only-appear-on-the-dashboard-in-non-streamer-non-study-mode-views-hide-it-entirely-in-streamer-mode-and-study-mode",
+      "title": "Implement Forest Mode: each time a Pomodoro focus session completes (not a break session), add one small tree icon to a 'Forest' display area shown below the main timer on the dashboard (route '/'). Display the accumulated trees as small tree emojis or minimal SVG tree icons (e.g., 🌲) in a row/wrap layout, with a label showing the daily tree count (e.g., 'Today's Forest: 🌲🌲🌲 3 trees'). Persist the daily tree count in localStorage using a date-keyed entry (reset to 0 automatically at the start of a new calendar day). Forest Mode display must only appear on the dashboard in non-Streamer, non-Study-Mode views — hide it entirely in Streamer Mode and Study Mode.",
+      "reqIds": [
+        "REQ-177"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-focus-tree-and-forest-mode-additions-maintain-the-existing-dark-study-vibe-design-use-only-dark-backgrounds-white-light-gray-text-for-labels-soft-green-neon-glow-for-the-tree-and-ensure-no-new-ui-element-introduces-visual-clutter-or-breaks-the-existing-premium-minimal-layout-of-the-dashboard-all-new-labels-and-text-in-the-forest-mode-section-must-be-in-english-the-tree-and-forest-elements-must-not-interfere-with-the-existing-timer-controls-settings-panels-motivational-quote-or-stay-locked-in-text",
+      "title": "Ensure the Focus Tree and Forest Mode additions maintain the existing dark study vibe design: use only dark backgrounds, white/light-gray text for labels, soft green neon glow for the tree, and ensure no new UI element introduces visual clutter or breaks the existing premium minimal layout of the dashboard. All new labels and text in the Forest Mode section must be in English. The tree and forest elements must not interfere with the existing timer controls, settings panels, motivational quote, or 'Stay Locked In.' text.",
+      "reqIds": [
+        "REQ-178"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Build advanced Pomodoro timer (default 25/5) with editable focus/break times, start/pause/reset, and skip session",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Add circular animated progress ring and smooth countdown animation for the timer",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Implement timer color themes (red/green/blue/purple) plus custom color picker",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Add sound features: soft ticking toggle and bell sound on session completion",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Show motivational quote when timer starts",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Create study-vibe UI: default dark mode, soft glow timer, minimal distraction-free layout, modern font, subtle animated gradient background, logo + tagline 'Focus. Study. Repeat.'",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Provide OBS Studio compatible separate /timer page with Streamer Mode toggle that shows only timer (no settings/buttons), optional transparent background, and clean minimal layout",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Ensure technical requirements: fully responsive, smooth in Chrome, lightweight/fast, no login, pure frontend (HTML/CSS/JS)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Optional: daily session counter, streak counter, lofi background music toggle, and save settings in localStorage",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Upgrade timer color customization: add more preset themes (Orange, Neon, White) and ensure selected color updates timer circle, countdown numbers, progress animation, and glow; persist selection in localStorage and keep active in Streamer Mode",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Add social media links: Instagram + X icons (top-right near profile and footer), clickable open-in-new-tab, minimal modern style with soft glow hover, optional follow text under timer; hide icons in Streamer Mode; responsive spacing and dark study aesthetic",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Add site-wide Dark/Light mode toggle icon (moon/sun) in top-right with smooth animated transition; default Dark; persist preference (localStorage or DB) and apply across all UI including Streamer Mode",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Add /community page with navbar community icon; authenticated users can upload 'Today's Target' photo + caption to a public feed (latest first) with profile info, timestamp, likes, and comments per post",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Add real-time group chat section on /community supporting text + emojis with profile photo/name/timestamp using Firebase realtime updates",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Implement moderator/admin role system: admin can delete any post/comment/chat message and block/ban/mute users; normal users can post/comment/chat but cannot delete others’ content; role assigned manually in database; enforce via Firebase security rules",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Integrate Firebase backend for community features: Firebase Authentication (Google login), Firestore for posts/comments/chat, Firebase Storage for image uploads; secure rules so only logged-in users can post; fully responsive clean study-vibe UI",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-24",
+      "summary": "Add backend data models and Candid methods in the single Motoko main actor to support Community posts, comments, likes, chat messages, user profiles (minimal), and blocked users, with stable storage so data persists across canister upgrades.",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Add NCERT section: navbar Book icon labeled 'NCERT' linking to /ncert page with Class 11 & 12 sections, subject folders (Physics/Chemistry/Biology), chapter-wise lists, and PDF view/download in clean minimal dark-mode-compatible mobile-friendly card layout",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Refine site-wide Dark Mode as the default on first load with a consistent dark navy/black palette (light text, slightly lighter cards/buttons) and ensure timer glow reads well; apply across Dashboard, /timer, /community, and /ncert while keeping clean study-vibe UI",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-25",
+      "summary": "Rename website from “Babu Sarraf Ji” to “Focus Babu” everywhere (navbar logo, browser tab title, login, dashboard, footer, community, NCERT) and ensure tagline is “Focus. Study. Repeat.” without changing other features",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-26",
+      "summary": "Add Test Series navbar icon linking to /test-series page with JEE/NEET/CUET sections; timed MCQ tests (PYQ/chapter-wise/full mock), next/prev navigation, submit + instant results (score, correct/incorrect, accuracy) and save test history in user account; dark-mode-compatible, clean exam-like, mobile-friendly UI",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-32",
+      "summary": "Add backend support to save and retrieve per-user Test Series history in the user account (Internet Identity principal), including at minimum: test identifier (exam + category), timestamp, total questions, correct count, incorrect count, score, and accuracy percentage.",
+      "reqIds": [
+        "REQ-48"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-33",
+      "summary": "Upload/set Focus Babu logo asset and display it top-left in navbar and centered on login page; logo is clickable to homepage, properly sized with subtle hover effect, responsive auto-resize on mobile, and automatically hidden in Streamer Mode",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-34",
+      "summary": "Dashboard-only background customization: add 'Change Background' upload button to set a per-user saved dashboard background image (full-screen cover, no stretching, slight dark overlay for readability), plus 'Reset to Default'; mobile-friendly; must not affect /timer Streamer Mode; keep clean study-vibe UI",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-40",
+      "summary": "Implement backend support (Motoko, single-actor) for storing, retrieving, and clearing a per-user Dashboard background image, using Internet Identity principal as the key and using existing blob storage types already used for community post images.",
+      "reqIds": [
+        "REQ-62"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-41",
+      "summary": "Fix /ncert routing and folder expand/click behavior (Class/Subject/Chapter), remove broken links, and populate Class 11/12 Physics/Chemistry/Biology chapter-wise PDFs using official NCERT public sources (epathshala/ncert.nic.in) with working View (new tab or built-in viewer) + Download buttons; ensure dark-mode compatible, mobile-friendly, fast, stable UI",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-42",
+      "summary": "NCERT: Add Mathematics subject for Class 11 & 12 with chapter-wise official NCERT PDF links (NCERT site only), each chapter having working View + Download buttons; ensure routing/folder expand works reliably; keep clean book-style dark-mode-compatible, mobile-friendly layout without affecting other subjects",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-43",
+      "summary": "Add an in-app NCERT PDF viewer page (/pdf-viewer?file=...) that opens PDFs inside the website (not new tab) with embedded viewer, zoom in/out, page navigation, download + back buttons, smooth loading animation, full-screen responsive dark-mode-compatible minimal layout",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-44",
+      "summary": "Test Series: add “Previous Year Real Papers” section for JEE Main (shift-wise 2024/2023/2022/2021 etc.), NEET (2024/2023/2022/2021), and CUET real papers with real exam pattern, timers (JEE 3h, NEET 3h20, CUET per paper), subject/section-wise structure, exam-like full-screen UI (question palette, mark for review, next/prev, submit, auto-submit on timeout), results (score, correct/incorrect, accuracy, solutions if available) and save attempts to user history; use publicly available papers; dark-mode compatible and mobile-friendly",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-45",
+      "summary": "Add a 1-second welcome motivational message overlay on website open: randomly choose from preset messages, centered with smooth fade-in/out, dark transparent background overlay, clean study-vibe style; auto-dismiss after 1s; must not affect login flow and must not appear in Streamer Mode (/timer)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-46",
+      "summary": "Add a new navbar entry (🎯) labeled \"Daily Target\" linking to /daily-target page with per-user daily goals/to-do list (add/edit/delete tasks, completion checkbox), stats (total/completed/progress %), autosave per user account, reset for next day, motivational line \"Plan Today. Win Tomorrow.\", dark-mode compatible clean minimal study-vibe UI, mobile friendly, and do not disturb other features",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-48",
+      "summary": "Update the user identity model so the app can store and return an authenticated user profile for a principal, including: (1) display name, (2) optional email, and (3) optional profile photo URL, with a clear fallback order for display name: authenticated display name → authenticated email → short principal.",
+      "reqIds": [
+        "REQ-96"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-49",
+      "summary": "Add Study Room navbar entry (video camera icon) linking to Google Meet at https://meet.google.com/fzn-cjad-ofe in new tab, show confirmation popup before redirect with message You are joining Focus Babu Study Room, add description on page Join live group study session and stay focused together, keep clean study-vibe design, dark-mode compatible, mobile-friendly",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-52",
+      "summary": "Update Community chat, comments, and post headers to display: profile photo (if available), bold display name, timestamp, and message/content below the name, with a clean layout that is dark-mode compatible and does not change other Community behaviors (posting, liking, moderation, polling).",
+      "reqIds": [
+        "REQ-102"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-53",
+      "summary": "Add 'Study Mode' navbar entry (🚫📱 icon) that shows a fullscreen popup 'Activate Focus Mode Now 🔥' with instructions (Do Not Disturb, Focus Mode, keep only Focus Babu open), a 'Start Deep Focus' button that triggers fullscreen mode, hides navbar/social icons/distractions showing only timer + minimal UI, optional 3-hour focus session lock screen with motivational quote + countdown timer; clean dark UI, mobile-friendly, must not break Streamer Mode",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-54",
+      "summary": "Upgrade Focus Timer Dashboard: deep dark blue/black gradient bg, soft glowing animated gradient behind timer, subtle floating particles, neon glow timer circle, clean modern font, 'Stay Locked In.' motivational line under timer, smooth ticking visual animation, soft shadow cards, 'Session Completed 🔥' animation, ambient background toggle, centered premium layout with more spacing, distraction-free, mobile-friendly, smooth non-heavy animations — NEET/JEE serious study vibe",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-55",
+      "summary": "Update the LandingPage and PomodoroTimer container background to a deep dark blue and black gradient (e.g., from #0a0a1a to #000510) that replaces or overrides the current animated gradient, giving the dashboard a powerful, premium dark aesthetic. This gradient must only apply on the dashboard route ('/') and must not affect the /timer route or any other page.",
+      "reqIds": [
+        "REQ-122"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-56",
+      "summary": "Add a soft, glowing, slowly animated radial/blob gradient element directly behind the Pomodoro timer circle on the dashboard. The glow should pulse gently using a CSS keyframe animation and use the current timer accent color (or a default deep blue/purple tone) with low opacity so it does not obscure the timer.",
+      "reqIds": [
+        "REQ-123"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-57",
+      "summary": "Add a subtle floating particles animation to the dashboard background (route '/'). Particles must be very small, low-opacity dots or specks that drift slowly upward or randomly. Implement using lightweight CSS animations or a minimal canvas/SVG approach — no heavy third-party particle libraries. Particle count must be low (20–40 max) to keep performance smooth on mobile.",
+      "reqIds": [
+        "REQ-124"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-58",
+      "summary": "Enhance the ProgressRing component so the timer circle has a smooth neon glow effect. The glow must use the currently selected timer accent color (leveraging the existing hexToGlowStyle or color utility in frontend/src/lib/color.ts) and appear as a distinct, sharp outer glow on the progress arc — not a blurry shadow. Increase the glow intensity slightly compared to the current implementation to give a neon appearance.",
+      "reqIds": [
+        "REQ-125"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-59",
+      "summary": "Apply a clean, minimal, sharp modern font to the Pomodoro timer countdown display (the large time digits). Use 'Space Grotesk' (already configured in tailwind.config.js) or a comparable monospaced/geometric font for the countdown numbers specifically, ensuring they look crisp and study-focused rather than decorative.",
+      "reqIds": [
+        "REQ-126"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-60",
+      "summary": "Add a static motivational line reading exactly \"Stay Locked In.\" displayed below the Pomodoro timer circle on the dashboard in non-Streamer, non-Study-Mode views. Style it in a small, muted but visible text (e.g., letter-spaced uppercase or subdued font weight), consistent with the minimal study vibe. This line must be separate from (and must not replace) the existing motivational quote shown when the timer starts.",
+      "reqIds": [
+        "REQ-127"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-61",
+      "summary": "Add a smooth visual ticking animation effect (visual only, no new audio) to the timer display while the timer is counting down. This can be a subtle scale pulse on the countdown digits or a brief brightness/opacity flicker in sync with each second tick. The animation must be lightweight (CSS-only keyframe, not JS interval-driven per frame) and imperceptible on first glance but satisfying on closer look.",
+      "reqIds": [
+        "REQ-128"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-62",
+      "summary": "Update the card/panel styling on the dashboard for the settings panels (DurationControls, ColorControls, SoundControls, MusicControls, MetricsPanel, DashboardBackgroundControls) to use soft shadow cards with a slightly elevated dark surface and a subtle box-shadow that creates depth against the dark background. Cards must not look flat; they should feel premium and layered.",
+      "reqIds": [
+        "REQ-129"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-63",
+      "summary": "Add a 'Session Completed 🔥' celebration animation that triggers on the dashboard when a Pomodoro focus session completes. The animation should be a brief (1.5–2 seconds), non-blocking overlay or inline effect — for example, a centered text pop-in with fade-out, or a small toast notification with a fire emoji. It must not block the UI and must automatically dismiss. Do not trigger this animation in Streamer Mode.",
+      "reqIds": [
+        "REQ-130"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-64",
+      "summary": "Improve the overall dashboard layout (LandingPage and PomodoroTimer) for a premium, distraction-free feel: increase vertical spacing between the timer and the control panels, ensure the timer and all its elements are centered horizontally and vertically within the viewport, reduce visual clutter by tightening the grouping of secondary controls, and ensure sufficient breathing room between each section. The layout must remain fully responsive and mobile-friendly.",
+      "reqIds": [
+        "REQ-131"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-65",
+      "summary": "Upload new Focus Babu logo and replace old logo everywhere: navbar top-left, login page center, admin panel header, favicon (browser tab icon). Add proper spacing, not too large, clean and balanced, slight glow effect in dark mode, smooth scale animation on hover, mobile responsive auto-resize, hidden in Streamer Mode, optimized image size for fast loading, favicon version of logo.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-66",
+      "summary": "Increase main countdown timer circle diameter by 30–40%, scale timer numbers proportionally, keep centered; glow and progress animation must scale correctly; no layout overlap; desktop large bold style, mobile slightly smaller but dominant; must not break responsiveness or affect Streamer Mode",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-69",
+      "summary": "Ensure the enlarged timer circle and its countdown display remain perfectly horizontally and vertically centered within the dashboard layout. No surrounding panels, cards, or UI elements should overlap or crowd the timer at the new size. Increase surrounding whitespace/padding as needed to preserve a clean, distraction-free layout.",
+      "reqIds": [
+        "REQ-142"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-70",
+      "summary": "Convert Focus Babu into a PWA: add manifest.json (app name 'Focus Babu', short name 'FocusBabu', dark blue theme, black bg, fullscreen display), service worker with basic offline caching, app icon from website logo, splash screen, Android installable, and 'Install App' popup prompt",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-74",
+      "summary": "Register the Service Worker in the React app entry point or a dedicated initialization file (not in any immutable file). On page load, check if 'serviceWorker' is supported in navigator, then call navigator.serviceWorker.register('/sw.js'). Log registration success or failure to the console. This registration must not break the existing Internet Identity or React Query setup.",
+      "reqIds": [
+        "REQ-155"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-75",
+      "summary": "Generate PWA icon assets from the existing Focus Babu logo at frontend/public/assets/generated/focus-babu-logo.png and place icon files at: frontend/public/icons/icon-192x192.png and frontend/public/icons/icon-512x512.png. These icons are used in the manifest icons array. Both files must have a square aspect ratio with the logo centered and sufficient padding so the logo is not cropped on any Android launcher.",
+      "reqIds": [
+        "REQ-156"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-76",
+      "summary": "Implement Wake Lock API (navigator.wakeLock) in the Focus Timer: acquire wake lock when timer starts, release when timer stops/completes, show fallback message 'Please disable screen sleep manually.' if wake lock fails. Works on HTTPS + Android Chrome.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-77",
+      "summary": "Increase circular timer size by 40–50%, increase and bold time digit font size, improve neon glow effect for study vibe, keep fully responsive (desktop: very large, mobile: slightly smaller but dominant), no overlapping elements, smooth animation, no lag.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-84",
+      "summary": "Ensure the enlarged timer and all its elements remain perfectly horizontally and vertically centered within the dashboard layout. No surrounding panels, cards, or UI elements should overlap or crowd the timer at the new size. Increase surrounding whitespace/padding as needed between the timer and the settings control panels to preserve a clean, distraction-free premium layout. The layout must remain fully responsive and mobile-friendly.",
+      "reqIds": [
+        "REQ-165"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-85",
+      "summary": "Add first-visit onboarding poll modal: Step 1 asks user's name (text input), Step 2 asks exam type (NEET/JEE/SCHOOL/OTHER selectable cards). Save userName and examType to localStorage; never show again after submission; show again if data cleared. After submit show personalized welcome message. Dark theme, smooth slide animation, glow on selected card, mobile responsive, no scroll while open, skip option, and 'Change exam' option in settings. Exam type personalizes dashboard accent color: NEET=green, JEE=blue, School=yellow, Other=purple.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-86",
+      "summary": "Add animated Focus Tree SVG inside the timer circle: centered behind time digits, grows from seed→plant→full tree based on timer progress (0/25/50/75/100%), soft green neon glow, pauses when timer stops, resets only on timer reset, increase circle size by 40%, responsive (smaller on mobile, bigger on desktop), dark study theme, smooth CSS animation",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-87",
+      "summary": "Optional Forest Mode: every completed Pomodoro session adds one small tree below the timer, shows daily tree count (🌲🌲🌲), motivates long study streaks — visible on dashboard only, not in Streamer Mode",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-91",
+      "summary": "Integrate the FocusTree SVG into the ProgressRing component (frontend/src/components/PomodoroTimer/ProgressRing.tsx). The tree must be rendered inside the SVG or as an absolutely positioned element inside the timer circle container, layered behind the countdown text (z-index below the time digits). The tree must not be rendered in the Streamer Mode variant (280px size) on the /timer route — only render it in the default/dashboard size variant. Ensure the tree SVG scales proportionally within the circle diameter so it fills the inner area attractively without clipping.",
+      "reqIds": [
+        "REQ-175"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Focus Babu",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

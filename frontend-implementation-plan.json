@@ -1,0 +1,166 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Add Animated Focus Tree SVG Inside Timer Circle + Forest Mode",
+  "requirements": [
+    {
+      "id": "REQ-172",
+      "summary": "Create FocusTree component with minimal aesthetic SVG tree illustration behind timer digits",
+      "acceptanceCriteria": [
+        "FocusTree component exists at frontend/src/components/PomodoroTimer/FocusTree.tsx",
+        "SVG tree is rendered using clean geometric paths (not raster or emoji)",
+        "Tree is absolutely positioned and centered behind the countdown digits inside the timer circle",
+        "Tree does not obscure or overlap the MM:SS countdown digits or session label",
+        "Soft green neon glow (drop-shadow filter) is applied to the SVG tree shape",
+        "Component accepts a `progress` prop (0–100)"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/PomodoroTimer/FocusTree.tsx",
+          "operation": "create",
+          "description": "Create a new React component that renders a minimal, aesthetic SVG tree illustration using clean geometric paths (trunk, branches, foliage). The tree must be absolutely positioned and centered behind timer digits without obscuring them. Apply a soft green neon glow effect using CSS filter: drop-shadow with green accent color (#22c55e or #4ade80) at low opacity. The component accepts a `progress` prop (0–100) to control growth stages. Use Tailwind responsive classes for mobile/desktop sizing. The SVG must scale proportionally within the timer circle without clipping."
+        }
+      ]
+    },
+    {
+      "id": "REQ-173",
+      "summary": "Implement smooth five-stage tree growth animation based on progress prop",
+      "acceptanceCriteria": [
+        "At progress=0, only a seed/sprout shape is visible",
+        "At progress=25, a small plant with a short stem is visible",
+        "At progress=50, a medium-height plant with more foliage is visible",
+        "At progress=75, a branched tree close to full size is visible",
+        "At progress=100, the fully grown tree is visible with an intensified neon glow",
+        "Transitions between stages are smooth (no abrupt jumps)",
+        "Animation uses only CSS transitions or lightweight SVG interpolation — no heavy third-party animation libraries"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/PomodoroTimer/FocusTree.tsx",
+          "operation": "modify",
+          "description": "Implement growth animation logic that transitions smoothly through five stages: 0% → seed (tiny dot/sprout), 25% → small plant (short stem with small leaves), 50% → medium plant (taller stem, more foliage), 75% → almost full tree (branching structure), 100% → fully grown glowing tree (complete canopy with intensified neon glow). Use CSS transitions or React state/style interpolation to animate SVG path scales and opacity smoothly. Do not use heavy animation libraries. Ensure transitions are lag-free and do not jump abruptly between stages."
+        }
+      ]
+    },
+    {
+      "id": "REQ-174",
+      "summary": "Wire FocusTree to timer state with real-time progress calculation during focus sessions",
+      "acceptanceCriteria": [
+        "Tree progress increases in real time as the focus timer counts down",
+        "Tree is frozen (does not animate) when the timer is paused",
+        "Pressing the reset button resets the tree to seed stage (progress = 0)",
+        "Tree does not grow during break sessions",
+        "Progress calculation is correct: 0% at session start, 100% when focus session completes"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx",
+          "operation": "modify",
+          "description": "Wire the FocusTree component into the timer UI. Compute progress as ((focusDurationSeconds - remainingSeconds) / focusDurationSeconds) * 100, clamped to 0–100. Pass this progress value to FocusTree. Ensure the tree only grows during focus sessions (not breaks), freezes when paused, and resets to seed (progress=0) when the reset button is pressed. Import and render FocusTree inside the timer layout."
+        },
+        {
+          "path": "frontend/src/components/PomodoroTimer/usePomodoroTimer.ts",
+          "operation": "modify",
+          "description": "Expose the computed tree progress value (percentage of focus session elapsed) from the timer hook. Ensure progress is 0 at session start, increases as time elapses, and is clamped to 0–100. Progress must not advance during break sessions or when paused. When reset is triggered, ensure progress resets to 0."
+        }
+      ]
+    },
+    {
+      "id": "REQ-175",
+      "summary": "Integrate FocusTree SVG into ProgressRing component layered behind countdown text",
+      "acceptanceCriteria": [
+        "FocusTree renders inside the timer circle, layered behind countdown digits",
+        "Time digits remain clearly readable above the tree SVG at all growth stages",
+        "FocusTree is NOT rendered in Streamer Mode (280px variant on /timer route)",
+        "Tree scales proportionally with the timer circle without clipping or overflow"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/PomodoroTimer/ProgressRing.tsx",
+          "operation": "modify",
+          "description": "Integrate FocusTree into ProgressRing by rendering it inside the timer circle container as an absolutely positioned element layered behind the countdown text (z-index below time digits). Accept a `treeProgress` prop and pass it to FocusTree. Ensure FocusTree is NOT rendered in the Streamer Mode variant (280px size on /timer route) — conditionally render based on the size prop or context. The tree must scale proportionally within the circle diameter without clipping or overflow. Time digits must remain clearly readable at all growth stages."
+        }
+      ]
+    },
+    {
+      "id": "REQ-176",
+      "summary": "Apply responsive sizing to FocusTree for mobile and desktop viewports",
+      "acceptanceCriteria": [
+        "On mobile viewports, the tree is proportionally smaller than on desktop",
+        "On desktop viewports, the tree is larger and visually prominent",
+        "Tree remains perfectly centered inside the timer circle on both mobile and desktop",
+        "Tree never overflows or clips outside the timer circle boundary"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/PomodoroTimer/FocusTree.tsx",
+          "operation": "modify",
+          "description": "Add responsive sizing logic to the FocusTree SVG component. Use Tailwind responsive classes (e.g., w-32 h-32 md:w-48 md:h-48) or CSS clamp/viewport units to make the tree smaller on mobile viewports and larger on desktop. Ensure the tree remains centered inside the timer circle on all screen sizes and never overflows or clips outside the circle boundary."
+        }
+      ]
+    },
+    {
+      "id": "REQ-177",
+      "summary": "Implement Forest Mode with daily tree count display below timer on dashboard",
+      "acceptanceCriteria": [
+        "Each completed focus session (not break) increments the forest tree count by 1",
+        "Small tree icons are displayed below the timer with a count label (e.g., 'Today's Forest: 🌲🌲🌲 3 trees')",
+        "Daily tree count is persisted in localStorage with a date key and resets to 0 on a new calendar day",
+        "Forest Mode display is hidden in Streamer Mode",
+        "Forest Mode display is hidden in Study Mode",
+        "Forest Mode display only appears on the dashboard route ('/')"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/PomodoroTimer/ForestMode.tsx",
+          "operation": "create",
+          "description": "Create a Forest Mode component that displays the daily tree count with small tree emojis or SVG icons (e.g., 🌲) in a row/wrap layout. Include a label showing 'Today's Forest: 🌲🌲🌲 X trees'. Implement localStorage persistence with a date-keyed entry (e.g., 'forest-YYYY-MM-DD') that auto-resets to 0 at the start of a new calendar day. Accept an `onSessionComplete` prop or listen to a global event to increment the count when a focus session completes (not break sessions). Use dark theme styling with white/light-gray text."
+        },
+        {
+          "path": "frontend/src/lib/forestMetrics.ts",
+          "operation": "create",
+          "description": "Create a utility module for Forest Mode metrics. Provide functions to: get today's tree count from localStorage (date-keyed, e.g., 'forest-2025-01-15'), increment the count by 1, and reset to 0 if the current date does not match the stored date. Include a helper to check if it's a new day and auto-reset the count. Export functions for reading and updating forest metrics."
+        },
+        {
+          "path": "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx",
+          "operation": "modify",
+          "description": "Wire Forest Mode into the timer UI. When a focus session completes (not a break), increment the daily forest tree count using the forestMetrics utility. Conditionally render the ForestMode component below the timer on the dashboard route ('/') only. Hide Forest Mode when Study Mode is active or in Streamer Mode. Ensure the forest section does not displace or obscure existing timer controls, quote, or 'Stay Locked In.' text."
+        },
+        {
+          "path": "frontend/src/pages/LandingPage.tsx",
+          "operation": "modify",
+          "description": "Integrate the Forest Mode display into the dashboard layout below the Pomodoro timer. Ensure Forest Mode is conditionally rendered only when not in Study Mode and visible on the '/' route. Position it attractively without breaking the existing layout or obscuring the timer, motivational quote, or controls. Verify it does not render on /timer or when streamer mode is active."
+        }
+      ]
+    },
+    {
+      "id": "REQ-178",
+      "summary": "Ensure Focus Tree and Forest Mode maintain dark study vibe and do not break existing layout",
+      "acceptanceCriteria": [
+        "Tree glow uses soft green color (e.g., #22c55e or #4ade80) consistent with dark study theme",
+        "All Forest Mode labels are in English",
+        "Time digits remain clearly visible at all tree growth stages in both light and dark mode",
+        "No existing dashboard elements (controls, quote, 'Stay Locked In.' text) are displaced or obscured",
+        "Dark mode: tree and forest section look clean and premium",
+        "Light mode: tree and forest section remain readable and do not look broken"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/PomodoroTimer/FocusTree.tsx",
+          "operation": "modify",
+          "description": "Verify the tree SVG glow uses soft green color (#22c55e or #4ade80) consistent with the dark study theme. Ensure time digits remain clearly visible at all tree growth stages in both light and dark mode by keeping glow opacity low and tree colors subtle. Test that the tree does not introduce visual clutter or break the premium minimal layout."
+        },
+        {
+          "path": "frontend/src/components/PomodoroTimer/ForestMode.tsx",
+          "operation": "modify",
+          "description": "Ensure all Forest Mode labels are in English. Use dark background, white/light-gray text, and soft green accents consistent with the study vibe. Verify the forest section does not displace or obscure existing dashboard elements (timer controls, motivational quote, 'Stay Locked In.' text). Test in both dark and light modes to ensure the section looks clean and premium."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add any necessary global CSS variables or utility classes for the Focus Tree green glow effect or Forest Mode styling if not already covered by Tailwind. Ensure consistency with the existing dark study theme using OKLCH-based color tokens. Do not introduce new global stylesheet paths."
+        }
+      ]
+    }
+  ]
+}

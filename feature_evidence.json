@@ -1,0 +1,131 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-new-react-component-focustree-frontend-src-components-pomodorotimer-focustree-tsx-that-renders-a-minimal-aesthetic-svg-illustration-of-a-growing-focus-tree-the-svg-must-be-centered-behind-the-time-digits-inside-the-progressring-circle-using-absolute-positioning-so-it-does-not-shift-or-obscure-the-countdown-numbers-or-session-label-the-tree-must-look-clean-and-modern-not-cartoonish-use-simple-geometric-svg-paths-for-trunk-branches-and-foliage-apply-a-soft-green-neon-glow-effect-filter-drop-shadow-using-a-green-accent-color-e-g-22c55e-or-4ade80-at-low-opacity-so-it-does-not-overpower-the-timer-digits-the-component-must-accept-a-progress-prop-number-0-100-representing-how-much-of-the-current-focus-session-has-elapsed",
+      "featureTitle": "Create a new React component `FocusTree` (frontend/src/components/PomodoroTimer/FocusTree.tsx) that renders a minimal, aesthetic SVG illustration of a growing focus tree. The SVG must be centered behind the time digits inside the ProgressRing circle, using absolute positioning so it does not shift or obscure the countdown numbers or session label. The tree must look clean and modern (not cartoonish) — use simple geometric SVG paths for trunk, branches, and foliage. Apply a soft green neon glow effect (filter: drop-shadow) using a green accent color (e.g., #22c55e or #4ade80) at low opacity so it does not overpower the timer digits. The component must accept a `progress` prop (number 0–100) representing how much of the current focus session has elapsed.",
+      "files": [
+        "frontend/src/components/PomodoroTimer/FocusTree.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-172"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-the-growth-animation-logic-for-the-focustree-component-the-tree-s-visual-state-must-transition-smoothly-through-five-growth-stages-based-on-the-progress-prop-0-seed-tiny-dot-or-sprout-shape-25-small-plant-short-stem-with-small-leaves-50-medium-plant-taller-stem-more-foliage-75-almost-full-tree-branching-structure-100-fully-grown-glowing-tree-complete-canopy-with-intensified-neon-glow-use-css-keyframe-transitions-or-svg-attribute-interpolation-via-react-state-style-so-growth-animation-is-smooth-and-lag-free-the-tree-must-not-jump-between-stages-abruptly-interpolate-svg-path-scales-or-opacity-smoothly-do-not-use-any-heavy-animation-libraries",
+      "featureTitle": "Implement the growth animation logic for the FocusTree component. The tree's visual state must transition smoothly through five growth stages based on the `progress` prop: 0% → seed (tiny dot or sprout shape), 25% → small plant (short stem with small leaves), 50% → medium plant (taller stem, more foliage), 75% → almost full tree (branching structure), 100% → fully grown glowing tree (complete canopy with intensified neon glow). Use CSS keyframe transitions or SVG attribute interpolation (via React state/style) so growth animation is smooth and lag-free. The tree must not jump between stages abruptly — interpolate SVG path scales or opacity smoothly. Do not use any heavy animation libraries.",
+      "files": [
+        "frontend/src/components/PomodoroTimer/FocusTree.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-173"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-wire-the-focustree-component-to-the-pomodoro-timer-state-in-pomodorotimer-tsx-and-usepomodorotimer-ts-compute-the-progress-value-as-the-percentage-of-elapsed-time-within-the-current-focus-session-progress-focusdurationseconds-remainingseconds-focusdurationseconds-100-clamped-to-0-100-when-the-timer-is-running-the-tree-grows-in-real-time-as-time-elapses-when-the-timer-is-paused-the-tree-freezes-at-its-current-growth-stage-do-not-animate-while-paused-when-the-timer-reset-button-is-pressed-the-tree-must-reset-back-to-the-seed-stage-progress-0-the-tree-must-only-grow-during-focus-sessions-do-not-advance-the-tree-during-break-sessions",
+      "featureTitle": "Wire the FocusTree component to the Pomodoro timer state in PomodoroTimer.tsx and usePomodoroTimer.ts. Compute the `progress` value as the percentage of elapsed time within the current focus session: `progress = ((focusDurationSeconds - remainingSeconds) / focusDurationSeconds) * 100`, clamped to 0–100. When the timer is running, the tree grows in real time as time elapses. When the timer is paused, the tree freezes at its current growth stage (do not animate while paused). When the timer reset button is pressed, the tree must reset back to the seed stage (progress = 0). The tree must only grow during focus sessions — do not advance the tree during break sessions.",
+      "files": [
+        "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx",
+        "frontend/src/components/PomodoroTimer/usePomodoroTimer.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-174"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-responsive-sizing-to-the-focustree-svg-component-on-mobile-viewports-below-sm-md-breakpoint-the-tree-must-be-slightly-smaller-so-it-fits-comfortably-inside-the-smaller-timer-circle-on-desktop-viewports-the-tree-should-be-larger-and-more-prominent-use-tailwind-responsive-classes-or-css-viewport-clamp-units-to-achieve-this-the-tree-must-always-remain-centered-inside-the-timer-circle-on-all-screen-sizes",
+      "featureTitle": "Apply responsive sizing to the FocusTree SVG component. On mobile viewports (below sm/md breakpoint), the tree must be slightly smaller so it fits comfortably inside the smaller timer circle. On desktop viewports, the tree should be larger and more prominent. Use Tailwind responsive classes or CSS viewport/clamp units to achieve this. The tree must always remain centered inside the timer circle on all screen sizes.",
+      "files": [
+        "frontend/src/components/PomodoroTimer/FocusTree.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-176"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-forest-mode-each-time-a-pomodoro-focus-session-completes-not-a-break-session-add-one-small-tree-icon-to-a-forest-display-area-shown-below-the-main-timer-on-the-dashboard-route-display-the-accumulated-trees-as-small-tree-emojis-or-minimal-svg-tree-icons-e-g-in-a-row-wrap-layout-with-a-label-showing-the-daily-tree-count-e-g-today-s-forest-3-trees-persist-the-daily-tree-count-in-localstorage-using-a-date-keyed-entry-reset-to-0-automatically-at-the-start-of-a-new-calendar-day-forest-mode-display-must-only-appear-on-the-dashboard-in-non-streamer-non-study-mode-views-hide-it-entirely-in-streamer-mode-and-study-mode",
+      "featureTitle": "Implement Forest Mode: each time a Pomodoro focus session completes (not a break session), add one small tree icon to a 'Forest' display area shown below the main timer on the dashboard (route '/'). Display the accumulated trees as small tree emojis or minimal SVG tree icons (e.g., 🌲) in a row/wrap layout, with a label showing the daily tree count (e.g., 'Today's Forest: 🌲🌲🌲 3 trees'). Persist the daily tree count in localStorage using a date-keyed entry (reset to 0 automatically at the start of a new calendar day). Forest Mode display must only appear on the dashboard in non-Streamer, non-Study-Mode views — hide it entirely in Streamer Mode and Study Mode.",
+      "files": [
+        "frontend/src/components/PomodoroTimer/ForestMode.tsx",
+        "frontend/src/components/PomodoroTimer/PomodoroTimer.tsx",
+        "frontend/src/lib/forestMetrics.ts",
+        "frontend/src/pages/LandingPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-177"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-focus-tree-and-forest-mode-additions-maintain-the-existing-dark-study-vibe-design-use-only-dark-backgrounds-white-light-gray-text-for-labels-soft-green-neon-glow-for-the-tree-and-ensure-no-new-ui-element-introduces-visual-clutter-or-breaks-the-existing-premium-minimal-layout-of-the-dashboard-all-new-labels-and-text-in-the-forest-mode-section-must-be-in-english-the-tree-and-forest-elements-must-not-interfere-with-the-existing-timer-controls-settings-panels-motivational-quote-or-stay-locked-in-text",
+      "featureTitle": "Ensure the Focus Tree and Forest Mode additions maintain the existing dark study vibe design: use only dark backgrounds, white/light-gray text for labels, soft green neon glow for the tree, and ensure no new UI element introduces visual clutter or breaks the existing premium minimal layout of the dashboard. All new labels and text in the Forest Mode section must be in English. The tree and forest elements must not interfere with the existing timer controls, settings panels, motivational quote, or 'Stay Locked In.' text.",
+      "files": [
+        "frontend/src/components/PomodoroTimer/FocusTree.tsx",
+        "frontend/src/components/PomodoroTimer/ForestMode.tsx",
+        "frontend/src/index.css"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-178"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

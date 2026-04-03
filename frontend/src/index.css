@@ -1,0 +1,286 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.625rem;
+        --background: 0.98 0.01 250;
+        --foreground: 0.15 0.02 250;
+        --card: 0.95 0.01 250;
+        --card-foreground: 0.15 0.02 250;
+        --popover: 0.98 0.01 250;
+        --popover-foreground: 0.15 0.02 250;
+        --primary: 0.55 0.18 260;
+        --primary-foreground: 0.98 0.01 250;
+        --secondary: 0.90 0.02 250;
+        --secondary-foreground: 0.15 0.02 250;
+        --muted: 0.92 0.02 250;
+        --muted-foreground: 0.45 0.02 250;
+        --accent: 0.88 0.03 250;
+        --accent-foreground: 0.15 0.02 250;
+        --destructive: 0.60 0.20 25;
+        --destructive-foreground: 0.98 0.01 250;
+        --border: 0.85 0.02 250;
+        --input: 0.85 0.02 250;
+        --ring: 0.55 0.18 260;
+        --chart-1: 0.55 0.18 260;
+        --chart-2: 0.60 0.15 200;
+        --chart-3: 0.70 0.20 160;
+        --chart-4: 0.55 0.22 320;
+        --chart-5: 0.68 0.18 40;
+        --sidebar: 0.95 0.01 250;
+        --sidebar-foreground: 0.15 0.02 250;
+        --sidebar-primary: 0.55 0.18 260;
+        --sidebar-primary-foreground: 0.98 0.01 250;
+        --sidebar-accent: 0.90 0.02 250;
+        --sidebar-accent-foreground: 0.15 0.02 250;
+        --sidebar-border: 0.85 0.02 250;
+        --sidebar-ring: 0.55 0.18 260;
+    }
+
+    .dark {
+        --background: 0.06 0.025 245;
+        --foreground: 0.93 0.01 240;
+        --card: 0.11 0.03 245;
+        --card-foreground: 0.93 0.01 240;
+        --popover: 0.11 0.03 245;
+        --popover-foreground: 0.93 0.01 240;
+        --primary: 0.62 0.16 270;
+        --primary-foreground: 0.98 0.01 240;
+        --secondary: 0.17 0.04 245;
+        --secondary-foreground: 0.93 0.01 240;
+        --muted: 0.15 0.03 245;
+        --muted-foreground: 0.52 0.02 240;
+        --accent: 0.19 0.04 245;
+        --accent-foreground: 0.93 0.01 240;
+        --destructive: 0.55 0.20 25;
+        --destructive-foreground: 0.98 0.01 240;
+        --border: 0.20 0.03 245;
+        --input: 0.20 0.03 245;
+        --ring: 0.62 0.16 270;
+        --chart-1: 0.62 0.16 270;
+        --chart-2: 0.55 0.14 200;
+        --chart-3: 0.65 0.18 160;
+        --chart-4: 0.50 0.20 320;
+        --chart-5: 0.63 0.16 40;
+        --sidebar: 0.11 0.03 245;
+        --sidebar-foreground: 0.93 0.01 240;
+        --sidebar-primary: 0.62 0.16 270;
+        --sidebar-primary-foreground: 0.98 0.01 240;
+        --sidebar-accent: 0.17 0.04 245;
+        --sidebar-accent-foreground: 0.93 0.01 240;
+        --sidebar-border: 0.20 0.03 245;
+        --sidebar-ring: 0.62 0.16 270;
+    }
+
+    * {
+        @apply border-border;
+    }
+    
+    body {
+        @apply bg-background text-foreground;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        background-image: 
+            radial-gradient(circle at 20% 50%, oklch(0.15 0.08 280 / 0.25) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, oklch(0.15 0.08 250 / 0.25) 0%, transparent 50%),
+            url('/assets/generated/bg-study-gradient.dim_1920x1080.png');
+        background-size: cover, cover, cover;
+        background-position: center, center, center;
+        background-attachment: fixed;
+        animation: gradientShift 20s ease infinite;
+        transition: opacity 0.3s ease;
+    }
+
+    .dark body::before {
+        opacity: 0.5;
+    }
+
+    body:not(.dark)::before {
+        opacity: 0.3;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Space Grotesk', 'Inter', sans-serif;
+    }
+
+    @keyframes gradientShift {
+        0%, 100% {
+            background-position: 0% 50%, 100% 100%, center;
+        }
+        50% {
+            background-position: 100% 50%, 0% 0%, center;
+        }
+    }
+}
+
+@layer components {
+    .social-icon-link {
+        @apply text-muted-foreground hover:text-foreground transition-all duration-300;
+        filter: drop-shadow(0 0 0 transparent);
+    }
+
+    .social-icon-link:hover {
+        filter: drop-shadow(0 0 8px oklch(0.65 0.18 280 / 0.6));
+    }
+
+    .social-icon-link:focus-visible {
+        @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background rounded;
+        filter: drop-shadow(0 0 8px oklch(0.65 0.18 280 / 0.6));
+    }
+
+    /* Hide social icons in streamer mode on /timer page */
+    [data-streamer-mode="true"] [data-social-links] {
+        display: none;
+    }
+
+    /* Dashboard dark gradient background */
+    .dashboard-dark-bg {
+        background: linear-gradient(160deg, #020510 0%, #050a1a 40%, #080d20 70%, #020408 100%);
+    }
+
+    /* Soft shadow cards */
+    .card-soft-shadow {
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45), 0 1px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Glow pulse animation for timer background */
+    @keyframes glow-pulse {
+        0%, 100% {
+            transform: scale(1);
+            opacity: 0.12;
+        }
+        50% {
+            transform: scale(1.08);
+            opacity: 0.22;
+        }
+    }
+
+    .timer-glow-bg {
+        animation: glow-pulse 3.5s ease-in-out infinite;
+    }
+
+    /* Floating particles */
+    @keyframes float-up-1 {
+        0% { transform: translateY(0) translateX(0); opacity: 0; }
+        10% { opacity: 0.4; }
+        90% { opacity: 0.15; }
+        100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+    }
+    @keyframes float-up-2 {
+        0% { transform: translateY(0) translateX(0); opacity: 0; }
+        10% { opacity: 0.3; }
+        90% { opacity: 0.1; }
+        100% { transform: translateY(-100vh) translateX(-30px); opacity: 0; }
+    }
+    @keyframes float-up-3 {
+        0% { transform: translateY(0) translateX(0); opacity: 0; }
+        15% { opacity: 0.35; }
+        85% { opacity: 0.12; }
+        100% { transform: translateY(-100vh) translateX(15px); opacity: 0; }
+    }
+    @keyframes float-up-4 {
+        0% { transform: translateY(0) translateX(0); opacity: 0; }
+        12% { opacity: 0.25; }
+        88% { opacity: 0.08; }
+        100% { transform: translateY(-100vh) translateX(-10px); opacity: 0; }
+    }
+
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+        will-change: transform, opacity;
+    }
+
+    /* Tick pulse animation for timer digits */
+    @keyframes tick-pulse {
+        0% { transform: scale(1); }
+        30% { transform: scale(1.025); }
+        100% { transform: scale(1); }
+    }
+
+    .tick-animate {
+        animation: tick-pulse 0.22s ease-out forwards;
+    }
+
+    /* Session completed celebration */
+    @keyframes celebration-pop-in {
+        0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+        60% { transform: translate(-50%, -50%) scale(1.08); opacity: 1; }
+        100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+
+    @keyframes celebration-fade-out {
+        0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+    }
+
+    .celebration-pop {
+        animation: celebration-pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .celebration-fade {
+        animation: celebration-fade-out 0.35s ease-in forwards;
+    }
+
+    /* Onboarding poll animations */
+    @keyframes onboarding-fade-in {
+        0% { opacity: 0; transform: scale(0.95) translateY(8px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes onboarding-dot-pulse {
+        0%, 100% { transform: scale(1); opacity: 0.7; }
+        50% { transform: scale(1.4); opacity: 1; }
+    }
+
+    /* ── Forest Mode ─────────────────────────────────────────────────────── */
+    .forest-mode-card {
+        background: oklch(0.10 0.03 145 / 0.55);
+        border: 1px solid oklch(0.35 0.12 145 / 0.35);
+        backdrop-filter: blur(8px);
+        box-shadow:
+            0 0 20px oklch(0.55 0.18 145 / 0.08),
+            0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .dark .forest-mode-card {
+        background: oklch(0.09 0.03 145 / 0.60);
+        border-color: oklch(0.40 0.14 145 / 0.30);
+    }
+
+    .forest-mode-label {
+        color: oklch(0.72 0.18 145);
+        letter-spacing: 0.18em;
+    }
+
+    .forest-mode-count {
+        color: oklch(0.82 0.14 145);
+    }
+
+    /* Pop-in animation for each tree icon */
+    @keyframes tree-pop-in {
+        0%   { transform: scale(0) rotate(-10deg); opacity: 0; }
+        70%  { transform: scale(1.15) rotate(3deg); opacity: 1; }
+        100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .forest-tree-icon {
+        display: inline-block;
+        animation: tree-pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+}
